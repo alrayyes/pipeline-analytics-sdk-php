@@ -112,3 +112,14 @@ what actually matters.
 
 Every change lands through a pull request; nothing is pushed straight to
 `main`.
+
+## Release tagging note
+
+`v0.1.0` is the real baseline release-please computes from -- it was
+retagged once after an early mistake pointed the tag at an orphaned
+squash-merge source commit instead of the actual `main` HEAD, which made
+release-please treat the repo as having no prior release at all and
+propose `1.0.0` (github.com/alrayyes/pipeline-analytics-sdk-php#3, #5, #7,
+#9, #11). If a future release ever proposes an unexpectedly large jump,
+check `git tag -l -n1` against `git log main` before assuming
+`release-please-config.json` is wrong again.
