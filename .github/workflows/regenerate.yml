@@ -1,0 +1,46 @@
+name: Regenerate from spec
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # weekly, Monday 06:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Bump the pinned spec commit to pipeline-analytics' current main
+        run: |
+          gh api repos/alrayyes/pipeline-analytics/commits/main --jq '.sha' \
+            > openapi/SPEC_COMMIT
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Fetch the spec at that commit
+        run: ./hack/fetch-spec.sh
+      - name: Regenerate the client
+        run: ./scripts/generate.sh
+      - name: Open a pull request if anything changed
+        # A regenerated SDK can touch every file in the repo -- real review,
+        # not the Renovate/Dependabot self-merge exception
+        # (rules/sdk-generation.md's "Regeneration in CI"). token is
+        # RELEASE_TOKEN, not GITHUB_TOKEN: a GITHUB_TOKEN-authored PR needs a
+        # human approval GitHub itself injects, and its own checks can come
+        # back completely empty rather than just failing
+        # (rules/releases.md's hush-hush-* codegen precedent).
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
+          commit-message: "chore(spec): regenerate client from pipeline-analytics openapi.yaml"
+          title: "chore(spec): regenerate client from pipeline-analytics openapi.yaml"
+          body: >-
+            Automated regeneration against pipeline-analytics' current
+            `openapi/openapi.yaml`. Diff the spec (not the generated code) to
+            decide the version bump this needs -- rules/sdk-generation.md's
+            "Versioning tracks the contract, not the commits".
+          branch: chore/regenerate-spec
+          labels: dependencies
