@@ -79,6 +79,11 @@ jobs:
           ./scripts/generate.sh
           git diff --exit-code openapi/openapi.yaml generated/
       - name: Every generated file still carries the DO-NOT-EDIT header
-        run: >-
-          ! find generated/src -name '*.php' -print0 |
-          xargs -0 grep -L 'Do not edit the class manually.'
+        run: |
+          missing=$(find generated/src -name '*.php' -print0 \
+            | xargs -0 grep -L 'Do not edit the class manually.' || true)
+          if [ -n "$missing" ]; then
+            echo "Missing the DO-NOT-EDIT header:"
+            echo "$missing"
+            exit 1
+          fi
