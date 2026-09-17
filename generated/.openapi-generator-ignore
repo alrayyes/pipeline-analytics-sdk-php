@@ -1,0 +1,11 @@
+# Generated code -- never hand-edit (rules/sdk-generation.md's "Generated
+# vs hand-written"). This file itself controls which supporting files
+# openapi-generator writes here; everything it still generates carries a
+# "Do not edit the class manually." docblock notice.
+composer.json
+README.md
+git_push.sh
+.travis.yml
+.php-cs-fixer.dist.php
+phpunit.xml.dist
+.gitignore

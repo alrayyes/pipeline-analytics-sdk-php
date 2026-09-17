@@ -1,0 +1,34 @@
+pre-commit:
+  parallel: false
+  commands:
+    pint:
+      # Scoped to src/tests, never a bare "*.php": pint.json's own
+      # "exclude" for generated/ only applies when Pint discovers files
+      # itself, not when explicit paths are passed on the command line
+      # (confirmed live -- passing a generated/ file directly reformats
+      # it regardless of the config). A staged generated/ file (the
+      # initial bootstrap commit, or a regeneration PR) must never reach
+      # {staged_files} here at all.
+      glob: "{src,tests}/**/*.php"
+      run: vendor/bin/pint {staged_files} && git add {staged_files}
+
+commit-msg:
+  commands:
+    commitlint:
+      run: bunx commitlint --edit {1}
+
+pre-push:
+  parallel: false
+  commands:
+    composer-normalize:
+      run: composer normalize --dry-run
+    pint:
+      run: vendor/bin/pint --test
+    phpstan:
+      run: vendor/bin/phpstan analyse --memory-limit=512M
+    rector:
+      run: vendor/bin/rector process --dry-run
+    test:
+      run: vendor/bin/phpunit
+    audit:
+      run: composer audit

@@ -1,0 +1,55 @@
+{
+    "name": "alrayyes/pipeline-analytics-sdk-php",
+    "description": "PHP client for pipeline-analytics's REST API, generated from its OpenAPI spec with openapi-generator.",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Ryan Kes",
+            "email": "ryan@andthensome.nl"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "8.2.0"
+    },
+    "require-dev": {
+        "ergebnis/composer-normalize": "2.53.0",
+        "laravel/pint": "1.32.1",
+        "phpstan/extension-installer": "1.4.3",
+        "phpstan/phpstan": "2.2.14",
+        "phpstan/phpstan-phpunit": "2.0.18",
+        "phpunit/phpunit": "11.5.56",
+        "rector/rector": "2.6.7",
+        "roave/security-advisories": "dev-latest"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "PipelineAnalytics\\": "src/",
+            "PipelineAnalytics\\Generated\\": "generated/src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PipelineAnalytics\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "phpstan": "phpstan analyse --memory-limit=512M",
+        "pint:fix": "pint",
+        "pint:lint": "pint --test",
+        "rector:fix": "rector process",
+        "rector:lint": "rector process --dry-run",
+        "test": "phpunit"
+    }
+}

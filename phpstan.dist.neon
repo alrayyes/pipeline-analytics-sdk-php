@@ -1,0 +1,21 @@
+parameters:
+    level: 9
+    paths:
+        - src
+        - tests
+    stubFiles:
+        - phpstan-stubs/ReposApi.stub.php
+    ignoreErrors:
+        -
+            # GuzzleHttp\HandlerStack's THandler template has no useful
+            # bound, and its own real instantiations are invariant against
+            # each other (HandlerStack::create() alone infers
+            # callable(): mixed, HandlerStack::create($mockHandler) infers
+            # a completely different, incompatible callable shape) -- see
+            # https://phpstan.org/blog/whats-up-with-template-covariant.
+            # There's no single generic parameterization of HandlerStack
+            # that's a supertype of every real caller here, so this is a
+            # genuine limitation in Guzzle's own generic, not a bug we can
+            # fix by annotating harder.
+            message: '#with generic class GuzzleHttp\\HandlerStack but does not specify its types#'
+            identifier: missingType.generics
