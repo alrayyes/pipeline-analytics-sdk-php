@@ -45,6 +45,8 @@
         "sort-packages": true
     },
     "scripts": {
+        "normalize:fix": "composer normalize",
+        "normalize:lint": "composer normalize --dry-run",
         "phpstan": "phpstan analyse --memory-limit=512M",
         "pint:fix": "pint",
         "pint:lint": "pint --test",

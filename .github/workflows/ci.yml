@@ -49,7 +49,7 @@ jobs:
       - name: composer install
         run: composer install --no-interaction --prefer-dist
       - name: composer normalize
-        run: composer normalize --dry-run
+        run: composer normalize:lint
       - name: Pint
         run: vendor/bin/pint --test
       - name: PHPStan

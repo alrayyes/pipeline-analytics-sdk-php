@@ -81,7 +81,7 @@ composer test              # PHPUnit
 composer phpstan           # level 9, generated/ excluded
 vendor/bin/pint --test     # formatting check
 composer rector:lint       # mechanical-upgrade check, dry run
-composer normalize --dry-run
+composer normalize:lint
 composer audit
 ```
 
