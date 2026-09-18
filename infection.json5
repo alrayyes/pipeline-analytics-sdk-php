@@ -1,0 +1,24 @@
+{
+  // $schema kept for editor completion; infection/infection ships it.
+  $schema: "vendor/infection/infection/resources/schema.json",
+
+  // Generated code isn't exercised by the hand-written unit suite at all
+  // (only indirectly, through a real HTTP call) -- mutating it here would
+  // just report untested noise phpstan.dist.neon and phpmd.xml.dist
+  // already exclude for the same reason.
+  source: {
+    directories: ["src"],
+  },
+
+  logs: {
+    text: "infection.log",
+    github: true,
+  },
+
+  // minMsi/minCoveredMsi live on the CLI, not here: the PR-diff-scoped CI
+  // job passes --min-msi=100 --min-covered-msi=100 per rules/php.md ("A
+  // surviving mutant in the diff blocks the merge from day one"), while
+  // the scheduled whole-codebase run is deliberately informational and
+  // passes neither -- baking a number in here would force both runs to
+  // the same bar.
+}

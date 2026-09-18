@@ -30,6 +30,25 @@ it('decodes the raw body when no model was attached', function (): void {
         ->and($apiError->requestId)->toBeNull();
 });
 
+it('falls back to the raw body when the response object is missing getMessage', function (): void {
+    // decodeBody() requires *both* getCode() and getMessage() before
+    // trusting a response object -- one without the other has to fall
+    // through to decoding the raw JSON body instead, same as no
+    // response object at all.
+    $exception = new ApiException('[500] boom', 500, [], '{"code":"from_body","message":"from body"}');
+    $exception->setResponseObject(new class
+    {
+        public function getCode(): string
+        {
+            return 'from_object';
+        }
+    });
+
+    $apiError = ApiError::fromGeneratedException($exception);
+
+    expect($apiError->apiCode)->toBe('from_body');
+});
+
 it("falls back gracefully when the body isn't the expected shape", function (): void {
     $exception = new ApiException('[500] boom', 500, [], 'not json at all');
 

@@ -57,6 +57,29 @@ it('stops once max retries is reached', function (): void {
     expect($decider(2, $request, new Response(500)))->toBeFalse();
 });
 
+it('stops after exactly three retries by default', function (): void {
+    $decider = (new RetryMiddleware)->decider();
+    $request = retryTestRequest();
+
+    expect($decider(0, $request, new Response(500)))->toBeTrue();
+    expect($decider(1, $request, new Response(500)))->toBeTrue();
+    expect($decider(2, $request, new Response(500)))->toBeTrue();
+    expect($decider(3, $request, new Response(500)))->toBeFalse();
+});
+
+it('ignores a malformed retry-after header', function (): void {
+    // Not a parseable IMF-fixdate at all -- retryAfterMillis() must
+    // return null and fall through to jitter-based backoff rather
+    // than operating on DateTimeImmutable::createFromFormat()'s
+    // false return value.
+    $delay = (new RetryMiddleware(baseDelaySeconds: 0.1))->delay();
+
+    $millis = $delay(0, new Response(503, ['Retry-After' => 'not-a-date']));
+
+    expect($millis)->toBeGreaterThanOrEqual(0)
+        ->and($millis)->toBeLessThanOrEqual(100);
+});
+
 it('honors retry-after in seconds', function (): void {
     $delay = (new RetryMiddleware)->delay();
 
