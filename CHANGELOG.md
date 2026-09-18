@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v0.3.0...v0.4.0) (2026-09-18)
+
+
+### Features
+
+* **lint:** wire PHP Mess Detector into CI and pre-push ([#28](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/28)) ([821c685](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/821c68593a4c3c4eae84df396fd879baedb21426))
+
 ## [0.3.0](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v0.2.0...v0.3.0) (2026-09-18)
 
 
