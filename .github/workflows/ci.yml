@@ -100,8 +100,18 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: bearer/bearer:2.1.1@sha256:054087ae504572bea7385f33c6a278571d03919fdc05f042c4de827b84ba2210
+      # The image's own default user (runuser, non-root) can't write to
+      # the runner's mounted work/temp directories, which actions/checkout
+      # (a Node.js action) needs -- confirmed live: EACCES writing to
+      # _runner_file_commands before a single step actually ran.
+      options: --user root
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # actions/checkout's own dubious-ownership fix lives in a temp $HOME
+      # that only exists for that step - bearer shells out to git for its
+      # own context, same as go build's VCS stamping elsewhere in this
+      # account, and needs this fresh since the job runs as root.
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - run: bearer scan src tests hack scripts
 
   generated-code-is-fresh:
