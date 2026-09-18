@@ -75,6 +75,32 @@ final class RetryMiddlewareTest extends TestCase
     }
 
     #[Test]
+    public function default_max_retries_is_exactly_three(): void
+    {
+        $decider = (new RetryMiddleware)->decider();
+
+        self::assertTrue($decider(0, $this->request, new Response(500)));
+        self::assertTrue($decider(1, $this->request, new Response(500)));
+        self::assertTrue($decider(2, $this->request, new Response(500)));
+        self::assertFalse($decider(3, $this->request, new Response(500)));
+    }
+
+    #[Test]
+    public function ignores_a_malformed_retry_after_header(): void
+    {
+        // Not a parseable IMF-fixdate at all -- retryAfterMillis() must
+        // return null and fall through to jitter-based backoff rather
+        // than operating on DateTimeImmutable::createFromFormat()'s
+        // false return value.
+        $delay = (new RetryMiddleware(baseDelaySeconds: 0.1))->delay();
+
+        $millis = $delay(0, new Response(503, ['Retry-After' => 'not-a-date']));
+
+        self::assertGreaterThanOrEqual(0, $millis);
+        self::assertLessThanOrEqual(100, $millis);
+    }
+
+    #[Test]
     public function honors_retry_after_in_seconds(): void
     {
         $delay = (new RetryMiddleware)->delay();

@@ -16,6 +16,7 @@
     },
     "require-dev": {
         "ergebnis/composer-normalize": "2.53.0",
+        "infection/infection": "0.29.14",
         "laravel/pint": "1.32.1",
         "phpstan/extension-installer": "1.4.3",
         "phpstan/phpstan": "2.2.14",
@@ -40,11 +41,13 @@
     "config": {
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
+            "infection/extension-installer": true,
             "phpstan/extension-installer": true
         },
         "sort-packages": true
     },
     "scripts": {
+        "infection": "infection --threads=max",
         "normalize:fix": "composer normalize",
         "normalize:lint": "composer normalize --dry-run",
         "phpstan": "phpstan analyse --memory-limit=512M",

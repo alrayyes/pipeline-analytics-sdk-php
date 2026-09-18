@@ -6,6 +6,7 @@ namespace PipelineAnalytics\Tests\Pagination;
 
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -48,6 +49,57 @@ final class RepoIteratorTest extends TestCase
         }
 
         self::assertSame(['1', '2'], $ids);
+    }
+
+    #[Test]
+    public function default_page_size_is_exactly_fifty(): void
+    {
+        $mock = new MockHandler([
+            new Response(200, [], $this->json(['repos' => [], 'hasMore' => false])),
+        ]);
+        $stack = HandlerStack::create($mock);
+        $history = [];
+        $stack->push(Middleware::history($history));
+
+        $client = new Client('https://example.test', handlerStack: $stack);
+
+        iterator_to_array($client->listRepos());
+
+        self::assertIsArray($history);
+        parse_str($history[0]['request']->getUri()->getQuery(), $query);
+        self::assertSame('50', $query['limit']);
+    }
+
+    #[Test]
+    public function offset_accumulates_across_more_than_two_pages(): void
+    {
+        // Three single-item pages: a page's offset getting reset to just
+        // that page's own count, instead of accumulating, only shows up
+        // once there's a third request to compare against -- the second
+        // request's offset is 1 either way.
+        $mock = new MockHandler([
+            new Response(200, [], $this->json(['repos' => [
+                ['id' => '1', 'forge' => 'github', 'identifier' => 'a/a', 'tokenMasked' => '****1', 'ingestionStatus' => 'active'],
+            ], 'hasMore' => true])),
+            new Response(200, [], $this->json(['repos' => [
+                ['id' => '2', 'forge' => 'github', 'identifier' => 'b/b', 'tokenMasked' => '****2', 'ingestionStatus' => 'active'],
+            ], 'hasMore' => true])),
+            new Response(200, [], $this->json(['repos' => [
+                ['id' => '3', 'forge' => 'github', 'identifier' => 'c/c', 'tokenMasked' => '****3', 'ingestionStatus' => 'active'],
+            ], 'hasMore' => false])),
+        ]);
+        $stack = HandlerStack::create($mock);
+        $history = [];
+        $stack->push(Middleware::history($history));
+
+        $client = new Client('https://example.test', handlerStack: $stack);
+
+        iterator_to_array($client->listRepos());
+
+        self::assertIsArray($history);
+        self::assertCount(3, $history);
+        parse_str($history[2]['request']->getUri()->getQuery(), $thirdRequestQuery);
+        self::assertSame('2', $thirdRequestQuery['offset']);
     }
 
     #[Test]

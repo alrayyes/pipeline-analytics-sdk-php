@@ -41,6 +41,27 @@ final class ApiErrorTest extends TestCase
     }
 
     #[Test]
+    public function falls_back_to_the_raw_body_when_the_response_object_is_missing_getmessage(): void
+    {
+        // decodeBody() requires *both* getCode() and getMessage() before
+        // trusting a response object -- one without the other has to fall
+        // through to decoding the raw JSON body instead, same as no
+        // response object at all.
+        $exception = new ApiException('[500] boom', 500, [], '{"code":"from_body","message":"from body"}');
+        $exception->setResponseObject(new class
+        {
+            public function getCode(): string
+            {
+                return 'from_object';
+            }
+        });
+
+        $apiError = ApiError::fromGeneratedException($exception);
+
+        self::assertSame('from_body', $apiError->apiCode);
+    }
+
+    #[Test]
     public function falls_back_gracefully_when_the_body_isnt_the_expected_shape(): void
     {
         $exception = new ApiException('[500] boom', 500, [], 'not json at all');
