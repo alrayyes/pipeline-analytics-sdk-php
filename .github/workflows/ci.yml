@@ -19,9 +19,9 @@ jobs:
           coverage: pcov
       - name: composer install
         run: composer install --no-interaction --prefer-dist
-      - name: PHPUnit
+      - name: Pest
         run: >-
-          vendor/bin/phpunit --log-junit junit.xml
+          vendor/bin/pest --log-junit junit.xml
           --coverage-clover coverage.xml
       - name: Upload coverage/test-result reports
         if: ${{ !cancelled() }}
