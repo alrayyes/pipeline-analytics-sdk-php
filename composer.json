@@ -16,7 +16,6 @@
     },
     "require-dev": {
         "ergebnis/composer-normalize": "2.53.0",
-        "infection/infection": "0.29.14",
         "laravel/pint": "1.32.1",
         "pestphp/pest": "3.8.7",
         "phpmd/phpmd": "2.15.0",
@@ -43,7 +42,6 @@
     "config": {
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
-            "infection/extension-installer": true,
             "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true
         },
@@ -53,7 +51,7 @@
         "sort-packages": true
     },
     "scripts": {
-        "infection": "infection --threads=max",
+        "mutate": "pest --mutate --everything --covered-only",
         "normalize:fix": "composer normalize",
         "normalize:lint": "composer normalize --dry-run",
         "phpmd": "phpmd src text phpmd.xml.dist --exclude generated",
