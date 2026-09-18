@@ -17,6 +17,7 @@
     "require-dev": {
         "ergebnis/composer-normalize": "2.53.0",
         "laravel/pint": "1.32.1",
+        "phpmd/phpmd": "2.15.0",
         "phpstan/extension-installer": "1.4.3",
         "phpstan/phpstan": "2.2.14",
         "phpstan/phpstan-phpunit": "2.0.18",
@@ -47,6 +48,7 @@
     "scripts": {
         "normalize:fix": "composer normalize",
         "normalize:lint": "composer normalize --dry-run",
+        "phpmd": "phpmd src text phpmd.xml.dist --exclude generated",
         "phpstan": "phpstan analyse --memory-limit=512M",
         "pint:fix": "pint",
         "pint:lint": "pint --test",

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PipelineAnalytics\Retry;
 
+use DateTimeImmutable;
+use DateTimeZone;
 use GuzzleHttp\Exception\ConnectException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -101,7 +103,7 @@ final readonly class RetryMiddleware
         // constant is deprecated as of PHP 8.5 (it silently assumes GMT
         // and ignores the actual timezone), and an HTTP-date is always
         // GMT by definition anyway.
-        $when = \DateTimeImmutable::createFromFormat('D, d M Y H:i:s \G\M\T', $header, new \DateTimeZone('GMT'));
+        $when = DateTimeImmutable::createFromFormat('D, d M Y H:i:s \G\M\T', $header, new DateTimeZone('GMT'));
         if ($when === false) {
             return null;
         }
