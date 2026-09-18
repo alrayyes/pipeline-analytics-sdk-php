@@ -21,7 +21,7 @@ pre-push:
   parallel: false
   commands:
     composer-normalize:
-      run: composer normalize --dry-run
+      run: composer normalize:lint
     pint:
       run: vendor/bin/pint --test
     phpstan:
