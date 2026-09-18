@@ -26,6 +26,8 @@ pre-push:
       run: vendor/bin/pint --test
     phpstan:
       run: vendor/bin/phpstan analyse --memory-limit=512M
+    phpmd:
+      run: composer phpmd
     rector:
       run: vendor/bin/rector process --dry-run
     test:
