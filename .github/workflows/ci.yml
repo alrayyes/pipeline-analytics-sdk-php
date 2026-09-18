@@ -92,6 +92,18 @@ jobs:
       - name: composer audit
         run: composer audit
 
+  # Data-flow analysis for injection, hardcoded secrets and privacy-sensitive
+  # fields -- the pattern class PHPStan and PHPMD don't look for. Scoped to
+  # hand-written code only; generated/ is openapi-generator's output, not
+  # code this repo controls the risk in.
+  bearer:
+    runs-on: ubuntu-latest
+    container:
+      image: bearer/bearer:2.1.1@sha256:054087ae504572bea7385f33c6a278571d03919fdc05f042c4de827b84ba2210
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: bearer scan src tests hack scripts
+
   generated-code-is-fresh:
     runs-on: ubuntu-latest
     steps:
