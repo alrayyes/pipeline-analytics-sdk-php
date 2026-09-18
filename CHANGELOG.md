@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v0.4.0...v0.5.0) (2026-09-18)
+
+
+### Features
+
+* **test:** contract-test the client against a Prism mock ([#31](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/31)) ([4b4ae02](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/4b4ae0264b0e3f633abe5c8ed406c5efb73ae3a6)), closes [#23](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/23)
+
 ## [0.4.0](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v0.3.0...v0.4.0) (2026-09-18)
 
 
