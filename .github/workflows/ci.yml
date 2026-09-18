@@ -98,6 +98,8 @@ jobs:
         run: vendor/bin/pint --test
       - name: PHPStan
         run: vendor/bin/phpstan analyse --memory-limit=512M
+      - name: PHPMD
+        run: composer phpmd
       - name: Rector
         run: vendor/bin/rector process --dry-run
 
