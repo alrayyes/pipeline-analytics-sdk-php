@@ -17,6 +17,7 @@
     "require-dev": {
         "ergebnis/composer-normalize": "2.53.0",
         "laravel/pint": "1.32.1",
+        "pestphp/pest": "3.8.7",
         "phpmd/phpmd": "2.15.0",
         "phpstan/extension-installer": "1.4.3",
         "phpstan/phpstan": "2.2.14",
@@ -41,6 +42,7 @@
     "config": {
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
+            "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true
         },
         "platform": {
@@ -57,6 +59,6 @@
         "pint:lint": "pint --test",
         "rector:fix": "rector process",
         "rector:lint": "rector process --dry-run",
-        "test": "phpunit"
+        "test": "pest"
     }
 }
