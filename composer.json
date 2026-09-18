@@ -52,6 +52,7 @@
         "pint:lint": "pint --test",
         "rector:fix": "rector process",
         "rector:lint": "rector process --dry-run",
-        "test": "phpunit"
+        "test": "phpunit --testsuite unit",
+        "test:contract": "phpunit --testsuite contract"
     }
 }

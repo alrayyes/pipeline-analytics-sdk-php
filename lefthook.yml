@@ -29,6 +29,6 @@ pre-push:
     rector:
       run: vendor/bin/rector process --dry-run
     test:
-      run: vendor/bin/phpunit
+      run: vendor/bin/phpunit --testsuite unit
     audit:
       run: composer audit

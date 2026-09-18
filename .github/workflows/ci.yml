@@ -21,7 +21,7 @@ jobs:
         run: composer install --no-interaction --prefer-dist
       - name: PHPUnit
         run: >-
-          vendor/bin/phpunit --log-junit junit.xml
+          vendor/bin/phpunit --testsuite unit --log-junit junit.xml
           --coverage-clover coverage.xml
       - name: Upload coverage/test-result reports
         if: ${{ !cancelled() }}
@@ -91,6 +91,40 @@ jobs:
         run: composer install --no-interaction --prefer-dist
       - name: composer audit
         run: composer audit
+
+  # Contract-test the client against a mock server built from the same
+  # pinned spec, per rules/sdk-generation.md's "testing against the spec,
+  # not a hand-written stub". Separate job from `test` above so a Prism
+  # failure never blocks on Docker being unavailable in every environment
+  # that runs `composer test`.
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: "8.3"
+      - name: composer install
+        run: composer install --no-interaction --prefer-dist
+      - name: Start Prism mock from the pinned spec
+        run: |
+          docker run -d --name prism -p 4010:4010 \
+            -v "$(pwd)/openapi:/spec:ro" \
+            stoplight/prism:5@sha256:3f6d29e31bfe0b99587f0f6f79c423858dd6a2ea7e1e4658273ed930a78a9acf mock -h 0.0.0.0 -m false /spec/openapi.yaml
+          # -m false: Prism's default multiprocess (Node cluster) mode
+          # crashes on startup in this image -- see hush-hush-go's
+          # CLAUDE.md for the reproduction.
+          for _ in $(seq 1 30); do
+            curl -sf http://localhost:4010/api/version >/dev/null 2>&1 && break
+            sleep 1
+          done
+      - name: Run contract tests against the mock
+        run: composer test:contract
+        env:
+          PIPELINE_ANALYTICS_BASE_URL: http://localhost:4010
+      - name: Prism logs
+        if: failure()
+        run: docker logs prism
 
   generated-code-is-fresh:
     runs-on: ubuntu-latest

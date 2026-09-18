@@ -77,7 +77,7 @@ commits".
 
 ```sh
 composer install
-composer test              # PHPUnit
+composer test              # PHPUnit, hand-written parts against a fake transport
 composer phpstan           # level 9, generated/ excluded
 vendor/bin/pint --test     # formatting check
 composer rector:lint       # mechanical-upgrade check, dry run
@@ -88,11 +88,28 @@ composer audit
 `lefthook run pre-push` runs the same set, so that's the one command to run
 before opening a pull request.
 
-Tests only cover the hand-written parts -- retry backoff, cookie injection,
-error decoding, pagination -- against a Guzzle `MockHandler`, never the
-generated request/response mapping itself (`rules/sdk-generation.md`'s
-"Testing against the spec, not a hand-written stub": testing the generated
-type mapping again is testing the generator, not this SDK).
+`composer test`'s suite only covers the hand-written parts -- retry backoff,
+cookie injection, error decoding, pagination -- against a Guzzle
+`MockHandler`, never the generated request/response mapping itself
+(`rules/sdk-generation.md`'s "Testing against the spec, not a hand-written
+stub": testing the generated type mapping again is testing the generator,
+not this SDK).
+
+A separate contract suite (`tests/Contract/`) tests the generated mapping
+instead, against a real [Prism](https://stoplight.io/open-source/prism)
+mock server built from the pinned spec -- proving the client's requests and
+responses actually conform to what the spec says, not just to a
+hand-rolled fixture's idea of it. Run it locally with:
+
+```sh
+docker run -d -p 4010:4010 -v "$(pwd)/openapi:/spec:ro" \
+  stoplight/prism:5 mock -h 0.0.0.0 -m false /spec/openapi.yaml
+PIPELINE_ANALYTICS_BASE_URL=http://localhost:4010 composer test:contract
+```
+
+It's a separate CI job and composer script from `composer test`, not part
+of `lefthook run pre-push` -- Docker isn't guaranteed available in every
+environment that runs the unit suite, and this one needs it.
 
 ## Commits and releases
 
