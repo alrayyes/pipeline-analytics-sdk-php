@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -110,6 +111,45 @@ it('sends no cookie header when none is available', function (): void {
     expect(requestAt($history, 0)->hasHeader('Cookie'))->toBeFalse();
 });
 
+it('does not produce a double slash when the base url has a trailing slash', function (): void {
+    $mock = new MockHandler([new Response(200, [], '{"version":"dev"}')]);
+    $stack = HandlerStack::create($mock);
+    $client = new Client('https://example.test/', handlerStack: $stack);
+    attachHistory($stack, $history);
+
+    $client->meta->getVersion();
+
+    $uri = requestAt($history, 0)->getUri();
+    // Pins that setHost() actually ran at all -- the generated
+    // Configuration's own default host ('http://localhost') would
+    // otherwise silently take over instead.
+    expect($uri->getHost())->toBe('example.test');
+    expect((string) $uri)->not->toContain('//api');
+});
+
+it('uses an explicit http client directly instead of building one', function (): void {
+    // No cookie or retry middleware pushed onto this handler stack at
+    // all -- if Client built its own Guzzle client instead of using
+    // this one (ignoring it entirely, say, on a $httpClient ?? ...
+    // that got its operands swapped), the request would either 500
+    // via a retry loop with nothing to retry into, or simply not be
+    // the object this test can see requests through.
+    $mock = new MockHandler([new Response(200, [], '{"version":"dev"}')]);
+    $history = [];
+    $stack = HandlerStack::create($mock);
+    $stack->push(Middleware::history($history));
+    $explicitClient = new GuzzleClient(['handler' => $stack]);
+
+    $client = new Client('https://example.test', 'a-cookie', httpClient: $explicitClient);
+    $client->meta->getVersion();
+
+    expect($history)->toBeArray()->toHaveCount(1);
+    // Client's own cookie middleware never ran on this stack, since
+    // buildGuzzleClient() -- the only place that middleware gets
+    // pushed -- must not run when an explicit client is given.
+    expect(requestAt($history, 0)->hasHeader('Cookie'))->toBeFalse();
+});
+
 it('retries a 5xx response and succeeds on the retry', function (): void {
     $mock = new MockHandler([
         new Response(503, ['Retry-After' => '0']),
@@ -122,6 +162,34 @@ it('retries a 5xx response and succeeds on the retry', function (): void {
     $client->meta->getVersion();
 
     expect(historyCount($history))->toBe(2);
+});
+
+it('defaults max retries to exactly three', function (): void {
+    // Four failing responses queued, none of them a success: with the
+    // real default of 3 retries (4 attempts total), the 4th response
+    // is consumed and the walk ends there. A default one lower would
+    // give up after 3 attempts (historyCount would be 3, not 4); a
+    // default one higher would ask MockHandler for a 5th response it
+    // doesn't have, throwing OutOfBoundsException instead of the
+    // ApiException this test catches -- either direction fails loudly.
+    $mock = new MockHandler([
+        new Response(503),
+        new Response(503),
+        new Response(503),
+        new Response(503),
+    ]);
+    $stack = HandlerStack::create($mock);
+    $client = new Client('https://example.test', handlerStack: $stack);
+    attachHistory($stack, $history);
+
+    try {
+        $client->meta->getVersion();
+        Assert::fail('expected an ApiException');
+    } catch (ApiException) {
+        // expected -- fall through to the assertion below
+    }
+
+    expect(historyCount($history))->toBe(4);
 });
 
 it('never retries a 400', function (): void {

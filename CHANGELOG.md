@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v0.2.0...v0.3.0) (2026-09-18)
+
+
+### Features
+
+* **test:** wire Infection mutation testing on the hand-written layer ([#29](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/29)) ([79aad90](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/79aad90bd257a0697065d3335c253ae89b9dde63))
+
 ## [0.2.0](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v0.1.2...v0.2.0) (2026-09-18)
 
 
