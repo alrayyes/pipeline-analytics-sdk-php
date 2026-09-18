@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.1](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v0.5.0...v0.5.1) (2026-09-18)
+
+
+### Bug Fixes
+
+* **test:** use Pest's native mutation testing instead of Infection ([ccb41a1](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/ccb41a13c79443e333a6274cd34d9395d57d051b))
+* **test:** use Pest's native mutation testing instead of Infection ([c818546](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/c8185465c8b664fd866d34e2555a1012c770912e)), closes [#37](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/37)
+
 ## [0.5.0](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v0.4.0...v0.5.0) (2026-09-18)
 
 
