@@ -18,6 +18,7 @@
         "ergebnis/composer-normalize": "2.53.0",
         "infection/infection": "0.29.14",
         "laravel/pint": "1.32.1",
+        "pestphp/pest": "3.8.7",
         "phpstan/extension-installer": "1.4.3",
         "phpstan/phpstan": "2.2.14",
         "phpstan/phpstan-phpunit": "2.0.18",
@@ -42,6 +43,7 @@
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
             "infection/extension-installer": true,
+            "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true
         },
         "platform": {
@@ -58,6 +60,6 @@
         "pint:lint": "pint --test",
         "rector:fix": "rector process",
         "rector:lint": "rector process --dry-run",
-        "test": "phpunit"
+        "test": "pest"
     }
 }

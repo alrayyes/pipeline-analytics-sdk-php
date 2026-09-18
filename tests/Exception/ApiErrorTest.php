@@ -2,99 +2,78 @@
 
 declare(strict_types=1);
 
-namespace PipelineAnalytics\Tests\Exception;
-
-use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 use PipelineAnalytics\Exception\ApiError;
 use PipelineAnalytics\Generated\ApiException;
 use PipelineAnalytics\Generated\Model\Error as GeneratedError;
 
-final class ApiErrorTest extends TestCase
-{
-    #[Test]
-    public function prefers_the_deserialized_error_model_when_one_was_attached(): void
+it('prefers the deserialized error model when one was attached', function (): void {
+    $exception = new ApiException('[401] ...', 401, ['X-Request-Id' => ['req-1']], '{"code":"unauthorized","message":"session expired"}');
+    $exception->setResponseObject(new GeneratedError(['code' => 'unauthorized', 'message' => 'session expired']));
+
+    $apiError = ApiError::fromGeneratedException($exception);
+
+    expect($apiError->statusCode)->toBe(401)
+        ->and($apiError->apiCode)->toBe('unauthorized')
+        ->and($apiError->requestId)->toBe('req-1');
+});
+
+it('decodes the raw body when no model was attached', function (): void {
+    // The status code the spec doesn't document explicitly for this
+    // operation (a 429, say) -- the generated Api classes never
+    // deserialize those, so ApiError has to decode the JSON itself.
+    $exception = new ApiException('[429] ...', 429, [], '{"code":"rate_limited","message":"slow down"}');
+
+    $apiError = ApiError::fromGeneratedException($exception);
+
+    expect($apiError->statusCode)->toBe(429)
+        ->and($apiError->apiCode)->toBe('rate_limited')
+        ->and($apiError->requestId)->toBeNull();
+});
+
+it('falls back to the raw body when the response object is missing getMessage', function (): void {
+    // decodeBody() requires *both* getCode() and getMessage() before
+    // trusting a response object -- one without the other has to fall
+    // through to decoding the raw JSON body instead, same as no
+    // response object at all.
+    $exception = new ApiException('[500] boom', 500, [], '{"code":"from_body","message":"from body"}');
+    $exception->setResponseObject(new class
     {
-        $exception = new ApiException('[401] ...', 401, ['X-Request-Id' => ['req-1']], '{"code":"unauthorized","message":"session expired"}');
-        $exception->setResponseObject(new GeneratedError(['code' => 'unauthorized', 'message' => 'session expired']));
-
-        $apiError = ApiError::fromGeneratedException($exception);
-
-        self::assertSame(401, $apiError->statusCode);
-        self::assertSame('unauthorized', $apiError->apiCode);
-        self::assertSame('req-1', $apiError->requestId);
-    }
-
-    #[Test]
-    public function decodes_the_raw_body_when_no_model_was_attached(): void
-    {
-        // The status code the spec doesn't document explicitly for this
-        // operation (a 429, say) -- the generated Api classes never
-        // deserialize those, so ApiError has to decode the JSON itself.
-        $exception = new ApiException('[429] ...', 429, [], '{"code":"rate_limited","message":"slow down"}');
-
-        $apiError = ApiError::fromGeneratedException($exception);
-
-        self::assertSame(429, $apiError->statusCode);
-        self::assertSame('rate_limited', $apiError->apiCode);
-        self::assertNull($apiError->requestId);
-    }
-
-    #[Test]
-    public function falls_back_to_the_raw_body_when_the_response_object_is_missing_getmessage(): void
-    {
-        // decodeBody() requires *both* getCode() and getMessage() before
-        // trusting a response object -- one without the other has to fall
-        // through to decoding the raw JSON body instead, same as no
-        // response object at all.
-        $exception = new ApiException('[500] boom', 500, [], '{"code":"from_body","message":"from body"}');
-        $exception->setResponseObject(new class
+        public function getCode(): string
         {
-            public function getCode(): string
-            {
-                return 'from_object';
-            }
-        });
+            return 'from_object';
+        }
+    });
 
-        $apiError = ApiError::fromGeneratedException($exception);
+    $apiError = ApiError::fromGeneratedException($exception);
 
-        self::assertSame('from_body', $apiError->apiCode);
-    }
+    expect($apiError->apiCode)->toBe('from_body');
+});
 
-    #[Test]
-    public function falls_back_gracefully_when_the_body_isnt_the_expected_shape(): void
-    {
-        $exception = new ApiException('[500] boom', 500, [], 'not json at all');
+it("falls back gracefully when the body isn't the expected shape", function (): void {
+    $exception = new ApiException('[500] boom', 500, [], 'not json at all');
 
-        $apiError = ApiError::fromGeneratedException($exception);
+    $apiError = ApiError::fromGeneratedException($exception);
 
-        self::assertSame(500, $apiError->statusCode);
-        self::assertSame('unknown', $apiError->apiCode);
-    }
+    expect($apiError->statusCode)->toBe(500)
+        ->and($apiError->apiCode)->toBe('unknown');
+});
 
-    #[Test]
-    public function finds_the_request_id_header_case_insensitively(): void
-    {
-        $exception = new ApiException('[500] boom', 500, ['x-request-id' => ['req-lower']], '{"code":"x","message":"y"}');
+it('finds the request id header case-insensitively', function (): void {
+    $exception = new ApiException('[500] boom', 500, ['x-request-id' => ['req-lower']], '{"code":"x","message":"y"}');
 
-        $apiError = ApiError::fromGeneratedException($exception);
+    $apiError = ApiError::fromGeneratedException($exception);
 
-        self::assertSame('req-lower', $apiError->requestId);
-    }
+    expect($apiError->requestId)->toBe('req-lower');
+});
 
-    #[Test]
-    public function message_includes_the_request_id_when_present(): void
-    {
-        $apiError = new ApiError(500, 'boom', 'something broke', 'req-99');
+it('includes the request id in the message when present', function (): void {
+    $apiError = new ApiError(500, 'boom', 'something broke', 'req-99');
 
-        self::assertStringContainsString('req-99', $apiError->getMessage());
-    }
+    expect($apiError->getMessage())->toContain('req-99');
+});
 
-    #[Test]
-    public function message_omits_the_request_id_when_absent(): void
-    {
-        $apiError = new ApiError(500, 'boom', 'something broke');
+it('omits the request id from the message when absent', function (): void {
+    $apiError = new ApiError(500, 'boom', 'something broke');
 
-        self::assertStringNotContainsString('request', $apiError->getMessage());
-    }
-}
+    expect($apiError->getMessage())->not->toContain('request');
+});

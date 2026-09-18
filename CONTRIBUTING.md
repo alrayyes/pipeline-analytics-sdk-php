@@ -77,7 +77,7 @@ commits".
 
 ```sh
 composer install
-composer test              # PHPUnit
+composer test              # Pest (runs on PHPUnit underneath)
 composer phpstan           # level 9, generated/ excluded
 vendor/bin/pint --test     # formatting check
 composer rector:lint       # mechanical-upgrade check, dry run
@@ -88,11 +88,13 @@ composer audit
 `lefthook run pre-push` runs the same set, so that's the one command to run
 before opening a pull request.
 
-Tests only cover the hand-written parts -- retry backoff, cookie injection,
-error decoding, pagination -- against a Guzzle `MockHandler`, never the
-generated request/response mapping itself (`rules/sdk-generation.md`'s
-"Testing against the spec, not a hand-written stub": testing the generated
-type mapping again is testing the generator, not this SDK).
+Tests are written in Pest's `it()`/`test()` syntax, not PHPUnit's
+class-and-method form (`rules/php.md`'s Testing section). They only cover
+the hand-written parts -- retry backoff, cookie injection, error decoding,
+pagination -- against a Guzzle `MockHandler`, never the generated
+request/response mapping itself (`rules/sdk-generation.md`'s "Testing
+against the spec, not a hand-written stub": testing the generated type
+mapping again is testing the generator, not this SDK).
 
 ## Commits and releases
 

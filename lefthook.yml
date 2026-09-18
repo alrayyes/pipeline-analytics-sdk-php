@@ -29,7 +29,7 @@ pre-push:
     rector:
       run: vendor/bin/rector process --dry-run
     test:
-      run: vendor/bin/phpunit
+      run: vendor/bin/pest
     audit:
       run: composer audit
     bearer:

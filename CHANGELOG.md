@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v0.1.2...v0.2.0) (2026-09-18)
+
+
+### Features
+
+* **security:** add Bearer SAST scan to CI and pre-push ([2f59f22](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/2f59f2278e8c0ef15c762eb5d9a89b97f0c4eadf))
+* **security:** add Bearer SAST scan to CI and pre-push ([d840bc7](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/d840bc71f7ce24460beeb012ccc91d64b57d33af)), closes [#22](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/22)
+
+
+### Bug Fixes
+
+* **ci:** run the bearer container job as root ([f3da86c](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/f3da86c6b33ab0e35a8e858673a1752b9d0bd8da))
+
 ## [0.1.2](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v0.1.1...v0.1.2) (2026-09-18)
 
 
