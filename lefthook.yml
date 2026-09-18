@@ -29,6 +29,13 @@ pre-push:
     rector:
       run: vendor/bin/rector process --dry-run
     test:
-      run: vendor/bin/phpunit --testsuite unit
+      run: vendor/bin/pest
     audit:
       run: composer audit
+    bearer:
+      # --diff against the base branch, not a full scan: too slow to run
+      # on every push per rules/php.md.
+      run: >-
+        docker run --rm -v "$(pwd):/src" -w /src
+        bearer/bearer:2.1.1@sha256:054087ae504572bea7385f33c6a278571d03919fdc05f042c4de827b84ba2210
+        scan src tests hack scripts --diff
