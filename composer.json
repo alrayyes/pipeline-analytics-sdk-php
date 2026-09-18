@@ -62,6 +62,7 @@
         "pint:lint": "pint --test",
         "rector:fix": "rector process",
         "rector:lint": "rector process --dry-run",
-        "test": "pest"
+        "test": "pest",
+        "test:contract": "pest --testsuite contract"
     }
 }

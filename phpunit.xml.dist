@@ -8,6 +8,10 @@
     <testsuites>
         <testsuite name="unit">
             <directory>tests</directory>
+            <exclude>tests/Contract</exclude>
+        </testsuite>
+        <testsuite name="contract">
+            <directory>tests/Contract</directory>
         </testsuite>
     </testsuites>
     <source>
