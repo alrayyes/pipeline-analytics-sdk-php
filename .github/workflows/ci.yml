@@ -8,9 +8,14 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
@@ -41,6 +46,7 @@ jobs:
   # exactly that).
   coverage:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: test
     if: ${{ !cancelled() }}
     steps:
@@ -75,6 +81,7 @@ jobs:
   # setup isn't worth reintroducing here.
   mutation:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
@@ -87,6 +94,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
@@ -107,6 +115,7 @@ jobs:
 
   audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
@@ -124,6 +133,7 @@ jobs:
   # that runs `composer test`.
   contract:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
@@ -157,6 +167,7 @@ jobs:
   # code this repo controls the risk in.
   bearer:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     container:
       image: bearer/bearer:2.1.1@sha256:054087ae504572bea7385f33c6a278571d03919fdc05f042c4de827b84ba2210
       # The image's own default user (runuser, non-root) can't write to
@@ -175,6 +186,7 @@ jobs:
 
   generated-code-is-fresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Regenerating from the pinned spec reproduces the committed client
