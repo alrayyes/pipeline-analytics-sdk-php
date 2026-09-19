@@ -1,0 +1,55 @@
+# Builds the API reference from PHPDoc blocks and publishes it to GitHub
+# Pages. Separate from ci.yml's own jobs since this deploys something
+# (a live site), not just checks a diff.
+#
+# Runs phpDocumentor from a pinned phar (scripts/phpdoc.sh) rather than as
+# a composer dependency: this repo's own transitive deps (paratest/
+# nunomaduro via pestphp) already lock symfony/console to ^7/^8, and
+# phpDocumentor 3.10.0 -- its latest release -- caps at ^6.0, so
+# `composer require` can never resolve it.
+#
+# Also runs on pull_request (build only, deploy stays push-to-main-only)
+# so a change that breaks phpdoc itself fails PR checks instead of only
+# main's push-triggered run.
+name: docs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: "8.3"
+          tools: composer:2.9.5
+          extensions: iconv
+      - run: bash scripts/phpdoc.sh
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

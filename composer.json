@@ -51,6 +51,7 @@
         "sort-packages": true
     },
     "scripts": {
+        "docs": "bash scripts/phpdoc.sh",
         "mutate": "pest --mutate --everything --covered-only",
         "normalize:fix": "composer normalize",
         "normalize:lint": "composer normalize --dry-run",

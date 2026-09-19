@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+    configVersion="3"
+    title="pipeline-analytics-sdk-php"
+>
+  <paths>
+    <output>site</output>
+    <cache>.phpdoc/cache</cache>
+  </paths>
+  <version number="1.0.0">
+    <api>
+      <source dsn=".">
+        <path>src</path>
+      </source>
+    </api>
+  </version>
+</phpdocumentor>
