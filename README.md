@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/alrayyes/pipeline-analytics-sdk-php/actions/workflows/ci.yml/badge.svg)](https://github.com/alrayyes/pipeline-analytics-sdk-php/actions/workflows/ci.yml)
 [![Codecov](https://codecov.io/gh/alrayyes/pipeline-analytics-sdk-php/graph/badge.svg)](https://codecov.io/gh/alrayyes/pipeline-analytics-sdk-php)
+[![docs](https://img.shields.io/badge/docs-phpdoc-blue)](https://alrayyes.github.io/pipeline-analytics-sdk-php/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A PHP client for [pipeline-analytics](https://github.com/alrayyes/pipeline-analytics)'s
