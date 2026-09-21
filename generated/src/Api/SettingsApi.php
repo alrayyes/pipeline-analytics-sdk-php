@@ -1,6 +1,6 @@
 <?php
 /**
- * WebhooksApi
+ * SettingsApi
  * PHP version 8.1
  *
  * @category Class
@@ -43,14 +43,14 @@ use PipelineAnalytics\Generated\HeaderSelector;
 use PipelineAnalytics\Generated\ObjectSerializer;
 
 /**
- * WebhooksApi Class Doc Comment
+ * SettingsApi Class Doc Comment
  *
  * @category Class
  * @package  PipelineAnalytics\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class WebhooksApi
+class SettingsApi
 {
     /**
      * @var ClientInterface
@@ -74,10 +74,10 @@ class WebhooksApi
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
-        'forgejoWebhook' => [
+        'getSettings' => [
             'application/json',
         ],
-        'githubWebhook' => [
+        'updateSettings' => [
             'application/json',
         ],
     ];
@@ -129,41 +129,36 @@ class WebhooksApi
     }
 
     /**
-     * Operation forgejoWebhook
+     * Operation getSettings
      *
-     * Forgejo Actions webhook receiver
+     * The dashboard account&#39;s persisted UI settings
      *
-     * @param  string $x_forgejo_signature HMAC-SHA256 signature over the raw request body, keyed by the repository&#39;s webhook secret. (required)
-     * @param  string $x_forgejo_event x_forgejo_event (required)
-     * @param  object $body body (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['forgejoWebhook'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getSettings'] to see the possible values for this operation
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return void
+     * @return \PipelineAnalytics\Generated\Model\Settings|\PipelineAnalytics\Generated\Model\Error
      */
-    public function forgejoWebhook($x_forgejo_signature, $x_forgejo_event, $body, string $contentType = self::contentTypes['forgejoWebhook'][0])
+    public function getSettings(string $contentType = self::contentTypes['getSettings'][0])
     {
-        $this->forgejoWebhookWithHttpInfo($x_forgejo_signature, $x_forgejo_event, $body, $contentType);
+        list($response) = $this->getSettingsWithHttpInfo($contentType);
+        return $response;
     }
 
     /**
-     * Operation forgejoWebhookWithHttpInfo
+     * Operation getSettingsWithHttpInfo
      *
-     * Forgejo Actions webhook receiver
+     * The dashboard account&#39;s persisted UI settings
      *
-     * @param  string $x_forgejo_signature HMAC-SHA256 signature over the raw request body, keyed by the repository&#39;s webhook secret. (required)
-     * @param  string $x_forgejo_event (required)
-     * @param  object $body (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['forgejoWebhook'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getSettings'] to see the possible values for this operation
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \PipelineAnalytics\Generated\Model\Settings|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
-    public function forgejoWebhookWithHttpInfo($x_forgejo_signature, $x_forgejo_event, $body, string $contentType = self::contentTypes['forgejoWebhook'][0])
+    public function getSettingsWithHttpInfo(string $contentType = self::contentTypes['getSettings'][0])
     {
-        $request = $this->forgejoWebhookRequest($x_forgejo_signature, $x_forgejo_event, $body, $contentType);
+        $request = $this->getSettingsRequest($contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -188,9 +183,51 @@ class WebhooksApi
             $statusCode = $response->getStatusCode();
 
 
-            return [null, $statusCode, $response->getHeaders()];
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Settings',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\PipelineAnalytics\Generated\Model\Settings',
+                $request,
+                $response,
+            );
         } catch (ApiException $e) {
             switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Settings',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
@@ -207,21 +244,18 @@ class WebhooksApi
     }
 
     /**
-     * Operation forgejoWebhookAsync
+     * Operation getSettingsAsync
      *
-     * Forgejo Actions webhook receiver
+     * The dashboard account&#39;s persisted UI settings
      *
-     * @param  string $x_forgejo_signature HMAC-SHA256 signature over the raw request body, keyed by the repository&#39;s webhook secret. (required)
-     * @param  string $x_forgejo_event (required)
-     * @param  object $body (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['forgejoWebhook'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getSettings'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function forgejoWebhookAsync($x_forgejo_signature, $x_forgejo_event, $body, string $contentType = self::contentTypes['forgejoWebhook'][0])
+    public function getSettingsAsync(string $contentType = self::contentTypes['getSettings'][0])
     {
-        return $this->forgejoWebhookAsyncWithHttpInfo($x_forgejo_signature, $x_forgejo_event, $body, $contentType)
+        return $this->getSettingsAsyncWithHttpInfo($contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -230,28 +264,38 @@ class WebhooksApi
     }
 
     /**
-     * Operation forgejoWebhookAsyncWithHttpInfo
+     * Operation getSettingsAsyncWithHttpInfo
      *
-     * Forgejo Actions webhook receiver
+     * The dashboard account&#39;s persisted UI settings
      *
-     * @param  string $x_forgejo_signature HMAC-SHA256 signature over the raw request body, keyed by the repository&#39;s webhook secret. (required)
-     * @param  string $x_forgejo_event (required)
-     * @param  object $body (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['forgejoWebhook'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getSettings'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function forgejoWebhookAsyncWithHttpInfo($x_forgejo_signature, $x_forgejo_event, $body, string $contentType = self::contentTypes['forgejoWebhook'][0])
+    public function getSettingsAsyncWithHttpInfo(string $contentType = self::contentTypes['getSettings'][0])
     {
-        $returnType = '';
-        $request = $this->forgejoWebhookRequest($x_forgejo_signature, $x_forgejo_event, $body, $contentType);
+        $returnType = '\PipelineAnalytics\Generated\Model\Settings';
+        $request = $this->getSettingsRequest($contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
                 function ($response) use ($returnType) {
-                    return [null, $response->getStatusCode(), $response->getHeaders()];
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
@@ -271,42 +315,18 @@ class WebhooksApi
     }
 
     /**
-     * Create request for operation 'forgejoWebhook'
+     * Create request for operation 'getSettings'
      *
-     * @param  string $x_forgejo_signature HMAC-SHA256 signature over the raw request body, keyed by the repository&#39;s webhook secret. (required)
-     * @param  string $x_forgejo_event (required)
-     * @param  object $body (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['forgejoWebhook'] to see the possible values for this operation
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getSettings'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function forgejoWebhookRequest($x_forgejo_signature, $x_forgejo_event, $body, string $contentType = self::contentTypes['forgejoWebhook'][0])
+    public function getSettingsRequest(string $contentType = self::contentTypes['getSettings'][0])
     {
 
-        // verify the required parameter 'x_forgejo_signature' is set
-        if ($x_forgejo_signature === null || (is_array($x_forgejo_signature) && count($x_forgejo_signature) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $x_forgejo_signature when calling forgejoWebhook'
-            );
-        }
 
-        // verify the required parameter 'x_forgejo_event' is set
-        if ($x_forgejo_event === null || (is_array($x_forgejo_event) && count($x_forgejo_event) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $x_forgejo_event when calling forgejoWebhook'
-            );
-        }
-
-        // verify the required parameter 'body' is set
-        if ($body === null || (is_array($body) && count($body) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $body when calling forgejoWebhook'
-            );
-        }
-
-
-        $resourcePath = '/webhooks/forgejo';
+        $resourcePath = '/api/settings';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -314,14 +334,6 @@ class WebhooksApi
         $multipart = false;
 
 
-        // header params
-        if ($x_forgejo_signature !== null) {
-            $headerParams['X-Forgejo-Signature'] = ObjectSerializer::toHeaderValue($x_forgejo_signature);
-        }
-        // header params
-        if ($x_forgejo_event !== null) {
-            $headerParams['X-Forgejo-Event'] = ObjectSerializer::toHeaderValue($x_forgejo_event);
-        }
 
 
 
@@ -332,18 +344,7 @@ class WebhooksApi
         );
 
         // for model (json/xml)
-        if (isset($body)) {
-            if (stripos($headers['Content-Type'], 'application/json') !== false) {
-                # if Content-Type contains "application/json", json_encode the body
-                try {
-                    $httpBody = json_encode(ObjectSerializer::sanitizeForSerialization($body), JSON_THROW_ON_ERROR);
-                } catch (\JsonException $e) {
-                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
-                }
-            } else {
-                $httpBody = $body;
-            }
-        } elseif (count($formParams) > 0) {
+        if (count($formParams) > 0) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -371,6 +372,10 @@ class WebhooksApi
             }
         }
 
+        // this endpoint requires Bearer authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
 
         $defaultHeaders = [];
         if ($this->config->getUserAgent()) {
@@ -386,7 +391,7 @@ class WebhooksApi
         $operationHost = $this->config->getHost();
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
-            'POST',
+            'GET',
             $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody
@@ -394,41 +399,38 @@ class WebhooksApi
     }
 
     /**
-     * Operation githubWebhook
+     * Operation updateSettings
      *
-     * GitHub Actions webhook receiver (workflow_run / workflow_job events)
+     * Update one or more settings
      *
-     * @param  string $x_hub_signature_256 HMAC-SHA256 signature over the raw request body, keyed by the repository&#39;s webhook secret. (required)
-     * @param  string $x_git_hub_event x_git_hub_event (required)
-     * @param  object $body body (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['githubWebhook'] to see the possible values for this operation
+     * @param  \PipelineAnalytics\Generated\Model\SettingsUpdate $settings_update settings_update (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateSettings'] to see the possible values for this operation
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return void
+     * @return \PipelineAnalytics\Generated\Model\Settings|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
      */
-    public function githubWebhook($x_hub_signature_256, $x_git_hub_event, $body, string $contentType = self::contentTypes['githubWebhook'][0])
+    public function updateSettings($settings_update, string $contentType = self::contentTypes['updateSettings'][0])
     {
-        $this->githubWebhookWithHttpInfo($x_hub_signature_256, $x_git_hub_event, $body, $contentType);
+        list($response) = $this->updateSettingsWithHttpInfo($settings_update, $contentType);
+        return $response;
     }
 
     /**
-     * Operation githubWebhookWithHttpInfo
+     * Operation updateSettingsWithHttpInfo
      *
-     * GitHub Actions webhook receiver (workflow_run / workflow_job events)
+     * Update one or more settings
      *
-     * @param  string $x_hub_signature_256 HMAC-SHA256 signature over the raw request body, keyed by the repository&#39;s webhook secret. (required)
-     * @param  string $x_git_hub_event (required)
-     * @param  object $body (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['githubWebhook'] to see the possible values for this operation
+     * @param  \PipelineAnalytics\Generated\Model\SettingsUpdate $settings_update (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateSettings'] to see the possible values for this operation
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \PipelineAnalytics\Generated\Model\Settings|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
-    public function githubWebhookWithHttpInfo($x_hub_signature_256, $x_git_hub_event, $body, string $contentType = self::contentTypes['githubWebhook'][0])
+    public function updateSettingsWithHttpInfo($settings_update, string $contentType = self::contentTypes['updateSettings'][0])
     {
-        $request = $this->githubWebhookRequest($x_hub_signature_256, $x_git_hub_event, $body, $contentType);
+        $request = $this->updateSettingsRequest($settings_update, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -453,9 +455,65 @@ class WebhooksApi
             $statusCode = $response->getStatusCode();
 
 
-            return [null, $statusCode, $response->getHeaders()];
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Settings',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\PipelineAnalytics\Generated\Model\Settings',
+                $request,
+                $response,
+            );
         } catch (ApiException $e) {
             switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Settings',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
@@ -472,21 +530,19 @@ class WebhooksApi
     }
 
     /**
-     * Operation githubWebhookAsync
+     * Operation updateSettingsAsync
      *
-     * GitHub Actions webhook receiver (workflow_run / workflow_job events)
+     * Update one or more settings
      *
-     * @param  string $x_hub_signature_256 HMAC-SHA256 signature over the raw request body, keyed by the repository&#39;s webhook secret. (required)
-     * @param  string $x_git_hub_event (required)
-     * @param  object $body (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['githubWebhook'] to see the possible values for this operation
+     * @param  \PipelineAnalytics\Generated\Model\SettingsUpdate $settings_update (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateSettings'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function githubWebhookAsync($x_hub_signature_256, $x_git_hub_event, $body, string $contentType = self::contentTypes['githubWebhook'][0])
+    public function updateSettingsAsync($settings_update, string $contentType = self::contentTypes['updateSettings'][0])
     {
-        return $this->githubWebhookAsyncWithHttpInfo($x_hub_signature_256, $x_git_hub_event, $body, $contentType)
+        return $this->updateSettingsAsyncWithHttpInfo($settings_update, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -495,28 +551,39 @@ class WebhooksApi
     }
 
     /**
-     * Operation githubWebhookAsyncWithHttpInfo
+     * Operation updateSettingsAsyncWithHttpInfo
      *
-     * GitHub Actions webhook receiver (workflow_run / workflow_job events)
+     * Update one or more settings
      *
-     * @param  string $x_hub_signature_256 HMAC-SHA256 signature over the raw request body, keyed by the repository&#39;s webhook secret. (required)
-     * @param  string $x_git_hub_event (required)
-     * @param  object $body (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['githubWebhook'] to see the possible values for this operation
+     * @param  \PipelineAnalytics\Generated\Model\SettingsUpdate $settings_update (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateSettings'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function githubWebhookAsyncWithHttpInfo($x_hub_signature_256, $x_git_hub_event, $body, string $contentType = self::contentTypes['githubWebhook'][0])
+    public function updateSettingsAsyncWithHttpInfo($settings_update, string $contentType = self::contentTypes['updateSettings'][0])
     {
-        $returnType = '';
-        $request = $this->githubWebhookRequest($x_hub_signature_256, $x_git_hub_event, $body, $contentType);
+        $returnType = '\PipelineAnalytics\Generated\Model\Settings';
+        $request = $this->updateSettingsRequest($settings_update, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
                 function ($response) use ($returnType) {
-                    return [null, $response->getStatusCode(), $response->getHeaders()];
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
                 },
                 function ($exception) {
                     $response = $exception->getResponse();
@@ -536,42 +603,26 @@ class WebhooksApi
     }
 
     /**
-     * Create request for operation 'githubWebhook'
+     * Create request for operation 'updateSettings'
      *
-     * @param  string $x_hub_signature_256 HMAC-SHA256 signature over the raw request body, keyed by the repository&#39;s webhook secret. (required)
-     * @param  string $x_git_hub_event (required)
-     * @param  object $body (required)
-     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['githubWebhook'] to see the possible values for this operation
+     * @param  \PipelineAnalytics\Generated\Model\SettingsUpdate $settings_update (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['updateSettings'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function githubWebhookRequest($x_hub_signature_256, $x_git_hub_event, $body, string $contentType = self::contentTypes['githubWebhook'][0])
+    public function updateSettingsRequest($settings_update, string $contentType = self::contentTypes['updateSettings'][0])
     {
 
-        // verify the required parameter 'x_hub_signature_256' is set
-        if ($x_hub_signature_256 === null || (is_array($x_hub_signature_256) && count($x_hub_signature_256) === 0)) {
+        // verify the required parameter 'settings_update' is set
+        if ($settings_update === null || (is_array($settings_update) && count($settings_update) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $x_hub_signature_256 when calling githubWebhook'
-            );
-        }
-
-        // verify the required parameter 'x_git_hub_event' is set
-        if ($x_git_hub_event === null || (is_array($x_git_hub_event) && count($x_git_hub_event) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $x_git_hub_event when calling githubWebhook'
-            );
-        }
-
-        // verify the required parameter 'body' is set
-        if ($body === null || (is_array($body) && count($body) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $body when calling githubWebhook'
+                'Missing the required parameter $settings_update when calling updateSettings'
             );
         }
 
 
-        $resourcePath = '/webhooks/github';
+        $resourcePath = '/api/settings';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -579,14 +630,6 @@ class WebhooksApi
         $multipart = false;
 
 
-        // header params
-        if ($x_hub_signature_256 !== null) {
-            $headerParams['X-Hub-Signature-256'] = ObjectSerializer::toHeaderValue($x_hub_signature_256);
-        }
-        // header params
-        if ($x_git_hub_event !== null) {
-            $headerParams['X-GitHub-Event'] = ObjectSerializer::toHeaderValue($x_git_hub_event);
-        }
 
 
 
@@ -597,16 +640,16 @@ class WebhooksApi
         );
 
         // for model (json/xml)
-        if (isset($body)) {
+        if (isset($settings_update)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 # if Content-Type contains "application/json", json_encode the body
                 try {
-                    $httpBody = json_encode(ObjectSerializer::sanitizeForSerialization($body), JSON_THROW_ON_ERROR);
+                    $httpBody = json_encode(ObjectSerializer::sanitizeForSerialization($settings_update), JSON_THROW_ON_ERROR);
                 } catch (\JsonException $e) {
                     throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
                 }
             } else {
-                $httpBody = $body;
+                $httpBody = $settings_update;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -636,6 +679,10 @@ class WebhooksApi
             }
         }
 
+        // this endpoint requires Bearer authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
 
         $defaultHeaders = [];
         if ($this->config->getUserAgent()) {
@@ -651,7 +698,7 @@ class WebhooksApi
         $operationHost = $this->config->getHost();
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
-            'POST',
+            'PATCH',
             $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody

@@ -1,6 +1,6 @@
 <?php
 /**
- * Repo
+ * FlakyRun
  *
  * PHP version 8.1
  *
@@ -32,7 +32,7 @@ use \ArrayAccess;
 use \PipelineAnalytics\Generated\ObjectSerializer;
 
 /**
- * Repo Class Doc Comment
+ * FlakyRun Class Doc Comment
  *
  * @category Class
  * @package  PipelineAnalytics\Generated
@@ -40,7 +40,7 @@ use \PipelineAnalytics\Generated\ObjectSerializer;
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
+class FlakyRun implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -49,7 +49,7 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'Repo';
+    protected static $openAPIModelName = 'FlakyRun';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -57,13 +57,9 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'id' => 'string',
-        'forge' => '\PipelineAnalytics\Generated\Model\Forge',
-        'identifier' => 'string',
-        'forgejo_instance_url' => 'string',
-        'token_masked' => 'string',
-        'ingestion_status' => '\PipelineAnalytics\Generated\Model\IngestionStatus',
-        'ingestion_status_reason' => 'string'
+        'run_id' => 'string',
+        'started_at' => '\DateTime',
+        'forge_url' => 'string'
     ];
 
     /**
@@ -74,13 +70,9 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'id' => null,
-        'forge' => null,
-        'identifier' => null,
-        'forgejo_instance_url' => 'uri',
-        'token_masked' => null,
-        'ingestion_status' => null,
-        'ingestion_status_reason' => null
+        'run_id' => null,
+        'started_at' => 'date-time',
+        'forge_url' => 'uri'
     ];
 
     /**
@@ -89,13 +81,9 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'id' => false,
-        'forge' => false,
-        'identifier' => false,
-        'forgejo_instance_url' => false,
-        'token_masked' => false,
-        'ingestion_status' => false,
-        'ingestion_status_reason' => false
+        'run_id' => false,
+        'started_at' => false,
+        'forge_url' => false
     ];
 
     /**
@@ -184,13 +172,9 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'id' => 'id',
-        'forge' => 'forge',
-        'identifier' => 'identifier',
-        'forgejo_instance_url' => 'forgejoInstanceUrl',
-        'token_masked' => 'tokenMasked',
-        'ingestion_status' => 'ingestionStatus',
-        'ingestion_status_reason' => 'ingestionStatusReason'
+        'run_id' => 'runId',
+        'started_at' => 'startedAt',
+        'forge_url' => 'forgeUrl'
     ];
 
     /**
@@ -199,13 +183,9 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'id' => 'setId',
-        'forge' => 'setForge',
-        'identifier' => 'setIdentifier',
-        'forgejo_instance_url' => 'setForgejoInstanceUrl',
-        'token_masked' => 'setTokenMasked',
-        'ingestion_status' => 'setIngestionStatus',
-        'ingestion_status_reason' => 'setIngestionStatusReason'
+        'run_id' => 'setRunId',
+        'started_at' => 'setStartedAt',
+        'forge_url' => 'setForgeUrl'
     ];
 
     /**
@@ -214,13 +194,9 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'id' => 'getId',
-        'forge' => 'getForge',
-        'identifier' => 'getIdentifier',
-        'forgejo_instance_url' => 'getForgejoInstanceUrl',
-        'token_masked' => 'getTokenMasked',
-        'ingestion_status' => 'getIngestionStatus',
-        'ingestion_status_reason' => 'getIngestionStatusReason'
+        'run_id' => 'getRunId',
+        'started_at' => 'getStartedAt',
+        'forge_url' => 'getForgeUrl'
     ];
 
     /**
@@ -280,13 +256,9 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('id', $data ?? [], null);
-        $this->setIfExists('forge', $data ?? [], null);
-        $this->setIfExists('identifier', $data ?? [], null);
-        $this->setIfExists('forgejo_instance_url', $data ?? [], null);
-        $this->setIfExists('token_masked', $data ?? [], null);
-        $this->setIfExists('ingestion_status', $data ?? [], null);
-        $this->setIfExists('ingestion_status_reason', $data ?? [], null);
+        $this->setIfExists('run_id', $data ?? [], null);
+        $this->setIfExists('started_at', $data ?? [], null);
+        $this->setIfExists('forge_url', $data ?? [], null);
     }
 
     /**
@@ -316,20 +288,11 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if ($this->container['id'] === null) {
-            $invalidProperties[] = "'id' can't be null";
+        if ($this->container['run_id'] === null) {
+            $invalidProperties[] = "'run_id' can't be null";
         }
-        if ($this->container['forge'] === null) {
-            $invalidProperties[] = "'forge' can't be null";
-        }
-        if ($this->container['identifier'] === null) {
-            $invalidProperties[] = "'identifier' can't be null";
-        }
-        if ($this->container['token_masked'] === null) {
-            $invalidProperties[] = "'token_masked' can't be null";
-        }
-        if ($this->container['ingestion_status'] === null) {
-            $invalidProperties[] = "'ingestion_status' can't be null";
+        if ($this->container['forge_url'] === null) {
+            $invalidProperties[] = "'forge_url' can't be null";
         }
         return $invalidProperties;
     }
@@ -347,190 +310,82 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
 
 
     /**
-     * Gets id
+     * Gets run_id
      *
      * @return string
      */
-    public function getId()
+    public function getRunId()
     {
-        return $this->container['id'];
+        return $this->container['run_id'];
     }
 
     /**
-     * Sets id
+     * Sets run_id
      *
-     * @param string $id id
+     * @param string $run_id run_id
      *
      * @return self
      */
-    public function setId($id)
+    public function setRunId($run_id)
     {
-        if (is_null($id)) {
-            throw new \InvalidArgumentException('non-nullable id cannot be null');
+        if (is_null($run_id)) {
+            throw new \InvalidArgumentException('non-nullable run_id cannot be null');
         }
-        $this->container['id'] = $id;
+        $this->container['run_id'] = $run_id;
 
         return $this;
     }
 
     /**
-     * Gets forge
+     * Gets started_at
      *
-     * @return \PipelineAnalytics\Generated\Model\Forge
+     * @return \DateTime|null
      */
-    public function getForge()
+    public function getStartedAt()
     {
-        return $this->container['forge'];
+        return $this->container['started_at'];
     }
 
     /**
-     * Sets forge
+     * Sets started_at
      *
-     * @param \PipelineAnalytics\Generated\Model\Forge $forge forge
+     * @param \DateTime|null $started_at started_at
      *
      * @return self
      */
-    public function setForge($forge)
+    public function setStartedAt($started_at)
     {
-        if (is_null($forge)) {
-            throw new \InvalidArgumentException('non-nullable forge cannot be null');
+        if (is_null($started_at)) {
+            throw new \InvalidArgumentException('non-nullable started_at cannot be null');
         }
-        $this->container['forge'] = $forge;
+        $this->container['started_at'] = $started_at;
 
         return $this;
     }
 
     /**
-     * Gets identifier
+     * Gets forge_url
      *
      * @return string
      */
-    public function getIdentifier()
+    public function getForgeUrl()
     {
-        return $this->container['identifier'];
+        return $this->container['forge_url'];
     }
 
     /**
-     * Sets identifier
+     * Sets forge_url
      *
-     * @param string $identifier owner/name on the forge.
+     * @param string $forge_url Deep link to the job this step failed in, on this specific run.
      *
      * @return self
      */
-    public function setIdentifier($identifier)
+    public function setForgeUrl($forge_url)
     {
-        if (is_null($identifier)) {
-            throw new \InvalidArgumentException('non-nullable identifier cannot be null');
+        if (is_null($forge_url)) {
+            throw new \InvalidArgumentException('non-nullable forge_url cannot be null');
         }
-        $this->container['identifier'] = $identifier;
-
-        return $this;
-    }
-
-    /**
-     * Gets forgejo_instance_url
-     *
-     * @return string|null
-     */
-    public function getForgejoInstanceUrl()
-    {
-        return $this->container['forgejo_instance_url'];
-    }
-
-    /**
-     * Sets forgejo_instance_url
-     *
-     * @param string|null $forgejo_instance_url Set only when forge is forgejo.
-     *
-     * @return self
-     */
-    public function setForgejoInstanceUrl($forgejo_instance_url)
-    {
-        if (is_null($forgejo_instance_url)) {
-            throw new \InvalidArgumentException('non-nullable forgejo_instance_url cannot be null');
-        }
-        $this->container['forgejo_instance_url'] = $forgejo_instance_url;
-
-        return $this;
-    }
-
-    /**
-     * Gets token_masked
-     *
-     * @return string
-     */
-    public function getTokenMasked()
-    {
-        return $this->container['token_masked'];
-    }
-
-    /**
-     * Sets token_masked
-     *
-     * @param string $token_masked The stored token's display form, e.g. \"****1234\" (forge-ingestion/spec.md's \"Credential storage\" -- never the full value).
-     *
-     * @return self
-     */
-    public function setTokenMasked($token_masked)
-    {
-        if (is_null($token_masked)) {
-            throw new \InvalidArgumentException('non-nullable token_masked cannot be null');
-        }
-        $this->container['token_masked'] = $token_masked;
-
-        return $this;
-    }
-
-    /**
-     * Gets ingestion_status
-     *
-     * @return \PipelineAnalytics\Generated\Model\IngestionStatus
-     */
-    public function getIngestionStatus()
-    {
-        return $this->container['ingestion_status'];
-    }
-
-    /**
-     * Sets ingestion_status
-     *
-     * @param \PipelineAnalytics\Generated\Model\IngestionStatus $ingestion_status ingestion_status
-     *
-     * @return self
-     */
-    public function setIngestionStatus($ingestion_status)
-    {
-        if (is_null($ingestion_status)) {
-            throw new \InvalidArgumentException('non-nullable ingestion_status cannot be null');
-        }
-        $this->container['ingestion_status'] = $ingestion_status;
-
-        return $this;
-    }
-
-    /**
-     * Gets ingestion_status_reason
-     *
-     * @return string|null
-     */
-    public function getIngestionStatusReason()
-    {
-        return $this->container['ingestion_status_reason'];
-    }
-
-    /**
-     * Sets ingestion_status_reason
-     *
-     * @param string|null $ingestion_status_reason Set when ingestionStatus is degraded.
-     *
-     * @return self
-     */
-    public function setIngestionStatusReason($ingestion_status_reason)
-    {
-        if (is_null($ingestion_status_reason)) {
-            throw new \InvalidArgumentException('non-nullable ingestion_status_reason cannot be null');
-        }
-        $this->container['ingestion_status_reason'] = $ingestion_status_reason;
+        $this->container['forge_url'] = $forge_url;
 
         return $this;
     }
