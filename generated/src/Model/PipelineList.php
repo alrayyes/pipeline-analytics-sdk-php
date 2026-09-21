@@ -1,6 +1,6 @@
 <?php
 /**
- * Repo
+ * PipelineList
  *
  * PHP version 8.1
  *
@@ -32,7 +32,7 @@ use \ArrayAccess;
 use \PipelineAnalytics\Generated\ObjectSerializer;
 
 /**
- * Repo Class Doc Comment
+ * PipelineList Class Doc Comment
  *
  * @category Class
  * @package  PipelineAnalytics\Generated
@@ -40,7 +40,7 @@ use \PipelineAnalytics\Generated\ObjectSerializer;
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
+class PipelineList implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -49,7 +49,7 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'Repo';
+    protected static $openAPIModelName = 'PipelineList';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -57,13 +57,8 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'id' => 'string',
-        'forge' => '\PipelineAnalytics\Generated\Model\Forge',
-        'identifier' => 'string',
-        'forgejo_instance_url' => 'string',
-        'token_masked' => 'string',
-        'ingestion_status' => '\PipelineAnalytics\Generated\Model\IngestionStatus',
-        'ingestion_status_reason' => 'string'
+        'pipelines' => '\PipelineAnalytics\Generated\Model\PipelineSummary[]',
+        'has_more' => 'bool'
     ];
 
     /**
@@ -74,13 +69,8 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'id' => null,
-        'forge' => null,
-        'identifier' => null,
-        'forgejo_instance_url' => 'uri',
-        'token_masked' => null,
-        'ingestion_status' => null,
-        'ingestion_status_reason' => null
+        'pipelines' => null,
+        'has_more' => null
     ];
 
     /**
@@ -89,13 +79,8 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'id' => false,
-        'forge' => false,
-        'identifier' => false,
-        'forgejo_instance_url' => false,
-        'token_masked' => false,
-        'ingestion_status' => false,
-        'ingestion_status_reason' => false
+        'pipelines' => false,
+        'has_more' => false
     ];
 
     /**
@@ -184,13 +169,8 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'id' => 'id',
-        'forge' => 'forge',
-        'identifier' => 'identifier',
-        'forgejo_instance_url' => 'forgejoInstanceUrl',
-        'token_masked' => 'tokenMasked',
-        'ingestion_status' => 'ingestionStatus',
-        'ingestion_status_reason' => 'ingestionStatusReason'
+        'pipelines' => 'pipelines',
+        'has_more' => 'hasMore'
     ];
 
     /**
@@ -199,13 +179,8 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'id' => 'setId',
-        'forge' => 'setForge',
-        'identifier' => 'setIdentifier',
-        'forgejo_instance_url' => 'setForgejoInstanceUrl',
-        'token_masked' => 'setTokenMasked',
-        'ingestion_status' => 'setIngestionStatus',
-        'ingestion_status_reason' => 'setIngestionStatusReason'
+        'pipelines' => 'setPipelines',
+        'has_more' => 'setHasMore'
     ];
 
     /**
@@ -214,13 +189,8 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'id' => 'getId',
-        'forge' => 'getForge',
-        'identifier' => 'getIdentifier',
-        'forgejo_instance_url' => 'getForgejoInstanceUrl',
-        'token_masked' => 'getTokenMasked',
-        'ingestion_status' => 'getIngestionStatus',
-        'ingestion_status_reason' => 'getIngestionStatusReason'
+        'pipelines' => 'getPipelines',
+        'has_more' => 'getHasMore'
     ];
 
     /**
@@ -280,13 +250,8 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('id', $data ?? [], null);
-        $this->setIfExists('forge', $data ?? [], null);
-        $this->setIfExists('identifier', $data ?? [], null);
-        $this->setIfExists('forgejo_instance_url', $data ?? [], null);
-        $this->setIfExists('token_masked', $data ?? [], null);
-        $this->setIfExists('ingestion_status', $data ?? [], null);
-        $this->setIfExists('ingestion_status_reason', $data ?? [], null);
+        $this->setIfExists('pipelines', $data ?? [], null);
+        $this->setIfExists('has_more', $data ?? [], null);
     }
 
     /**
@@ -316,20 +281,11 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if ($this->container['id'] === null) {
-            $invalidProperties[] = "'id' can't be null";
+        if ($this->container['pipelines'] === null) {
+            $invalidProperties[] = "'pipelines' can't be null";
         }
-        if ($this->container['forge'] === null) {
-            $invalidProperties[] = "'forge' can't be null";
-        }
-        if ($this->container['identifier'] === null) {
-            $invalidProperties[] = "'identifier' can't be null";
-        }
-        if ($this->container['token_masked'] === null) {
-            $invalidProperties[] = "'token_masked' can't be null";
-        }
-        if ($this->container['ingestion_status'] === null) {
-            $invalidProperties[] = "'ingestion_status' can't be null";
+        if ($this->container['has_more'] === null) {
+            $invalidProperties[] = "'has_more' can't be null";
         }
         return $invalidProperties;
     }
@@ -347,190 +303,55 @@ class Repo implements ModelInterface, ArrayAccess, \JsonSerializable
 
 
     /**
-     * Gets id
+     * Gets pipelines
      *
-     * @return string
+     * @return \PipelineAnalytics\Generated\Model\PipelineSummary[]
      */
-    public function getId()
+    public function getPipelines()
     {
-        return $this->container['id'];
+        return $this->container['pipelines'];
     }
 
     /**
-     * Sets id
+     * Sets pipelines
      *
-     * @param string $id id
+     * @param \PipelineAnalytics\Generated\Model\PipelineSummary[] $pipelines pipelines
      *
      * @return self
      */
-    public function setId($id)
+    public function setPipelines($pipelines)
     {
-        if (is_null($id)) {
-            throw new \InvalidArgumentException('non-nullable id cannot be null');
+        if (is_null($pipelines)) {
+            throw new \InvalidArgumentException('non-nullable pipelines cannot be null');
         }
-        $this->container['id'] = $id;
+        $this->container['pipelines'] = $pipelines;
 
         return $this;
     }
 
     /**
-     * Gets forge
+     * Gets has_more
      *
-     * @return \PipelineAnalytics\Generated\Model\Forge
+     * @return bool
      */
-    public function getForge()
+    public function getHasMore()
     {
-        return $this->container['forge'];
+        return $this->container['has_more'];
     }
 
     /**
-     * Sets forge
+     * Sets has_more
      *
-     * @param \PipelineAnalytics\Generated\Model\Forge $forge forge
+     * @param bool $has_more True when pipelines beyond this page match the filter. Always false when limit was omitted.
      *
      * @return self
      */
-    public function setForge($forge)
+    public function setHasMore($has_more)
     {
-        if (is_null($forge)) {
-            throw new \InvalidArgumentException('non-nullable forge cannot be null');
+        if (is_null($has_more)) {
+            throw new \InvalidArgumentException('non-nullable has_more cannot be null');
         }
-        $this->container['forge'] = $forge;
-
-        return $this;
-    }
-
-    /**
-     * Gets identifier
-     *
-     * @return string
-     */
-    public function getIdentifier()
-    {
-        return $this->container['identifier'];
-    }
-
-    /**
-     * Sets identifier
-     *
-     * @param string $identifier owner/name on the forge.
-     *
-     * @return self
-     */
-    public function setIdentifier($identifier)
-    {
-        if (is_null($identifier)) {
-            throw new \InvalidArgumentException('non-nullable identifier cannot be null');
-        }
-        $this->container['identifier'] = $identifier;
-
-        return $this;
-    }
-
-    /**
-     * Gets forgejo_instance_url
-     *
-     * @return string|null
-     */
-    public function getForgejoInstanceUrl()
-    {
-        return $this->container['forgejo_instance_url'];
-    }
-
-    /**
-     * Sets forgejo_instance_url
-     *
-     * @param string|null $forgejo_instance_url Set only when forge is forgejo.
-     *
-     * @return self
-     */
-    public function setForgejoInstanceUrl($forgejo_instance_url)
-    {
-        if (is_null($forgejo_instance_url)) {
-            throw new \InvalidArgumentException('non-nullable forgejo_instance_url cannot be null');
-        }
-        $this->container['forgejo_instance_url'] = $forgejo_instance_url;
-
-        return $this;
-    }
-
-    /**
-     * Gets token_masked
-     *
-     * @return string
-     */
-    public function getTokenMasked()
-    {
-        return $this->container['token_masked'];
-    }
-
-    /**
-     * Sets token_masked
-     *
-     * @param string $token_masked The stored token's display form, e.g. \"****1234\" (forge-ingestion/spec.md's \"Credential storage\" -- never the full value).
-     *
-     * @return self
-     */
-    public function setTokenMasked($token_masked)
-    {
-        if (is_null($token_masked)) {
-            throw new \InvalidArgumentException('non-nullable token_masked cannot be null');
-        }
-        $this->container['token_masked'] = $token_masked;
-
-        return $this;
-    }
-
-    /**
-     * Gets ingestion_status
-     *
-     * @return \PipelineAnalytics\Generated\Model\IngestionStatus
-     */
-    public function getIngestionStatus()
-    {
-        return $this->container['ingestion_status'];
-    }
-
-    /**
-     * Sets ingestion_status
-     *
-     * @param \PipelineAnalytics\Generated\Model\IngestionStatus $ingestion_status ingestion_status
-     *
-     * @return self
-     */
-    public function setIngestionStatus($ingestion_status)
-    {
-        if (is_null($ingestion_status)) {
-            throw new \InvalidArgumentException('non-nullable ingestion_status cannot be null');
-        }
-        $this->container['ingestion_status'] = $ingestion_status;
-
-        return $this;
-    }
-
-    /**
-     * Gets ingestion_status_reason
-     *
-     * @return string|null
-     */
-    public function getIngestionStatusReason()
-    {
-        return $this->container['ingestion_status_reason'];
-    }
-
-    /**
-     * Sets ingestion_status_reason
-     *
-     * @param string|null $ingestion_status_reason Set when ingestionStatus is degraded.
-     *
-     * @return self
-     */
-    public function setIngestionStatusReason($ingestion_status_reason)
-    {
-        if (is_null($ingestion_status_reason)) {
-            throw new \InvalidArgumentException('non-nullable ingestion_status_reason cannot be null');
-        }
-        $this->container['ingestion_status_reason'] = $ingestion_status_reason;
+        $this->container['has_more'] = $has_more;
 
         return $this;
     }
