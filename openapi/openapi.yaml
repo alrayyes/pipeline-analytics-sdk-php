@@ -36,6 +36,42 @@ paths:
               schema:
                 $ref: "#/components/schemas/Version"
 
+  /api/mcp:
+    post:
+      operationId: mcpEndpoint
+      summary: MCP server (Streamable HTTP transport)
+      description: >
+        Serves an MCP server over the Streamable HTTP transport
+        (mcp-endpoint/spec.md), exposing the same pipeline health,
+        trend, flaky-step, and usage data as read-only MCP tools. The
+        request and response bodies are MCP's own JSON-RPC 2.0
+        envelope, not a REST payload -- this entry documents the
+        endpoint for discoverability and auth, not for REST client
+        generation.
+      tags: [mcp]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: An MCP JSON-RPC 2.0 request or notification.
+      responses:
+        "200":
+          description: >
+            An MCP JSON-RPC 2.0 response, or an event stream of them
+            (text/event-stream) per the Streamable HTTP transport.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: An MCP JSON-RPC 2.0 response.
+            text/event-stream:
+              schema:
+                type: string
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
   /api/repos:
     get:
       operationId: listRepos
@@ -204,6 +240,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/PipelineRepoIdFilter"
         - $ref: "#/components/parameters/RepoForgeFilter"
+        - $ref: "#/components/parameters/Window"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/Offset"
       responses:

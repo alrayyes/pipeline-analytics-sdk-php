@@ -1429,6 +1429,7 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listPipelines'] to see the possible values for this operation
@@ -1437,9 +1438,9 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return \PipelineAnalytics\Generated\Model\PipelineList|\PipelineAnalytics\Generated\Model\Error
      */
-    public function listPipelines($repo_id = null, $forge = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
+    public function listPipelines($repo_id = null, $forge = null, $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
     {
-        list($response) = $this->listPipelinesWithHttpInfo($repo_id, $forge, $limit, $offset, $contentType);
+        list($response) = $this->listPipelinesWithHttpInfo($repo_id, $forge, $window, $limit, $offset, $contentType);
         return $response;
     }
 
@@ -1450,6 +1451,7 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listPipelines'] to see the possible values for this operation
@@ -1458,9 +1460,9 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return array of \PipelineAnalytics\Generated\Model\PipelineList|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
-    public function listPipelinesWithHttpInfo($repo_id = null, $forge = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
+    public function listPipelinesWithHttpInfo($repo_id = null, $forge = null, $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
     {
-        $request = $this->listPipelinesRequest($repo_id, $forge, $limit, $offset, $contentType);
+        $request = $this->listPipelinesRequest($repo_id, $forge, $window, $limit, $offset, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -1552,6 +1554,7 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listPipelines'] to see the possible values for this operation
@@ -1559,9 +1562,9 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listPipelinesAsync($repo_id = null, $forge = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
+    public function listPipelinesAsync($repo_id = null, $forge = null, $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
     {
-        return $this->listPipelinesAsyncWithHttpInfo($repo_id, $forge, $limit, $offset, $contentType)
+        return $this->listPipelinesAsyncWithHttpInfo($repo_id, $forge, $window, $limit, $offset, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1576,6 +1579,7 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listPipelines'] to see the possible values for this operation
@@ -1583,10 +1587,10 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listPipelinesAsyncWithHttpInfo($repo_id = null, $forge = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
+    public function listPipelinesAsyncWithHttpInfo($repo_id = null, $forge = null, $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
     {
         $returnType = '\PipelineAnalytics\Generated\Model\PipelineList';
-        $request = $this->listPipelinesRequest($repo_id, $forge, $limit, $offset, $contentType);
+        $request = $this->listPipelinesRequest($repo_id, $forge, $window, $limit, $offset, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -1629,6 +1633,7 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listPipelines'] to see the possible values for this operation
@@ -1636,8 +1641,9 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function listPipelinesRequest($repo_id = null, $forge = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
+    public function listPipelinesRequest($repo_id = null, $forge = null, $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
     {
+
 
 
 
@@ -1671,6 +1677,15 @@ class PipelinesApi
             $forge,
             'forge', // param base name
             'Forge', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $window,
+            'window', // param base name
+            'string', // openApiType
             'form', // style
             true, // explode
             false // required

@@ -1,5 +1,6 @@
 src/Api/AuthApi.php
 src/Api/InsightsApi.php
+src/Api/McpApi.php
 src/Api/MetaApi.php
 src/Api/PipelinesApi.php
 src/Api/ReposApi.php
