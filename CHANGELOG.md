@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v1.0.0...v1.0.1) (2026-09-25)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @commitlint/cli from 21.2.2 to 21.2.3 ([#46](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/46)) ([dbdb98a](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/dbdb98aa9d5701e896f6af79769d853156946ca9))
+* **deps-dev:** bump @commitlint/config-conventional ([#47](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/47)) ([0a5e48a](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/0a5e48a50145ebe36895f063a05dc59cd5441e51))
+
 ## [1.0.0](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v0.5.1...v1.0.0) (2026-09-21)
 
 
