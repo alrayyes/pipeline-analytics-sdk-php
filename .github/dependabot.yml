@@ -4,11 +4,24 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    commit-message:
+      # Ships in the published package - a bump here is a change to what
+      # ships whether or not it's security-relevant, so fix: cuts a patch
+      # the same way any other fix does (rules/releases.md).
+      prefix: fix
+
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
+    commit-message:
+      # Nothing here is JavaScript that ships - package.json exists for
+      # commitlint tooling only, same reasoning as the sibling go/node SDKs.
+      prefix: chore
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    commit-message:
+      prefix: ci
