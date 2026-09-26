@@ -37,7 +37,15 @@ pre-push:
     bearer:
       # --diff against the base branch, not a full scan: too slow to run
       # on every push per rules/php.md.
+      #
+      # The image's own default (non-root) user can't write
+      # .git/index.lock in the bind-mounted repo, owned by the host's
+      # uid -- confirmed live: "Unable to create '/src/.git/index.lock':
+      # Permission denied" the moment bearer's --diff tries to switch to
+      # the base branch. --user root plus its own safe.directory (this
+      # container's git config is its own, not the host's) fixes it the
+      # same way CI's own bearer job does.
       run: >-
-        docker run --rm -v "$(pwd):/src" -w /src
+        docker run --rm -v "$(pwd):/src" -w /src --user root --entrypoint sh
         bearer/bearer:2.1.1@sha256:054087ae504572bea7385f33c6a278571d03919fdc05f042c4de827b84ba2210
-        scan src tests hack scripts --diff
+        -c "git config --global --add safe.directory /src && bearer scan src tests hack scripts --diff"
