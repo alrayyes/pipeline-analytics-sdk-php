@@ -1,0 +1,36 @@
+# pipeline-analytics-sdk-php
+
+> API reference for pipeline-analytics-sdk-php, a PHP client for
+> [pipeline-analytics](https://github.com/alrayyes/pipeline-analytics)'s
+> REST API. Generated from the upstream OpenAPI spec with openapi-generator's
+> `php` target, wrapped in a hand-written `Client` facade over a Guzzle HTTP
+> transport with retries and pagination. This site is the generated
+> phpDocumentor API reference; for usage examples, authentication and
+> installation, see the [source repository](https://github.com/alrayyes/pipeline-analytics-sdk-php)
+> README.
+
+Requires PHP 8.2+ and a running pipeline-analytics instance. Every endpoint
+except `getVersion` and the webhook receivers needs a session cookie, since
+the upstream API authenticates with WebAuthn rather than an API token.
+
+## API reference
+
+- [Client class](classes/PipelineAnalytics-Client.html): the hand-written
+  facade — constructor, retry/backoff options, and the per-tag API
+  properties (`repos`, `pipelines`, `insights`, `auth`, `webhooks`).
+- [PipelineAnalytics namespace](namespaces/pipelineanalytics.html): the
+  hand-written layer (`Client`, `ApiError`) that wraps the generated code.
+- [PipelineAnalytics\Exception namespace](namespaces/pipelineanalytics-exception.html):
+  typed error handling around the generated client's exceptions.
+- [PipelineAnalytics\Pagination namespace](namespaces/pipelineanalytics-pagination.html):
+  the pagination iterator used by list endpoints like `listRepos`.
+- [PipelineAnalytics\Retry namespace](namespaces/pipelineanalytics-retry.html):
+  the exponential-backoff retry policy for `429`/`5xx` responses.
+- [File index](indices/files.html): every documented source file, generated
+  and hand-written.
+
+## Source
+
+- [GitHub repository](https://github.com/alrayyes/pipeline-analytics-sdk-php):
+  README, CONTRIBUTING.md (regenerating the client), and the OpenAPI spec
+  this SDK is generated from.

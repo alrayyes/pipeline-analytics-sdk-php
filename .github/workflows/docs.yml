@@ -39,6 +39,12 @@ jobs:
           tools: composer:2.9.5
           extensions: iconv
       - run: bash scripts/phpdoc.sh
+      # phpDocumentor's config has no static-asset passthrough (checked
+      # phpdoc.dist.xml's schema: only paths/version/api), so there's no
+      # native way to get an arbitrary root-level file into its output.
+      # Copy it in ourselves, after the build and before the artifact is
+      # uploaded, so it survives a fresh `site/` every run.
+      - run: cp llms.txt site/llms.txt
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: site
