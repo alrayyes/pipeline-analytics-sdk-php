@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.3](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v1.0.2...v1.0.3) (2026-09-26)
+
+
+### Bug Fixes
+
+* **ci:** run bearer's local hook as root to fix git permission error ([3d0fcff](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/3d0fcffc80843e3adaa29e1b14501469ee2366f5))
+* **ci:** run bearer's local hook as root to fix git permission error ([9f7ca0f](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/9f7ca0fc19584e4fa23cba90ac8477d5f3570793)), closes [#58](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/58)
+
 ## [1.0.2](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v1.0.1...v1.0.2) (2026-09-25)
 
 
