@@ -10,7 +10,7 @@ updates:
       # the same way any other fix does (rules/releases.md).
       prefix: fix
 
-  - package-ecosystem: npm
+  - package-ecosystem: bun
     directory: /
     schedule:
       interval: weekly
