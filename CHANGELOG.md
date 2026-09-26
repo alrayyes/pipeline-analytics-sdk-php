@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.4](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v1.0.3...v1.0.4) (2026-09-26)
+
+
+### Bug Fixes
+
+* **deps:** use bun ecosystem for dependabot, not npm ([535594b](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/535594b5d95bfc31a4fc242846e167ac7245e79f))
+* **deps:** use bun ecosystem for dependabot, not npm ([802ea85](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/802ea852693593732ae34cbf0d8d653ece182209)), closes [#57](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/57)
+
 ## [1.0.3](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v1.0.2...v1.0.3) (2026-09-26)
 
 
