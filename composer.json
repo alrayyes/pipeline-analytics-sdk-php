@@ -20,7 +20,7 @@
         "pestphp/pest": "3.8.7",
         "phpmd/phpmd": "2.15.0",
         "phpstan/extension-installer": "1.4.3",
-        "phpstan/phpstan": "2.2.14",
+        "phpstan/phpstan": "2.2.15",
         "phpstan/phpstan-phpunit": "2.0.18",
         "phpunit/phpunit": "11.5.56",
         "rector/rector": "2.6.7",
