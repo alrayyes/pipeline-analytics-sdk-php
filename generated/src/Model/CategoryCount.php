@@ -1,6 +1,6 @@
 <?php
 /**
- * StageFailureCount
+ * CategoryCount
  *
  * PHP version 8.1
  *
@@ -32,7 +32,7 @@ use \ArrayAccess;
 use \PipelineAnalytics\Generated\ObjectSerializer;
 
 /**
- * StageFailureCount Class Doc Comment
+ * CategoryCount Class Doc Comment
  *
  * @category Class
  * @package  PipelineAnalytics\Generated
@@ -40,7 +40,7 @@ use \PipelineAnalytics\Generated\ObjectSerializer;
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class StageFailureCount implements ModelInterface, ArrayAccess, \JsonSerializable
+class CategoryCount implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -49,7 +49,7 @@ class StageFailureCount implements ModelInterface, ArrayAccess, \JsonSerializabl
      *
      * @var string
      */
-    protected static $openAPIModelName = 'StageFailureCount';
+    protected static $openAPIModelName = 'CategoryCount';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -57,8 +57,8 @@ class StageFailureCount implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $openAPITypes = [
-        'step' => 'string',
-        'failures' => 'int',
+        'category' => '\PipelineAnalytics\Generated\Model\FailureCategory',
+        'occurrences' => 'int',
         'share' => 'float'
     ];
 
@@ -70,8 +70,8 @@ class StageFailureCount implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'step' => null,
-        'failures' => null,
+        'category' => null,
+        'occurrences' => null,
         'share' => null
     ];
 
@@ -81,8 +81,8 @@ class StageFailureCount implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'step' => false,
-        'failures' => false,
+        'category' => false,
+        'occurrences' => false,
         'share' => false
     ];
 
@@ -172,8 +172,8 @@ class StageFailureCount implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $attributeMap = [
-        'step' => 'step',
-        'failures' => 'failures',
+        'category' => 'category',
+        'occurrences' => 'occurrences',
         'share' => 'share'
     ];
 
@@ -183,8 +183,8 @@ class StageFailureCount implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $setters = [
-        'step' => 'setStep',
-        'failures' => 'setFailures',
+        'category' => 'setCategory',
+        'occurrences' => 'setOccurrences',
         'share' => 'setShare'
     ];
 
@@ -194,8 +194,8 @@ class StageFailureCount implements ModelInterface, ArrayAccess, \JsonSerializabl
      * @var string[]
      */
     protected static $getters = [
-        'step' => 'getStep',
-        'failures' => 'getFailures',
+        'category' => 'getCategory',
+        'occurrences' => 'getOccurrences',
         'share' => 'getShare'
     ];
 
@@ -256,8 +256,8 @@ class StageFailureCount implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('step', $data ?? [], null);
-        $this->setIfExists('failures', $data ?? [], null);
+        $this->setIfExists('category', $data ?? [], null);
+        $this->setIfExists('occurrences', $data ?? [], null);
         $this->setIfExists('share', $data ?? [], null);
     }
 
@@ -288,11 +288,11 @@ class StageFailureCount implements ModelInterface, ArrayAccess, \JsonSerializabl
     {
         $invalidProperties = [];
 
-        if ($this->container['step'] === null) {
-            $invalidProperties[] = "'step' can't be null";
+        if ($this->container['category'] === null) {
+            $invalidProperties[] = "'category' can't be null";
         }
-        if ($this->container['failures'] === null) {
-            $invalidProperties[] = "'failures' can't be null";
+        if ($this->container['occurrences'] === null) {
+            $invalidProperties[] = "'occurrences' can't be null";
         }
         if ($this->container['share'] === null) {
             $invalidProperties[] = "'share' can't be null";
@@ -313,55 +313,55 @@ class StageFailureCount implements ModelInterface, ArrayAccess, \JsonSerializabl
 
 
     /**
-     * Gets step
+     * Gets category
      *
-     * @return string
+     * @return \PipelineAnalytics\Generated\Model\FailureCategory
      */
-    public function getStep()
+    public function getCategory()
     {
-        return $this->container['step'];
+        return $this->container['category'];
     }
 
     /**
-     * Sets step
+     * Sets category
      *
-     * @param string $step step
+     * @param \PipelineAnalytics\Generated\Model\FailureCategory $category category
      *
      * @return self
      */
-    public function setStep($step)
+    public function setCategory($category)
     {
-        if (is_null($step)) {
-            throw new \InvalidArgumentException('non-nullable step cannot be null');
+        if (is_null($category)) {
+            throw new \InvalidArgumentException('non-nullable category cannot be null');
         }
-        $this->container['step'] = $step;
+        $this->container['category'] = $category;
 
         return $this;
     }
 
     /**
-     * Gets failures
+     * Gets occurrences
      *
      * @return int
      */
-    public function getFailures()
+    public function getOccurrences()
     {
-        return $this->container['failures'];
+        return $this->container['occurrences'];
     }
 
     /**
-     * Sets failures
+     * Sets occurrences
      *
-     * @param int $failures failures
+     * @param int $occurrences Failed-step occurrences whose step falls in this category.
      *
      * @return self
      */
-    public function setFailures($failures)
+    public function setOccurrences($occurrences)
     {
-        if (is_null($failures)) {
-            throw new \InvalidArgumentException('non-nullable failures cannot be null');
+        if (is_null($occurrences)) {
+            throw new \InvalidArgumentException('non-nullable occurrences cannot be null');
         }
-        $this->container['failures'] = $failures;
+        $this->container['occurrences'] = $occurrences;
 
         return $this;
     }
@@ -379,7 +379,7 @@ class StageFailureCount implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets share
      *
-     * @param float $share Fraction in (0, 1] of all failed-step occurrences in the window; the entries' shares sum to 1.
+     * @param float $share Fraction in (0, 1] of all failed-step occurrences in the window; the categories' shares sum to 1.
      *
      * @return self
      */
