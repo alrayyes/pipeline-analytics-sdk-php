@@ -62,7 +62,8 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
         'forge_filter' => 'string',
         'pipelines_health_filter' => 'string',
         'pipelines_repo_selector' => 'string',
-        'pipelines_sort_order' => 'string'
+        'pipelines_sort_order' => 'string',
+        'telemetry_window' => 'string'
     ];
 
     /**
@@ -77,7 +78,8 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
         'forge_filter' => null,
         'pipelines_health_filter' => null,
         'pipelines_repo_selector' => null,
-        'pipelines_sort_order' => null
+        'pipelines_sort_order' => null,
+        'telemetry_window' => null
     ];
 
     /**
@@ -90,7 +92,8 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
         'forge_filter' => true,
         'pipelines_health_filter' => true,
         'pipelines_repo_selector' => true,
-        'pipelines_sort_order' => true
+        'pipelines_sort_order' => true,
+        'telemetry_window' => true
     ];
 
     /**
@@ -183,7 +186,8 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
         'forge_filter' => 'forgeFilter',
         'pipelines_health_filter' => 'pipelinesHealthFilter',
         'pipelines_repo_selector' => 'pipelinesRepoSelector',
-        'pipelines_sort_order' => 'pipelinesSortOrder'
+        'pipelines_sort_order' => 'pipelinesSortOrder',
+        'telemetry_window' => 'telemetryWindow'
     ];
 
     /**
@@ -196,7 +200,8 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
         'forge_filter' => 'setForgeFilter',
         'pipelines_health_filter' => 'setPipelinesHealthFilter',
         'pipelines_repo_selector' => 'setPipelinesRepoSelector',
-        'pipelines_sort_order' => 'setPipelinesSortOrder'
+        'pipelines_sort_order' => 'setPipelinesSortOrder',
+        'telemetry_window' => 'setTelemetryWindow'
     ];
 
     /**
@@ -209,7 +214,8 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
         'forge_filter' => 'getForgeFilter',
         'pipelines_health_filter' => 'getPipelinesHealthFilter',
         'pipelines_repo_selector' => 'getPipelinesRepoSelector',
-        'pipelines_sort_order' => 'getPipelinesSortOrder'
+        'pipelines_sort_order' => 'getPipelinesSortOrder',
+        'telemetry_window' => 'getTelemetryWindow'
     ];
 
     /**
@@ -264,6 +270,9 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
     public const PIPELINES_HEALTH_FILTER_UNHEALTHY = 'unhealthy';
     public const PIPELINES_SORT_ORDER_NAME = 'name';
     public const PIPELINES_SORT_ORDER_LAST_RUN = 'lastRun';
+    public const TELEMETRY_WINDOW__24H = '24h';
+    public const TELEMETRY_WINDOW__7D = '7d';
+    public const TELEMETRY_WINDOW__30D = '30d';
 
     /**
      * Gets allowable values of the enum
@@ -321,6 +330,20 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getTelemetryWindowAllowableValues()
+    {
+        return [
+            self::TELEMETRY_WINDOW__24H,
+            self::TELEMETRY_WINDOW__7D,
+            self::TELEMETRY_WINDOW__30D,
+        ];
+    }
+
+    /**
      * Associative array for storing property values
      *
      * @var mixed[]
@@ -340,6 +363,7 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('pipelines_health_filter', $data ?? [], null);
         $this->setIfExists('pipelines_repo_selector', $data ?? [], null);
         $this->setIfExists('pipelines_sort_order', $data ?? [], null);
+        $this->setIfExists('telemetry_window', $data ?? [], null);
     }
 
     /**
@@ -401,6 +425,15 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
             $invalidProperties[] = sprintf(
                 "invalid value '%s' for 'pipelines_sort_order', must be one of '%s'",
                 $this->container['pipelines_sort_order'],
+                implode("', '", $allowedValues)
+            );
+        }
+
+        $allowedValues = $this->getTelemetryWindowAllowableValues();
+        if (!is_null($this->container['telemetry_window']) && !in_array($this->container['telemetry_window'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'telemetry_window', must be one of '%s'",
+                $this->container['telemetry_window'],
                 implode("', '", $allowedValues)
             );
         }
@@ -626,6 +659,50 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
             );
         }
         $this->container['pipelines_sort_order'] = $pipelines_sort_order;
+
+        return $this;
+    }
+
+    /**
+     * Gets telemetry_window
+     *
+     * @return string|null
+     */
+    public function getTelemetryWindow()
+    {
+        return $this->container['telemetry_window'];
+    }
+
+    /**
+     * Sets telemetry_window
+     *
+     * @param string|null $telemetry_window telemetry_window
+     *
+     * @return self
+     */
+    public function setTelemetryWindow($telemetry_window)
+    {
+        if (is_null($telemetry_window)) {
+            array_push($this->openAPINullablesSetToNull, 'telemetry_window');
+        } else {
+            $nullablesSetToNull = $this->getOpenAPINullablesSetToNull();
+            $index = array_search('telemetry_window', $nullablesSetToNull);
+            if ($index !== FALSE) {
+                unset($nullablesSetToNull[$index]);
+                $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
+            }
+        }
+        $allowedValues = $this->getTelemetryWindowAllowableValues();
+        if (!is_null($telemetry_window) && !in_array($telemetry_window, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'telemetry_window', must be one of '%s'",
+                    $telemetry_window,
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['telemetry_window'] = $telemetry_window;
 
         return $this;
     }
