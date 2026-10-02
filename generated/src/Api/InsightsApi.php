@@ -135,14 +135,14 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
-     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
+     * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return \PipelineAnalytics\Generated\Model\FailureInsights|\PipelineAnalytics\Generated\Model\Error
      */
-    public function getFailureInsights($repo_id = null, $forge = null, $window = null, string $contentType = self::contentTypes['getFailureInsights'][0])
+    public function getFailureInsights($repo_id = null, $forge = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
     {
         list($response) = $this->getFailureInsightsWithHttpInfo($repo_id, $forge, $window, $contentType);
         return $response;
@@ -155,14 +155,14 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
-     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
+     * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
      * @return array of \PipelineAnalytics\Generated\Model\FailureInsights|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getFailureInsightsWithHttpInfo($repo_id = null, $forge = null, $window = null, string $contentType = self::contentTypes['getFailureInsights'][0])
+    public function getFailureInsightsWithHttpInfo($repo_id = null, $forge = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
     {
         $request = $this->getFailureInsightsRequest($repo_id, $forge, $window, $contentType);
 
@@ -256,13 +256,13 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
-     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
+     * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getFailureInsightsAsync($repo_id = null, $forge = null, $window = null, string $contentType = self::contentTypes['getFailureInsights'][0])
+    public function getFailureInsightsAsync($repo_id = null, $forge = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
     {
         return $this->getFailureInsightsAsyncWithHttpInfo($repo_id, $forge, $window, $contentType)
             ->then(
@@ -279,13 +279,13 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
-     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
+     * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getFailureInsightsAsyncWithHttpInfo($repo_id = null, $forge = null, $window = null, string $contentType = self::contentTypes['getFailureInsights'][0])
+    public function getFailureInsightsAsyncWithHttpInfo($repo_id = null, $forge = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
     {
         $returnType = '\PipelineAnalytics\Generated\Model\FailureInsights';
         $request = $this->getFailureInsightsRequest($repo_id, $forge, $window, $contentType);
@@ -331,13 +331,13 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
-     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
+     * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getFailureInsightsRequest($repo_id = null, $forge = null, $window = null, string $contentType = self::contentTypes['getFailureInsights'][0])
+    public function getFailureInsightsRequest($repo_id = null, $forge = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
     {
 
 
