@@ -26,6 +26,7 @@ src/Model/HealthStatus.php
 src/Model/IngestionStatus.php
 src/Model/ListRepoIdentifiers200Response.php
 src/Model/ModelInterface.php
+src/Model/Outcome.php
 src/Model/PipelineDetail.php
 src/Model/PipelineList.php
 src/Model/PipelineStepsGroup.php

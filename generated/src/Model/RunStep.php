@@ -60,6 +60,7 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'string',
         'status' => 'string',
         'conclusion' => 'string',
+        'outcome' => '\PipelineAnalytics\Generated\Model\Outcome',
         'forge_url' => 'string'
     ];
 
@@ -74,6 +75,7 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => null,
         'status' => null,
         'conclusion' => null,
+        'outcome' => null,
         'forge_url' => 'uri'
     ];
 
@@ -86,6 +88,7 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => false,
         'status' => false,
         'conclusion' => false,
+        'outcome' => false,
         'forge_url' => false
     ];
 
@@ -178,6 +181,7 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'name',
         'status' => 'status',
         'conclusion' => 'conclusion',
+        'outcome' => 'outcome',
         'forge_url' => 'forgeUrl'
     ];
 
@@ -190,6 +194,7 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'setName',
         'status' => 'setStatus',
         'conclusion' => 'setConclusion',
+        'outcome' => 'setOutcome',
         'forge_url' => 'setForgeUrl'
     ];
 
@@ -202,6 +207,7 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
         'name' => 'getName',
         'status' => 'getStatus',
         'conclusion' => 'getConclusion',
+        'outcome' => 'getOutcome',
         'forge_url' => 'getForgeUrl'
     ];
 
@@ -265,6 +271,7 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('name', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('conclusion', $data ?? [], null);
+        $this->setIfExists('outcome', $data ?? [], null);
         $this->setIfExists('forge_url', $data ?? [], null);
     }
 
@@ -300,6 +307,9 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
         }
         if ($this->container['status'] === null) {
             $invalidProperties[] = "'status' can't be null";
+        }
+        if ($this->container['outcome'] === null) {
+            $invalidProperties[] = "'outcome' can't be null";
         }
         return $invalidProperties;
     }
@@ -393,6 +403,33 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable conclusion cannot be null');
         }
         $this->container['conclusion'] = $conclusion;
+
+        return $this;
+    }
+
+    /**
+     * Gets outcome
+     *
+     * @return \PipelineAnalytics\Generated\Model\Outcome
+     */
+    public function getOutcome()
+    {
+        return $this->container['outcome'];
+    }
+
+    /**
+     * Sets outcome
+     *
+     * @param \PipelineAnalytics\Generated\Model\Outcome $outcome outcome
+     *
+     * @return self
+     */
+    public function setOutcome($outcome)
+    {
+        if (is_null($outcome)) {
+            throw new \InvalidArgumentException('non-nullable outcome cannot be null');
+        }
+        $this->container['outcome'] = $outcome;
 
         return $this;
     }
