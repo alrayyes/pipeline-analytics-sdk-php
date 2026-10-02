@@ -63,6 +63,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'repo_id' => 'string',
         'status' => 'string',
         'conclusion' => 'string',
+        'outcome' => '\PipelineAnalytics\Generated\Model\Outcome',
         'started_at' => '\DateTime',
         'duration_seconds' => 'float',
         'branch' => 'string',
@@ -87,6 +88,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'repo_id' => null,
         'status' => null,
         'conclusion' => null,
+        'outcome' => null,
         'started_at' => 'date-time',
         'duration_seconds' => null,
         'branch' => null,
@@ -109,6 +111,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'repo_id' => false,
         'status' => false,
         'conclusion' => false,
+        'outcome' => false,
         'started_at' => false,
         'duration_seconds' => false,
         'branch' => false,
@@ -211,6 +214,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'repo_id' => 'repoId',
         'status' => 'status',
         'conclusion' => 'conclusion',
+        'outcome' => 'outcome',
         'started_at' => 'startedAt',
         'duration_seconds' => 'durationSeconds',
         'branch' => 'branch',
@@ -233,6 +237,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'repo_id' => 'setRepoId',
         'status' => 'setStatus',
         'conclusion' => 'setConclusion',
+        'outcome' => 'setOutcome',
         'started_at' => 'setStartedAt',
         'duration_seconds' => 'setDurationSeconds',
         'branch' => 'setBranch',
@@ -255,6 +260,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'repo_id' => 'getRepoId',
         'status' => 'getStatus',
         'conclusion' => 'getConclusion',
+        'outcome' => 'getOutcome',
         'started_at' => 'getStartedAt',
         'duration_seconds' => 'getDurationSeconds',
         'branch' => 'getBranch',
@@ -328,6 +334,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('repo_id', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('conclusion', $data ?? [], null);
+        $this->setIfExists('outcome', $data ?? [], null);
         $this->setIfExists('started_at', $data ?? [], null);
         $this->setIfExists('duration_seconds', $data ?? [], null);
         $this->setIfExists('branch', $data ?? [], null);
@@ -379,6 +386,9 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         }
         if ($this->container['status'] === null) {
             $invalidProperties[] = "'status' can't be null";
+        }
+        if ($this->container['outcome'] === null) {
+            $invalidProperties[] = "'outcome' can't be null";
         }
         if ($this->container['steps'] === null) {
             $invalidProperties[] = "'steps' can't be null";
@@ -556,6 +566,33 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable conclusion cannot be null');
         }
         $this->container['conclusion'] = $conclusion;
+
+        return $this;
+    }
+
+    /**
+     * Gets outcome
+     *
+     * @return \PipelineAnalytics\Generated\Model\Outcome
+     */
+    public function getOutcome()
+    {
+        return $this->container['outcome'];
+    }
+
+    /**
+     * Sets outcome
+     *
+     * @param \PipelineAnalytics\Generated\Model\Outcome $outcome outcome
+     *
+     * @return self
+     */
+    public function setOutcome($outcome)
+    {
+        if (is_null($outcome)) {
+            throw new \InvalidArgumentException('non-nullable outcome cannot be null');
+        }
+        $this->container['outcome'] = $outcome;
 
         return $this;
     }
