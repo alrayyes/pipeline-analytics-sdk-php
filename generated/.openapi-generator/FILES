@@ -13,6 +13,11 @@ src/HeaderSelector.php
 src/Model/ApiToken.php
 src/Model/Credential.php
 src/Model/Error.php
+src/Model/FailingPipeline.php
+src/Model/FailureCategory.php
+src/Model/FailureGroup.php
+src/Model/FailureGroupPipelinesInner.php
+src/Model/FailureInsights.php
 src/Model/FlakyRun.php
 src/Model/Forge.php
 src/Model/GitHubTokenUsage.php
@@ -30,9 +35,12 @@ src/Model/RepoDiscoveryRequest.php
 src/Model/RepoList.php
 src/Model/RepoRegistration.php
 src/Model/RunDetail.php
+src/Model/RunList.php
 src/Model/RunStep.php
+src/Model/RunSummary.php
 src/Model/Settings.php
 src/Model/SettingsUpdate.php
+src/Model/StageFailureCount.php
 src/Model/Step.php
 src/Model/Trend.php
 src/Model/UnhealthyStepsList.php
