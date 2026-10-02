@@ -336,9 +336,6 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
         if ($this->container['failed_runs'] === null) {
             $invalidProperties[] = "'failed_runs' can't be null";
         }
-        if ($this->container['pass_rate'] === null) {
-            $invalidProperties[] = "'pass_rate' can't be null";
-        }
         if ($this->container['flaky_step_ratio'] === null) {
             $invalidProperties[] = "'flaky_step_ratio' can't be null";
         }
@@ -423,7 +420,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets pass_rate
      *
-     * @return float
+     * @return float|null
      */
     public function getPassRate()
     {
@@ -433,7 +430,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets pass_rate
      *
-     * @param float $pass_rate Fraction in [0, 1] of concluded runs that succeeded.
+     * @param float|null $pass_rate Fraction in [0, 1] of concluded runs that succeeded. Absent when no run concluded in the window, since no data isn't 0%.
      *
      * @return self
      */
