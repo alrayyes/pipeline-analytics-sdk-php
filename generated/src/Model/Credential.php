@@ -59,7 +59,8 @@ class Credential implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $openAPITypes = [
         'id' => 'string',
         'label' => 'string',
-        'created_at' => '\DateTime'
+        'created_at' => '\DateTime',
+        'revocable' => 'bool'
     ];
 
     /**
@@ -72,7 +73,8 @@ class Credential implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $openAPIFormats = [
         'id' => null,
         'label' => null,
-        'created_at' => 'date-time'
+        'created_at' => 'date-time',
+        'revocable' => null
     ];
 
     /**
@@ -83,7 +85,8 @@ class Credential implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static array $openAPINullables = [
         'id' => false,
         'label' => false,
-        'created_at' => false
+        'created_at' => false,
+        'revocable' => false
     ];
 
     /**
@@ -174,7 +177,8 @@ class Credential implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $attributeMap = [
         'id' => 'id',
         'label' => 'label',
-        'created_at' => 'createdAt'
+        'created_at' => 'createdAt',
+        'revocable' => 'revocable'
     ];
 
     /**
@@ -185,7 +189,8 @@ class Credential implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $setters = [
         'id' => 'setId',
         'label' => 'setLabel',
-        'created_at' => 'setCreatedAt'
+        'created_at' => 'setCreatedAt',
+        'revocable' => 'setRevocable'
     ];
 
     /**
@@ -196,7 +201,8 @@ class Credential implements ModelInterface, ArrayAccess, \JsonSerializable
     protected static $getters = [
         'id' => 'getId',
         'label' => 'getLabel',
-        'created_at' => 'getCreatedAt'
+        'created_at' => 'getCreatedAt',
+        'revocable' => 'getRevocable'
     ];
 
     /**
@@ -259,6 +265,7 @@ class Credential implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('id', $data ?? [], null);
         $this->setIfExists('label', $data ?? [], null);
         $this->setIfExists('created_at', $data ?? [], null);
+        $this->setIfExists('revocable', $data ?? [], null);
     }
 
     /**
@@ -296,6 +303,9 @@ class Credential implements ModelInterface, ArrayAccess, \JsonSerializable
         }
         if ($this->container['created_at'] === null) {
             $invalidProperties[] = "'created_at' can't be null";
+        }
+        if ($this->container['revocable'] === null) {
+            $invalidProperties[] = "'revocable' can't be null";
         }
         return $invalidProperties;
     }
@@ -389,6 +399,33 @@ class Credential implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable created_at cannot be null');
         }
         $this->container['created_at'] = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * Gets revocable
+     *
+     * @return bool
+     */
+    public function getRevocable()
+    {
+        return $this->container['revocable'];
+    }
+
+    /**
+     * Sets revocable
+     *
+     * @param bool $revocable False only for the account's last remaining credential, which DELETE /api/auth/credentials/{credentialId} refuses to revoke (409). A hint for clients so they don't apply the rule themselves; the server still enforces it.
+     *
+     * @return self
+     */
+    public function setRevocable($revocable)
+    {
+        if (is_null($revocable)) {
+            throw new \InvalidArgumentException('non-nullable revocable cannot be null');
+        }
+        $this->container['revocable'] = $revocable;
 
         return $this;
     }
