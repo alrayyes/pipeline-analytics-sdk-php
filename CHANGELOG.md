@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.5](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v1.0.4...v1.0.5) (2026-10-02)
+
+
+### Bug Fixes
+
+* bump ergebnis/composer-normalize from 2.53.0 to 2.54.0 ([#65](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/65)) ([7502dce](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/7502dced8bd61e9add82192aff71b53ec013d495))
+* bump phpstan/phpstan from 2.2.14 to 2.2.15 ([#63](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/63)) ([7938f29](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/7938f296da1f935acef415400ac5d1c317251fd7))
+* bump phpstan/phpstan from 2.2.15 to 2.2.16 ([#64](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/64)) ([03c31b6](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/03c31b6864c205633f460212a7a92a13919ae33c))
+* bump phpstan/phpstan-phpunit from 2.0.18 to 2.0.19 ([#66](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/66)) ([da134b2](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/da134b21d462ce9247341a968f86e2e597cdd2d5))
+* regenerate client from pipeline-analytics openapi.yaml ([d4ea3aa](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/d4ea3aa7606426a00ae9cd07b5a42c379cb08083))
+* regenerate client from pipeline-analytics openapi.yaml ([7ed3024](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/7ed30241d248fe5476aa05c8f2c8f92ee28cbb4a))
+
 ## [1.0.4](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v1.0.3...v1.0.4) (2026-09-26)
 
 
