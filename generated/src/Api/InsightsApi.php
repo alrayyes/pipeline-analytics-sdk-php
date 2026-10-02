@@ -74,6 +74,9 @@ class InsightsApi
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
+        'getFailureInsights' => [
+            'application/json',
+        ],
         'getGitHubRateLimitInsights' => [
             'application/json',
         ],
@@ -123,6 +126,321 @@ class InsightsApi
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * Operation getFailureInsights
+     *
+     * Failure aggregates over a window -- pass rate, MTTR, failure distribution, root-cause groups
+     *
+     * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \PipelineAnalytics\Generated\Model\FailureInsights|\PipelineAnalytics\Generated\Model\Error
+     */
+    public function getFailureInsights($repo_id = null, $forge = null, $window = null, string $contentType = self::contentTypes['getFailureInsights'][0])
+    {
+        list($response) = $this->getFailureInsightsWithHttpInfo($repo_id, $forge, $window, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation getFailureInsightsWithHttpInfo
+     *
+     * Failure aggregates over a window -- pass rate, MTTR, failure distribution, root-cause groups
+     *
+     * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \PipelineAnalytics\Generated\Model\FailureInsights|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function getFailureInsightsWithHttpInfo($repo_id = null, $forge = null, $window = null, string $contentType = self::contentTypes['getFailureInsights'][0])
+    {
+        $request = $this->getFailureInsightsRequest($repo_id, $forge, $window, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\FailureInsights',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\PipelineAnalytics\Generated\Model\FailureInsights',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\FailureInsights',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getFailureInsightsAsync
+     *
+     * Failure aggregates over a window -- pass rate, MTTR, failure distribution, root-cause groups
+     *
+     * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getFailureInsightsAsync($repo_id = null, $forge = null, $window = null, string $contentType = self::contentTypes['getFailureInsights'][0])
+    {
+        return $this->getFailureInsightsAsyncWithHttpInfo($repo_id, $forge, $window, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation getFailureInsightsAsyncWithHttpInfo
+     *
+     * Failure aggregates over a window -- pass rate, MTTR, failure distribution, root-cause groups
+     *
+     * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getFailureInsightsAsyncWithHttpInfo($repo_id = null, $forge = null, $window = null, string $contentType = self::contentTypes['getFailureInsights'][0])
+    {
+        $returnType = '\PipelineAnalytics\Generated\Model\FailureInsights';
+        $request = $this->getFailureInsightsRequest($repo_id, $forge, $window, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getFailureInsights'
+     *
+     * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function getFailureInsightsRequest($repo_id = null, $forge = null, $window = null, string $contentType = self::contentTypes['getFailureInsights'][0])
+    {
+
+
+
+
+
+        $resourcePath = '/api/insights/failures';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $repo_id,
+            'repoId', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $forge,
+            'forge', // param base name
+            'Forge', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $window,
+            'window', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'GET',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
     }
 
     /**

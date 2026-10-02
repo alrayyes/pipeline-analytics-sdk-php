@@ -400,6 +400,56 @@ paths:
         "401":
           $ref: "#/components/responses/Unauthorized"
 
+  /api/insights/failures:
+    get:
+      operationId: getFailureInsights
+      summary: Failure aggregates over a window -- pass rate, MTTR, failure distribution, root-cause groups
+      description: >
+        Backs the failure overview and root-cause views. "Stage" means
+        step: forges expose workflows, jobs and steps but no stage
+        taxonomy, so the distribution and the groups are by failing step
+        name. `passRateDelta` compares against the preceding window of
+        equal length. Failure categories are heuristic (step conclusion
+        and name), never log-derived; a failure no rule matches is
+        `uncategorised`.
+      tags: [insights]
+      parameters:
+        - $ref: "#/components/parameters/PipelineRepoIdFilter"
+        - $ref: "#/components/parameters/RepoForgeFilter"
+        - $ref: "#/components/parameters/Window"
+      responses:
+        "200":
+          description: Failure insights for the window
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FailureInsights"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /api/runs:
+    get:
+      operationId: listRuns
+      summary: A page of runs, newest first, each with its steps for a stage progression bar
+      tags: [pipelines]
+      parameters:
+        - $ref: "#/components/parameters/PipelineRepoIdFilter"
+        - $ref: "#/components/parameters/RepoForgeFilter"
+        - $ref: "#/components/parameters/RunStatusFilter"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Offset"
+      responses:
+        "200":
+          description: A page of runs ordered by start time, newest first
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RunList"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
   /api/settings:
     get:
       operationId: getSettings
@@ -877,6 +927,18 @@ components:
         type: integer
         minimum: 0
         default: 0
+    RunStatusFilter:
+      name: status
+      in: query
+      required: false
+      description: >
+        Restrict runs to one status bucket. `failed` is a concluded
+        failure, `running` is queued or in progress, `success` is a
+        concluded success. Omitted or `all` returns every run.
+      schema:
+        type: string
+        enum: [all, failed, running, success]
+        default: all
 
   responses:
     BadRequest:
@@ -1276,6 +1338,169 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/RunStep"
+
+    RunSummary:
+      type: object
+      required: [id, pipelineId, pipelineName, repoId, status, steps]
+      properties:
+        id:
+          type: string
+        pipelineId:
+          type: string
+        pipelineName:
+          type: string
+        repoId:
+          type: string
+        status:
+          type: string
+          description: The forge's run status, as recorded.
+        conclusion:
+          type: string
+          description: Absent until the run concludes.
+        startedAt:
+          type: string
+          format: date-time
+        durationSeconds:
+          type: number
+          description: Absent while the run is still going or has no recorded end.
+        branch:
+          type: string
+          description: Absent on runs ingested before commit metadata was recorded.
+        sha:
+          type: string
+          description: Head commit SHA. Absent where the forge or an older row lacks it.
+        message:
+          type: string
+          description: First line of the head commit message.
+        actor:
+          type: string
+          description: The triggering user or bot.
+        forgeUrl:
+          type: string
+          format: uri
+          description: Deep link to the run on the originating forge.
+        steps:
+          type: array
+          description: The run's steps in recorded order.
+          items:
+            $ref: "#/components/schemas/RunStep"
+
+    RunList:
+      type: object
+      required: [runs, hasMore]
+      properties:
+        runs:
+          type: array
+          items:
+            $ref: "#/components/schemas/RunSummary"
+        hasMore:
+          type: boolean
+          description: True when runs beyond this page match the filter. Always false when limit was omitted.
+
+    FailureCategory:
+      type: string
+      enum:
+        [
+          infrastructure,
+          code_tests,
+          network_timeouts,
+          config_secrets,
+          uncategorised,
+        ]
+
+    StageFailureCount:
+      type: object
+      required: [step, failures]
+      properties:
+        step:
+          type: string
+        failures:
+          type: integer
+
+    FailingPipeline:
+      type: object
+      required: [pipelineId, pipelineName, repoId, runs, failedRuns]
+      properties:
+        pipelineId:
+          type: string
+        pipelineName:
+          type: string
+        repoId:
+          type: string
+        runs:
+          type: integer
+        failedRuns:
+          type: integer
+
+    FailureGroup:
+      type: object
+      required: [step, category, occurrences, pipelines]
+      properties:
+        step:
+          type: string
+        category:
+          $ref: "#/components/schemas/FailureCategory"
+        conclusion:
+          type: string
+          description: The most common step conclusion in the group, shown so a heuristic category can be checked.
+        occurrences:
+          type: integer
+        pipelines:
+          type: array
+          description: Pipelines the step failed in, each reachable via GET .../flaky-runs.
+          items:
+            type: object
+            required: [pipelineId, pipelineName]
+            properties:
+              pipelineId:
+                type: string
+              pipelineName:
+                type: string
+
+    FailureInsights:
+      type: object
+      required:
+        [
+          totalRuns,
+          failedRuns,
+          passRate,
+          flakyStepRatio,
+          stageDistribution,
+          topFailingPipelines,
+          failureGroups,
+        ]
+      properties:
+        totalRuns:
+          type: integer
+        failedRuns:
+          type: integer
+        passRate:
+          type: number
+          description: Fraction in [0, 1] of concluded runs that succeeded.
+        passRateDelta:
+          type: number
+          description: Percentage points versus the preceding window of equal length. Absent when that window had no runs.
+        flakyStepRatio:
+          type: number
+          description: Fraction in [0, 1] of distinct steps flagged flaky.
+        mttrSeconds:
+          type: number
+          description: Mean time from a pipeline's first failed run to its next successful run. Absent when nothing recovered in the window.
+        stageDistribution:
+          type: array
+          description: Failures by failing step name, highest first.
+          items:
+            $ref: "#/components/schemas/StageFailureCount"
+        topFailingPipelines:
+          type: array
+          description: Pipelines ordered by failed runs, highest first.
+          items:
+            $ref: "#/components/schemas/FailingPipeline"
+        failureGroups:
+          type: array
+          description: Failed steps grouped by name, highest occurrence count first.
+          items:
+            $ref: "#/components/schemas/FailureGroup"
 
     UsageEntry:
       type: object

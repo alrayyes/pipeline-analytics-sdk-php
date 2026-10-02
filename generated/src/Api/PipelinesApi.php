@@ -89,6 +89,9 @@ class PipelinesApi
         'listPipelines' => [
             'application/json',
         ],
+        'listRuns' => [
+            'application/json',
+        ],
         'listUnhealthySteps' => [
             'application/json',
         ],
@@ -1685,6 +1688,371 @@ class PipelinesApi
         $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
             $window,
             'window', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $limit,
+            'limit', // param base name
+            'integer', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $offset,
+            'offset', // param base name
+            'integer', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'GET',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation listRuns
+     *
+     * A page of runs, newest first, each with its steps for a stage progression bar
+     *
+     * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $status Restrict runs to one status bucket. &#x60;failed&#x60; is a concluded failure, &#x60;running&#x60; is queued or in progress, &#x60;success&#x60; is a concluded success. Omitted or &#x60;all&#x60; returns every run. (optional, default to 'all')
+     * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
+     * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listRuns'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \PipelineAnalytics\Generated\Model\RunList|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
+     */
+    public function listRuns($repo_id = null, $forge = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
+    {
+        list($response) = $this->listRunsWithHttpInfo($repo_id, $forge, $status, $limit, $offset, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation listRunsWithHttpInfo
+     *
+     * A page of runs, newest first, each with its steps for a stage progression bar
+     *
+     * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $status Restrict runs to one status bucket. &#x60;failed&#x60; is a concluded failure, &#x60;running&#x60; is queued or in progress, &#x60;success&#x60; is a concluded success. Omitted or &#x60;all&#x60; returns every run. (optional, default to 'all')
+     * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
+     * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listRuns'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \PipelineAnalytics\Generated\Model\RunList|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function listRunsWithHttpInfo($repo_id = null, $forge = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
+    {
+        $request = $this->listRunsRequest($repo_id, $forge, $status, $limit, $offset, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\RunList',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\PipelineAnalytics\Generated\Model\RunList',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\RunList',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation listRunsAsync
+     *
+     * A page of runs, newest first, each with its steps for a stage progression bar
+     *
+     * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $status Restrict runs to one status bucket. &#x60;failed&#x60; is a concluded failure, &#x60;running&#x60; is queued or in progress, &#x60;success&#x60; is a concluded success. Omitted or &#x60;all&#x60; returns every run. (optional, default to 'all')
+     * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
+     * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listRuns'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function listRunsAsync($repo_id = null, $forge = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
+    {
+        return $this->listRunsAsyncWithHttpInfo($repo_id, $forge, $status, $limit, $offset, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation listRunsAsyncWithHttpInfo
+     *
+     * A page of runs, newest first, each with its steps for a stage progression bar
+     *
+     * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $status Restrict runs to one status bucket. &#x60;failed&#x60; is a concluded failure, &#x60;running&#x60; is queued or in progress, &#x60;success&#x60; is a concluded success. Omitted or &#x60;all&#x60; returns every run. (optional, default to 'all')
+     * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
+     * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listRuns'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function listRunsAsyncWithHttpInfo($repo_id = null, $forge = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
+    {
+        $returnType = '\PipelineAnalytics\Generated\Model\RunList';
+        $request = $this->listRunsRequest($repo_id, $forge, $status, $limit, $offset, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'listRuns'
+     *
+     * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $status Restrict runs to one status bucket. &#x60;failed&#x60; is a concluded failure, &#x60;running&#x60; is queued or in progress, &#x60;success&#x60; is a concluded success. Omitted or &#x60;all&#x60; returns every run. (optional, default to 'all')
+     * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
+     * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listRuns'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function listRunsRequest($repo_id = null, $forge = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
+    {
+
+
+
+
+        if ($limit !== null && $limit < 1) {
+            throw new \InvalidArgumentException('invalid value for "$limit" when calling PipelinesApi.listRuns, must be bigger than or equal to 1.');
+        }
+        
+        if ($offset !== null && $offset < 0) {
+            throw new \InvalidArgumentException('invalid value for "$offset" when calling PipelinesApi.listRuns, must be bigger than or equal to 0.');
+        }
+        
+
+        $resourcePath = '/api/runs';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $repo_id,
+            'repoId', // param base name
+            'string', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $forge,
+            'forge', // param base name
+            'Forge', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $status,
+            'status', // param base name
             'string', // openApiType
             'form', // style
             true, // explode
