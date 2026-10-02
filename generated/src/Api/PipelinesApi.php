@@ -1432,6 +1432,8 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\HealthStatus|null $health Restrict the list to pipelines with this health status. Omitted returns every status. An unknown value is a 400. (optional)
+     * @param  string|null $sort Order of the list. &#x60;name&#x60; (the default) is by repoId then name; &#x60;lastRun&#x60; is most recent run first, a pipeline with no runs last, ties by repoId then name. An unknown value is a 400. (optional, default to 'name')
      * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -1439,11 +1441,11 @@ class PipelinesApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \PipelineAnalytics\Generated\Model\PipelineList|\PipelineAnalytics\Generated\Model\Error
+     * @return \PipelineAnalytics\Generated\Model\PipelineList|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
      */
-    public function listPipelines($repo_id = null, $forge = null, $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
+    public function listPipelines($repo_id = null, $forge = null, $health = null, $sort = 'name', $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
     {
-        list($response) = $this->listPipelinesWithHttpInfo($repo_id, $forge, $window, $limit, $offset, $contentType);
+        list($response) = $this->listPipelinesWithHttpInfo($repo_id, $forge, $health, $sort, $window, $limit, $offset, $contentType);
         return $response;
     }
 
@@ -1454,6 +1456,8 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\HealthStatus|null $health Restrict the list to pipelines with this health status. Omitted returns every status. An unknown value is a 400. (optional)
+     * @param  string|null $sort Order of the list. &#x60;name&#x60; (the default) is by repoId then name; &#x60;lastRun&#x60; is most recent run first, a pipeline with no runs last, ties by repoId then name. An unknown value is a 400. (optional, default to 'name')
      * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -1461,11 +1465,11 @@ class PipelinesApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \PipelineAnalytics\Generated\Model\PipelineList|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \PipelineAnalytics\Generated\Model\PipelineList|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
-    public function listPipelinesWithHttpInfo($repo_id = null, $forge = null, $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
+    public function listPipelinesWithHttpInfo($repo_id = null, $forge = null, $health = null, $sort = 'name', $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
     {
-        $request = $this->listPipelinesRequest($repo_id, $forge, $window, $limit, $offset, $contentType);
+        $request = $this->listPipelinesRequest($repo_id, $forge, $health, $sort, $window, $limit, $offset, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -1494,6 +1498,12 @@ class PipelinesApi
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\PipelineAnalytics\Generated\Model\PipelineList',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
                         $request,
                         $response,
                     );
@@ -1535,6 +1545,14 @@ class PipelinesApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
@@ -1557,6 +1575,8 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\HealthStatus|null $health Restrict the list to pipelines with this health status. Omitted returns every status. An unknown value is a 400. (optional)
+     * @param  string|null $sort Order of the list. &#x60;name&#x60; (the default) is by repoId then name; &#x60;lastRun&#x60; is most recent run first, a pipeline with no runs last, ties by repoId then name. An unknown value is a 400. (optional, default to 'name')
      * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -1565,9 +1585,9 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listPipelinesAsync($repo_id = null, $forge = null, $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
+    public function listPipelinesAsync($repo_id = null, $forge = null, $health = null, $sort = 'name', $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
     {
-        return $this->listPipelinesAsyncWithHttpInfo($repo_id, $forge, $window, $limit, $offset, $contentType)
+        return $this->listPipelinesAsyncWithHttpInfo($repo_id, $forge, $health, $sort, $window, $limit, $offset, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1582,6 +1602,8 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\HealthStatus|null $health Restrict the list to pipelines with this health status. Omitted returns every status. An unknown value is a 400. (optional)
+     * @param  string|null $sort Order of the list. &#x60;name&#x60; (the default) is by repoId then name; &#x60;lastRun&#x60; is most recent run first, a pipeline with no runs last, ties by repoId then name. An unknown value is a 400. (optional, default to 'name')
      * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -1590,10 +1612,10 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listPipelinesAsyncWithHttpInfo($repo_id = null, $forge = null, $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
+    public function listPipelinesAsyncWithHttpInfo($repo_id = null, $forge = null, $health = null, $sort = 'name', $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
     {
         $returnType = '\PipelineAnalytics\Generated\Model\PipelineList';
-        $request = $this->listPipelinesRequest($repo_id, $forge, $window, $limit, $offset, $contentType);
+        $request = $this->listPipelinesRequest($repo_id, $forge, $health, $sort, $window, $limit, $offset, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -1636,6 +1658,8 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  \PipelineAnalytics\Generated\Model\HealthStatus|null $health Restrict the list to pipelines with this health status. Omitted returns every status. An unknown value is a 400. (optional)
+     * @param  string|null $sort Order of the list. &#x60;name&#x60; (the default) is by repoId then name; &#x60;lastRun&#x60; is most recent run first, a pipeline with no runs last, ties by repoId then name. An unknown value is a 400. (optional, default to 'name')
      * @param  string|null $window Trailing run count or duration the trend/ranking is computed over. Defaults to a server-chosen rolling window. (optional)
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -1644,8 +1668,10 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function listPipelinesRequest($repo_id = null, $forge = null, $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
+    public function listPipelinesRequest($repo_id = null, $forge = null, $health = null, $sort = 'name', $window = null, $limit = null, $offset = 0, string $contentType = self::contentTypes['listPipelines'][0])
     {
+
+
 
 
 
@@ -1680,6 +1706,24 @@ class PipelinesApi
             $forge,
             'forge', // param base name
             'Forge', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $health,
+            'health', // param base name
+            'HealthStatus', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $sort,
+            'sort', // param base name
+            'string', // openApiType
             'form', // style
             true, // explode
             false // required
