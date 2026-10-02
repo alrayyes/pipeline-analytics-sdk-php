@@ -64,6 +64,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
         'flaky_step_ratio' => 'float',
         'mttr_seconds' => 'float',
         'stage_distribution' => '\PipelineAnalytics\Generated\Model\StageFailureCount[]',
+        'category_breakdown' => '\PipelineAnalytics\Generated\Model\CategoryCount[]',
         'top_failing_pipelines' => '\PipelineAnalytics\Generated\Model\FailingPipeline[]',
         'failure_groups' => '\PipelineAnalytics\Generated\Model\FailureGroup[]'
     ];
@@ -83,6 +84,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
         'flaky_step_ratio' => null,
         'mttr_seconds' => null,
         'stage_distribution' => null,
+        'category_breakdown' => null,
         'top_failing_pipelines' => null,
         'failure_groups' => null
     ];
@@ -100,6 +102,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
         'flaky_step_ratio' => false,
         'mttr_seconds' => false,
         'stage_distribution' => false,
+        'category_breakdown' => false,
         'top_failing_pipelines' => false,
         'failure_groups' => false
     ];
@@ -197,6 +200,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
         'flaky_step_ratio' => 'flakyStepRatio',
         'mttr_seconds' => 'mttrSeconds',
         'stage_distribution' => 'stageDistribution',
+        'category_breakdown' => 'categoryBreakdown',
         'top_failing_pipelines' => 'topFailingPipelines',
         'failure_groups' => 'failureGroups'
     ];
@@ -214,6 +218,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
         'flaky_step_ratio' => 'setFlakyStepRatio',
         'mttr_seconds' => 'setMttrSeconds',
         'stage_distribution' => 'setStageDistribution',
+        'category_breakdown' => 'setCategoryBreakdown',
         'top_failing_pipelines' => 'setTopFailingPipelines',
         'failure_groups' => 'setFailureGroups'
     ];
@@ -231,6 +236,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
         'flaky_step_ratio' => 'getFlakyStepRatio',
         'mttr_seconds' => 'getMttrSeconds',
         'stage_distribution' => 'getStageDistribution',
+        'category_breakdown' => 'getCategoryBreakdown',
         'top_failing_pipelines' => 'getTopFailingPipelines',
         'failure_groups' => 'getFailureGroups'
     ];
@@ -299,6 +305,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('flaky_step_ratio', $data ?? [], null);
         $this->setIfExists('mttr_seconds', $data ?? [], null);
         $this->setIfExists('stage_distribution', $data ?? [], null);
+        $this->setIfExists('category_breakdown', $data ?? [], null);
         $this->setIfExists('top_failing_pipelines', $data ?? [], null);
         $this->setIfExists('failure_groups', $data ?? [], null);
     }
@@ -341,6 +348,9 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
         }
         if ($this->container['stage_distribution'] === null) {
             $invalidProperties[] = "'stage_distribution' can't be null";
+        }
+        if ($this->container['category_breakdown'] === null) {
+            $invalidProperties[] = "'category_breakdown' can't be null";
         }
         if ($this->container['top_failing_pipelines'] === null) {
             $invalidProperties[] = "'top_failing_pipelines' can't be null";
@@ -548,6 +558,33 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable stage_distribution cannot be null');
         }
         $this->container['stage_distribution'] = $stage_distribution;
+
+        return $this;
+    }
+
+    /**
+     * Gets category_breakdown
+     *
+     * @return \PipelineAnalytics\Generated\Model\CategoryCount[]
+     */
+    public function getCategoryBreakdown()
+    {
+        return $this->container['category_breakdown'];
+    }
+
+    /**
+     * Sets category_breakdown
+     *
+     * @param \PipelineAnalytics\Generated\Model\CategoryCount[] $category_breakdown Failed-step occurrences by failure category, heaviest first. Empty when nothing failed.
+     *
+     * @return self
+     */
+    public function setCategoryBreakdown($category_breakdown)
+    {
+        if (is_null($category_breakdown)) {
+            throw new \InvalidArgumentException('non-nullable category_breakdown cannot be null');
+        }
+        $this->container['category_breakdown'] = $category_breakdown;
 
         return $this;
     }

@@ -11,6 +11,7 @@ src/Configuration.php
 src/FormDataProcessor.php
 src/HeaderSelector.php
 src/Model/ApiToken.php
+src/Model/CategoryCount.php
 src/Model/Credential.php
 src/Model/Error.php
 src/Model/FailingPipeline.php
