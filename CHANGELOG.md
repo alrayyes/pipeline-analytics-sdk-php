@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v2.0.0...v2.0.1) (2026-10-02)
+
+
+### Bug Fixes
+
+* regenerate client from pipeline-analytics openapi.yaml ([22ae68b](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/22ae68bd392da17b09519ba380b7de75f86db05f))
+* regenerate client from pipeline-analytics openapi.yaml ([a18c756](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/a18c756d68275afa73c8f4991414e3497ee1cde1))
+
 ## [2.0.0](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v1.0.5...v2.0.0) (2026-10-02)
 
 
