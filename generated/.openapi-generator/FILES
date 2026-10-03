@@ -20,6 +20,8 @@ src/Model/FailureGroup.php
 src/Model/FailureGroupPipelinesInner.php
 src/Model/FailureInsights.php
 src/Model/FlakyRun.php
+src/Model/FlakyStepEntry.php
+src/Model/FlakyStepList.php
 src/Model/Forge.php
 src/Model/GitHubTokenUsage.php
 src/Model/HealthStatus.php
