@@ -48,9 +48,13 @@ paths:
       summary: Readiness -- the instance can serve, its database answers
       description: >
         Public and unauthenticated, for the container's `HEALTHCHECK` and
-        any orchestrator. Reads the database schema within a short deadline. A
-        failure returns 503 with a generic body: the cause goes to the
-        server log, not to an unauthenticated caller.
+        any orchestrator. Reads the database schema within a short deadline and
+        reuses the result for a few seconds, so polling can't hammer the
+        database. A failure returns 503 with a generic body: the cause goes to
+        the server log, not to an unauthenticated caller. After SIGTERM it
+        returns 503 without checking, while the server keeps serving for its
+        drain period, so a router takes the instance out of rotation before
+        the listener closes.
       tags: [meta]
       security: []
       responses:
@@ -62,7 +66,7 @@ paths:
                 type: string
                 examples: [ok]
         "503":
-          description: The database did not answer in time, or errored
+          description: The database did not answer in time or errored, or the instance is shutting down
           content:
             application/json:
               schema:
