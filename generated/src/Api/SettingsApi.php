@@ -408,7 +408,7 @@ class SettingsApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \PipelineAnalytics\Generated\Model\Settings|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
+     * @return \PipelineAnalytics\Generated\Model\Settings|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
      */
     public function updateSettings($settings_update, string $contentType = self::contentTypes['updateSettings'][0])
     {
@@ -426,7 +426,7 @@ class SettingsApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \PipelineAnalytics\Generated\Model\Settings|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \PipelineAnalytics\Generated\Model\Settings|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
     public function updateSettingsWithHttpInfo($settings_update, string $contentType = self::contentTypes['updateSettings'][0])
     {
@@ -474,6 +474,12 @@ class SettingsApi
                         $request,
                         $response,
                     );
+                case 413:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
             }
 
             
@@ -515,6 +521,14 @@ class SettingsApi
                     $e->setResponseObject($data);
                     throw $e;
                 case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\PipelineAnalytics\Generated\Model\Error',

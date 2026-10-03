@@ -135,7 +135,7 @@ class McpApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return object|\PipelineAnalytics\Generated\Model\Error
+     * @return object|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
      */
     public function mcpEndpoint($body, string $contentType = self::contentTypes['mcpEndpoint'][0])
     {
@@ -153,7 +153,7 @@ class McpApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of object|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     * @return array of object|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
     public function mcpEndpointWithHttpInfo($body, string $contentType = self::contentTypes['mcpEndpoint'][0])
     {
@@ -195,6 +195,12 @@ class McpApi
                         $request,
                         $response,
                     );
+                case 413:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
             }
 
             
@@ -228,6 +234,14 @@ class McpApi
                     $e->setResponseObject($data);
                     throw $e;
                 case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\PipelineAnalytics\Generated\Model\Error',

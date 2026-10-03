@@ -431,6 +431,10 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
         if ($this->container['pipelines_repo_selector'] === null) {
             $invalidProperties[] = "'pipelines_repo_selector' can't be null";
         }
+        if ((mb_strlen($this->container['pipelines_repo_selector']) > 128)) {
+            $invalidProperties[] = "invalid value for 'pipelines_repo_selector', the character length must be smaller than or equal to 128.";
+        }
+
         if ($this->container['pipelines_sort_order'] === null) {
             $invalidProperties[] = "'pipelines_sort_order' can't be null";
         }
@@ -603,6 +607,10 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
         if (is_null($pipelines_repo_selector)) {
             throw new \InvalidArgumentException('non-nullable pipelines_repo_selector cannot be null');
         }
+        if ((mb_strlen($pipelines_repo_selector) > 128)) {
+            throw new \InvalidArgumentException('invalid length for $pipelines_repo_selector when calling Settings., must be smaller than or equal to 128.');
+        }
+
         $this->container['pipelines_repo_selector'] = $pipelines_repo_selector;
 
         return $this;
