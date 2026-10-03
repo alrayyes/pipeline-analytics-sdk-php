@@ -420,6 +420,10 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
             );
         }
 
+        if (!is_null($this->container['pipelines_repo_selector']) && (mb_strlen($this->container['pipelines_repo_selector']) > 128)) {
+            $invalidProperties[] = "invalid value for 'pipelines_repo_selector', the character length must be smaller than or equal to 128.";
+        }
+
         $allowedValues = $this->getPipelinesSortOrderAllowableValues();
         if (!is_null($this->container['pipelines_sort_order']) && !in_array($this->container['pipelines_sort_order'], $allowedValues, true)) {
             $invalidProperties[] = sprintf(
@@ -614,6 +618,10 @@ class SettingsUpdate implements ModelInterface, ArrayAccess, \JsonSerializable
                 $this->setOpenAPINullablesSetToNull($nullablesSetToNull);
             }
         }
+        if (!is_null($pipelines_repo_selector) && (mb_strlen($pipelines_repo_selector) > 128)) {
+            throw new \InvalidArgumentException('invalid length for $pipelines_repo_selector when calling SettingsUpdate., must be smaller than or equal to 128.');
+        }
+
         $this->container['pipelines_repo_selector'] = $pipelines_repo_selector;
 
         return $this;

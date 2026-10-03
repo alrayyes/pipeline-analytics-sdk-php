@@ -150,7 +150,7 @@ class ReposApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return string[]|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
+     * @return string[]|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
      */
     public function discoverRepos($repo_discovery_request, string $contentType = self::contentTypes['discoverRepos'][0])
     {
@@ -168,7 +168,7 @@ class ReposApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of string[]|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     * @return array of string[]|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
     public function discoverReposWithHttpInfo($repo_discovery_request, string $contentType = self::contentTypes['discoverRepos'][0])
     {
@@ -211,6 +211,12 @@ class ReposApi
                         $response,
                     );
                 case 401:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 413:
                     return $this->handleResponseWithDataType(
                         '\PipelineAnalytics\Generated\Model\Error',
                         $request,
@@ -263,6 +269,14 @@ class ReposApi
                     $e->setResponseObject($data);
                     throw $e;
                 case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\PipelineAnalytics\Generated\Model\Error',
@@ -1431,7 +1445,7 @@ class ReposApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \PipelineAnalytics\Generated\Model\Repo|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
+     * @return \PipelineAnalytics\Generated\Model\Repo|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
      */
     public function registerRepo($repo_registration, string $contentType = self::contentTypes['registerRepo'][0])
     {
@@ -1449,7 +1463,7 @@ class ReposApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \PipelineAnalytics\Generated\Model\Repo|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \PipelineAnalytics\Generated\Model\Repo|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
     public function registerRepoWithHttpInfo($repo_registration, string $contentType = self::contentTypes['registerRepo'][0])
     {
@@ -1498,6 +1512,12 @@ class ReposApi
                         $response,
                     );
                 case 409:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 413:
                     return $this->handleResponseWithDataType(
                         '\PipelineAnalytics\Generated\Model\Error',
                         $request,
@@ -1552,6 +1572,14 @@ class ReposApi
                     $e->setResponseObject($data);
                     throw $e;
                 case 409:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\PipelineAnalytics\Generated\Model\Error',

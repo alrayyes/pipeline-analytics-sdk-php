@@ -291,9 +291,17 @@ class RepoDiscoveryRequest implements ModelInterface, ArrayAccess, \JsonSerializ
         if ($this->container['forge'] === null) {
             $invalidProperties[] = "'forge' can't be null";
         }
+        if (!is_null($this->container['forgejo_instance_url']) && (mb_strlen($this->container['forgejo_instance_url']) > 2048)) {
+            $invalidProperties[] = "invalid value for 'forgejo_instance_url', the character length must be smaller than or equal to 2048.";
+        }
+
         if ($this->container['token'] === null) {
             $invalidProperties[] = "'token' can't be null";
         }
+        if ((mb_strlen($this->container['token']) > 1024)) {
+            $invalidProperties[] = "invalid value for 'token', the character length must be smaller than or equal to 1024.";
+        }
+
         return $invalidProperties;
     }
 
@@ -358,6 +366,10 @@ class RepoDiscoveryRequest implements ModelInterface, ArrayAccess, \JsonSerializ
         if (is_null($forgejo_instance_url)) {
             throw new \InvalidArgumentException('non-nullable forgejo_instance_url cannot be null');
         }
+        if ((mb_strlen($forgejo_instance_url) > 2048)) {
+            throw new \InvalidArgumentException('invalid length for $forgejo_instance_url when calling RepoDiscoveryRequest., must be smaller than or equal to 2048.');
+        }
+
         $this->container['forgejo_instance_url'] = $forgejo_instance_url;
 
         return $this;
@@ -385,6 +397,10 @@ class RepoDiscoveryRequest implements ModelInterface, ArrayAccess, \JsonSerializ
         if (is_null($token)) {
             throw new \InvalidArgumentException('non-nullable token cannot be null');
         }
+        if ((mb_strlen($token) > 1024)) {
+            throw new \InvalidArgumentException('invalid length for $token when calling RepoDiscoveryRequest., must be smaller than or equal to 1024.');
+        }
+
         $this->container['token'] = $token;
 
         return $this;

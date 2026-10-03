@@ -232,6 +232,14 @@ class AuthApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 413:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
         
 
@@ -1768,6 +1776,14 @@ class AuthApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 413:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
             }
         
 
@@ -2482,6 +2498,14 @@ class AuthApi
                     $e->setResponseObject($data);
                     throw $e;
                 case 409:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 413:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\PipelineAnalytics\Generated\Model\Error',
