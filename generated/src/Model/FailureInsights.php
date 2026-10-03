@@ -57,6 +57,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
+        'window' => 'string',
         'total_runs' => 'int',
         'failed_runs' => 'int',
         'pass_rate' => 'float',
@@ -77,6 +78,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
+        'window' => null,
         'total_runs' => null,
         'failed_runs' => null,
         'pass_rate' => null,
@@ -95,6 +97,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var boolean[]
      */
     protected static array $openAPINullables = [
+        'window' => false,
         'total_runs' => false,
         'failed_runs' => false,
         'pass_rate' => false,
@@ -193,6 +196,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
+        'window' => 'window',
         'total_runs' => 'totalRuns',
         'failed_runs' => 'failedRuns',
         'pass_rate' => 'passRate',
@@ -211,6 +215,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
+        'window' => 'setWindow',
         'total_runs' => 'setTotalRuns',
         'failed_runs' => 'setFailedRuns',
         'pass_rate' => 'setPassRate',
@@ -229,6 +234,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
+        'window' => 'getWindow',
         'total_runs' => 'getTotalRuns',
         'failed_runs' => 'getFailedRuns',
         'pass_rate' => 'getPassRate',
@@ -282,6 +288,23 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
         return self::$openAPIModelName;
     }
 
+    public const WINDOW__24H = '24h';
+    public const WINDOW__7D = '7d';
+    public const WINDOW__30D = '30d';
+
+    /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getWindowAllowableValues()
+    {
+        return [
+            self::WINDOW__24H,
+            self::WINDOW__7D,
+            self::WINDOW__30D,
+        ];
+    }
 
     /**
      * Associative array for storing property values
@@ -298,6 +321,7 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(?array $data = null)
     {
+        $this->setIfExists('window', $data ?? [], null);
         $this->setIfExists('total_runs', $data ?? [], null);
         $this->setIfExists('failed_runs', $data ?? [], null);
         $this->setIfExists('pass_rate', $data ?? [], null);
@@ -337,6 +361,18 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
+        if ($this->container['window'] === null) {
+            $invalidProperties[] = "'window' can't be null";
+        }
+        $allowedValues = $this->getWindowAllowableValues();
+        if (!is_null($this->container['window']) && !in_array($this->container['window'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'window', must be one of '%s'",
+                $this->container['window'],
+                implode("', '", $allowedValues)
+            );
+        }
+
         if ($this->container['total_runs'] === null) {
             $invalidProperties[] = "'total_runs' can't be null";
         }
@@ -372,6 +408,43 @@ class FailureInsights implements ModelInterface, ArrayAccess, \JsonSerializable
         return count($this->listInvalidProperties()) === 0;
     }
 
+
+    /**
+     * Gets window
+     *
+     * @return string
+     */
+    public function getWindow()
+    {
+        return $this->container['window'];
+    }
+
+    /**
+     * Sets window
+     *
+     * @param string $window The window these figures cover: the requested one, or the server's default when the request named none or an unknown one. Clients show this rather than assuming a default.
+     *
+     * @return self
+     */
+    public function setWindow($window)
+    {
+        if (is_null($window)) {
+            throw new \InvalidArgumentException('non-nullable window cannot be null');
+        }
+        $allowedValues = $this->getWindowAllowableValues();
+        if (!in_array($window, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'window', must be one of '%s'",
+                    $window,
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['window'] = $window;
+
+        return $this;
+    }
 
     /**
      * Gets total_runs
