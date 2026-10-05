@@ -2175,6 +2175,7 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $status Restrict runs to one status bucket. &#x60;failed&#x60; is a concluded failure, &#x60;running&#x60; is queued or in progress, &#x60;success&#x60; is a concluded success. Omitted or &#x60;all&#x60; returns every run. (optional, default to 'all')
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -2184,9 +2185,9 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return \PipelineAnalytics\Generated\Model\RunList|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
      */
-    public function listRuns($repo_id = null, $forge = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
+    public function listRuns($repo_id = null, $forge = null, $branch = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
     {
-        list($response) = $this->listRunsWithHttpInfo($repo_id, $forge, $status, $limit, $offset, $contentType);
+        list($response) = $this->listRunsWithHttpInfo($repo_id, $forge, $branch, $status, $limit, $offset, $contentType);
         return $response;
     }
 
@@ -2197,6 +2198,7 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $status Restrict runs to one status bucket. &#x60;failed&#x60; is a concluded failure, &#x60;running&#x60; is queued or in progress, &#x60;success&#x60; is a concluded success. Omitted or &#x60;all&#x60; returns every run. (optional, default to 'all')
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -2206,9 +2208,9 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return array of \PipelineAnalytics\Generated\Model\RunList|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
-    public function listRunsWithHttpInfo($repo_id = null, $forge = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
+    public function listRunsWithHttpInfo($repo_id = null, $forge = null, $branch = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
     {
-        $request = $this->listRunsRequest($repo_id, $forge, $status, $limit, $offset, $contentType);
+        $request = $this->listRunsRequest($repo_id, $forge, $branch, $status, $limit, $offset, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -2314,6 +2316,7 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $status Restrict runs to one status bucket. &#x60;failed&#x60; is a concluded failure, &#x60;running&#x60; is queued or in progress, &#x60;success&#x60; is a concluded success. Omitted or &#x60;all&#x60; returns every run. (optional, default to 'all')
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -2322,9 +2325,9 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listRunsAsync($repo_id = null, $forge = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
+    public function listRunsAsync($repo_id = null, $forge = null, $branch = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
     {
-        return $this->listRunsAsyncWithHttpInfo($repo_id, $forge, $status, $limit, $offset, $contentType)
+        return $this->listRunsAsyncWithHttpInfo($repo_id, $forge, $branch, $status, $limit, $offset, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -2339,6 +2342,7 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $status Restrict runs to one status bucket. &#x60;failed&#x60; is a concluded failure, &#x60;running&#x60; is queued or in progress, &#x60;success&#x60; is a concluded success. Omitted or &#x60;all&#x60; returns every run. (optional, default to 'all')
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -2347,10 +2351,10 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listRunsAsyncWithHttpInfo($repo_id = null, $forge = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
+    public function listRunsAsyncWithHttpInfo($repo_id = null, $forge = null, $branch = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
     {
         $returnType = '\PipelineAnalytics\Generated\Model\RunList';
-        $request = $this->listRunsRequest($repo_id, $forge, $status, $limit, $offset, $contentType);
+        $request = $this->listRunsRequest($repo_id, $forge, $branch, $status, $limit, $offset, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -2393,6 +2397,7 @@ class PipelinesApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $status Restrict runs to one status bucket. &#x60;failed&#x60; is a concluded failure, &#x60;running&#x60; is queued or in progress, &#x60;success&#x60; is a concluded success. Omitted or &#x60;all&#x60; returns every run. (optional, default to 'all')
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -2401,11 +2406,15 @@ class PipelinesApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function listRunsRequest($repo_id = null, $forge = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
+    public function listRunsRequest($repo_id = null, $forge = null, $branch = null, $status = 'all', $limit = null, $offset = 0, string $contentType = self::contentTypes['listRuns'][0])
     {
 
 
 
+        if ($branch !== null && strlen($branch) > 255) {
+            throw new \InvalidArgumentException('invalid length for "$branch" when calling PipelinesApi.listRuns, must be smaller than or equal to 255.');
+        }
+        
 
         if ($limit !== null && $limit < 1) {
             throw new \InvalidArgumentException('invalid value for "$limit" when calling PipelinesApi.listRuns, must be bigger than or equal to 1.');
@@ -2437,6 +2446,15 @@ class PipelinesApi
             $forge,
             'forge', // param base name
             'Forge', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $branch,
+            'branch', // param base name
+            'string', // openApiType
             'form', // style
             true, // explode
             false // required

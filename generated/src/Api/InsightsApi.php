@@ -138,16 +138,17 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \PipelineAnalytics\Generated\Model\FailureInsights|\PipelineAnalytics\Generated\Model\Error
+     * @return \PipelineAnalytics\Generated\Model\FailureInsights|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
      */
-    public function getFailureInsights($repo_id = null, $forge = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
+    public function getFailureInsights($repo_id = null, $forge = null, $branch = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
     {
-        list($response) = $this->getFailureInsightsWithHttpInfo($repo_id, $forge, $window, $contentType);
+        list($response) = $this->getFailureInsightsWithHttpInfo($repo_id, $forge, $branch, $window, $contentType);
         return $response;
     }
 
@@ -158,16 +159,17 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \PipelineAnalytics\Generated\Model\FailureInsights|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \PipelineAnalytics\Generated\Model\FailureInsights|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getFailureInsightsWithHttpInfo($repo_id = null, $forge = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
+    public function getFailureInsightsWithHttpInfo($repo_id = null, $forge = null, $branch = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
     {
-        $request = $this->getFailureInsightsRequest($repo_id, $forge, $window, $contentType);
+        $request = $this->getFailureInsightsRequest($repo_id, $forge, $branch, $window, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -196,6 +198,12 @@ class InsightsApi
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\PipelineAnalytics\Generated\Model\FailureInsights',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
                         $request,
                         $response,
                     );
@@ -237,6 +245,14 @@ class InsightsApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
@@ -259,15 +275,16 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getFailureInsightsAsync($repo_id = null, $forge = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
+    public function getFailureInsightsAsync($repo_id = null, $forge = null, $branch = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
     {
-        return $this->getFailureInsightsAsyncWithHttpInfo($repo_id, $forge, $window, $contentType)
+        return $this->getFailureInsightsAsyncWithHttpInfo($repo_id, $forge, $branch, $window, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -282,16 +299,17 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getFailureInsightsAsyncWithHttpInfo($repo_id = null, $forge = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
+    public function getFailureInsightsAsyncWithHttpInfo($repo_id = null, $forge = null, $branch = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
     {
         $returnType = '\PipelineAnalytics\Generated\Model\FailureInsights';
-        $request = $this->getFailureInsightsRequest($repo_id, $forge, $window, $contentType);
+        $request = $this->getFailureInsightsRequest($repo_id, $forge, $branch, $window, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -334,17 +352,22 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getFailureInsights'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function getFailureInsightsRequest($repo_id = null, $forge = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
+    public function getFailureInsightsRequest($repo_id = null, $forge = null, $branch = null, $window = '7d', string $contentType = self::contentTypes['getFailureInsights'][0])
     {
 
 
 
+        if ($branch !== null && strlen($branch) > 255) {
+            throw new \InvalidArgumentException('invalid length for "$branch" when calling InsightsApi.getFailureInsights, must be smaller than or equal to 255.');
+        }
+        
 
 
         $resourcePath = '/api/insights/failures';
@@ -368,6 +391,15 @@ class InsightsApi
             $forge,
             'forge', // param base name
             'Forge', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $branch,
+            'branch', // param base name
+            'string', // openApiType
             'form', // style
             true, // explode
             false // required
@@ -723,6 +755,7 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -730,11 +763,11 @@ class InsightsApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \PipelineAnalytics\Generated\Model\FlakyStepList|\PipelineAnalytics\Generated\Model\Error
+     * @return \PipelineAnalytics\Generated\Model\FlakyStepList|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
      */
-    public function listFlakySteps($repo_id = null, $forge = null, $window = '7d', $limit = null, $offset = 0, string $contentType = self::contentTypes['listFlakySteps'][0])
+    public function listFlakySteps($repo_id = null, $forge = null, $branch = null, $window = '7d', $limit = null, $offset = 0, string $contentType = self::contentTypes['listFlakySteps'][0])
     {
-        list($response) = $this->listFlakyStepsWithHttpInfo($repo_id, $forge, $window, $limit, $offset, $contentType);
+        list($response) = $this->listFlakyStepsWithHttpInfo($repo_id, $forge, $branch, $window, $limit, $offset, $contentType);
         return $response;
     }
 
@@ -745,6 +778,7 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -752,11 +786,11 @@ class InsightsApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \PipelineAnalytics\Generated\Model\FlakyStepList|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \PipelineAnalytics\Generated\Model\FlakyStepList|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
-    public function listFlakyStepsWithHttpInfo($repo_id = null, $forge = null, $window = '7d', $limit = null, $offset = 0, string $contentType = self::contentTypes['listFlakySteps'][0])
+    public function listFlakyStepsWithHttpInfo($repo_id = null, $forge = null, $branch = null, $window = '7d', $limit = null, $offset = 0, string $contentType = self::contentTypes['listFlakySteps'][0])
     {
-        $request = $this->listFlakyStepsRequest($repo_id, $forge, $window, $limit, $offset, $contentType);
+        $request = $this->listFlakyStepsRequest($repo_id, $forge, $branch, $window, $limit, $offset, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -785,6 +819,12 @@ class InsightsApi
                 case 200:
                     return $this->handleResponseWithDataType(
                         '\PipelineAnalytics\Generated\Model\FlakyStepList',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
                         $request,
                         $response,
                     );
@@ -826,6 +866,14 @@ class InsightsApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
@@ -848,6 +896,7 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -856,9 +905,9 @@ class InsightsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listFlakyStepsAsync($repo_id = null, $forge = null, $window = '7d', $limit = null, $offset = 0, string $contentType = self::contentTypes['listFlakySteps'][0])
+    public function listFlakyStepsAsync($repo_id = null, $forge = null, $branch = null, $window = '7d', $limit = null, $offset = 0, string $contentType = self::contentTypes['listFlakySteps'][0])
     {
-        return $this->listFlakyStepsAsyncWithHttpInfo($repo_id, $forge, $window, $limit, $offset, $contentType)
+        return $this->listFlakyStepsAsyncWithHttpInfo($repo_id, $forge, $branch, $window, $limit, $offset, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -873,6 +922,7 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -881,10 +931,10 @@ class InsightsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function listFlakyStepsAsyncWithHttpInfo($repo_id = null, $forge = null, $window = '7d', $limit = null, $offset = 0, string $contentType = self::contentTypes['listFlakySteps'][0])
+    public function listFlakyStepsAsyncWithHttpInfo($repo_id = null, $forge = null, $branch = null, $window = '7d', $limit = null, $offset = 0, string $contentType = self::contentTypes['listFlakySteps'][0])
     {
         $returnType = '\PipelineAnalytics\Generated\Model\FlakyStepList';
-        $request = $this->listFlakyStepsRequest($repo_id, $forge, $window, $limit, $offset, $contentType);
+        $request = $this->listFlakyStepsRequest($repo_id, $forge, $branch, $window, $limit, $offset, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -927,6 +977,7 @@ class InsightsApi
      *
      * @param  string|null $repo_id Restrict the list to one tracked repo. Omitted returns every repo&#39;s pipelines. (optional)
      * @param  \PipelineAnalytics\Generated\Model\Forge|null $forge Restrict the list to one forge. Omitted returns every forge. (optional)
+     * @param  string|null $branch Cover only runs on this branch, matched exactly. Omitted covers every branch. A branch with no runs in range is an empty result, not an error. Longer than 255 characters is a 400. (optional)
      * @param  string|null $window Trailing span of time the failure insights cover: &#x60;24h&#x60;, &#x60;7d&#x60; or &#x60;30d&#x60;. Unlike &#x60;Window&#x60;, this is never a run count -- a quiet and a busy pipeline would cover very different spans. Anything else falls back to &#x60;7d&#x60;. (optional, default to '7d')
      * @param  int|null $limit Max items to return. Omitted returns every matching item, unpaginated. (optional)
      * @param  int|null $offset Items to skip before the returned page. (optional, default to 0)
@@ -935,11 +986,15 @@ class InsightsApi
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function listFlakyStepsRequest($repo_id = null, $forge = null, $window = '7d', $limit = null, $offset = 0, string $contentType = self::contentTypes['listFlakySteps'][0])
+    public function listFlakyStepsRequest($repo_id = null, $forge = null, $branch = null, $window = '7d', $limit = null, $offset = 0, string $contentType = self::contentTypes['listFlakySteps'][0])
     {
 
 
 
+        if ($branch !== null && strlen($branch) > 255) {
+            throw new \InvalidArgumentException('invalid length for "$branch" when calling InsightsApi.listFlakySteps, must be smaller than or equal to 255.');
+        }
+        
 
         if ($limit !== null && $limit < 1) {
             throw new \InvalidArgumentException('invalid value for "$limit" when calling InsightsApi.listFlakySteps, must be bigger than or equal to 1.');
@@ -971,6 +1026,15 @@ class InsightsApi
             $forge,
             'forge', // param base name
             'Forge', // openApiType
+            'form', // style
+            true, // explode
+            false // required
+        ) ?? []);
+        // query params
+        $queryParams = array_merge($queryParams, ObjectSerializer::toQueryValue(
+            $branch,
+            'branch', // param base name
+            'string', // openApiType
             'form', // style
             true, // explode
             false // required
