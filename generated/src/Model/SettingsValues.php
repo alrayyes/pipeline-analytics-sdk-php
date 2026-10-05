@@ -1,6 +1,6 @@
 <?php
 /**
- * Settings
+ * SettingsValues
  *
  * PHP version 8.1
  *
@@ -32,16 +32,15 @@ use \ArrayAccess;
 use \PipelineAnalytics\Generated\ObjectSerializer;
 
 /**
- * Settings Class Doc Comment
+ * SettingsValues Class Doc Comment
  *
  * @category Class
- * @description Every setting in force, plus &#x60;defaults&#x60;: the server&#39;s documented default for each, so a client can tell whether a value is the default without keeping its own copy.
  * @package  PipelineAnalytics\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
+class SettingsValues implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +49,7 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'Settings';
+    protected static $openAPIModelName = 'SettingsValues';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -63,8 +62,7 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
         'pipelines_health_filter' => 'string',
         'pipelines_repo_selector' => 'string',
         'pipelines_sort_order' => 'string',
-        'telemetry_window' => 'string',
-        'defaults' => '\PipelineAnalytics\Generated\Model\SettingsValues'
+        'telemetry_window' => 'string'
     ];
 
     /**
@@ -80,8 +78,7 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
         'pipelines_health_filter' => null,
         'pipelines_repo_selector' => null,
         'pipelines_sort_order' => null,
-        'telemetry_window' => null,
-        'defaults' => null
+        'telemetry_window' => null
     ];
 
     /**
@@ -95,8 +92,7 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
         'pipelines_health_filter' => false,
         'pipelines_repo_selector' => false,
         'pipelines_sort_order' => false,
-        'telemetry_window' => false,
-        'defaults' => false
+        'telemetry_window' => false
     ];
 
     /**
@@ -190,8 +186,7 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
         'pipelines_health_filter' => 'pipelinesHealthFilter',
         'pipelines_repo_selector' => 'pipelinesRepoSelector',
         'pipelines_sort_order' => 'pipelinesSortOrder',
-        'telemetry_window' => 'telemetryWindow',
-        'defaults' => 'defaults'
+        'telemetry_window' => 'telemetryWindow'
     ];
 
     /**
@@ -205,8 +200,7 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
         'pipelines_health_filter' => 'setPipelinesHealthFilter',
         'pipelines_repo_selector' => 'setPipelinesRepoSelector',
         'pipelines_sort_order' => 'setPipelinesSortOrder',
-        'telemetry_window' => 'setTelemetryWindow',
-        'defaults' => 'setDefaults'
+        'telemetry_window' => 'setTelemetryWindow'
     ];
 
     /**
@@ -220,8 +214,7 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
         'pipelines_health_filter' => 'getPipelinesHealthFilter',
         'pipelines_repo_selector' => 'getPipelinesRepoSelector',
         'pipelines_sort_order' => 'getPipelinesSortOrder',
-        'telemetry_window' => 'getTelemetryWindow',
-        'defaults' => 'getDefaults'
+        'telemetry_window' => 'getTelemetryWindow'
     ];
 
     /**
@@ -370,7 +363,6 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('pipelines_repo_selector', $data ?? [], null);
         $this->setIfExists('pipelines_sort_order', $data ?? [], null);
         $this->setIfExists('telemetry_window', $data ?? [], null);
-        $this->setIfExists('defaults', $data ?? [], null);
     }
 
     /**
@@ -467,9 +459,6 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
             );
         }
 
-        if ($this->container['defaults'] === null) {
-            $invalidProperties[] = "'defaults' can't be null";
-        }
         return $invalidProperties;
     }
 
@@ -619,7 +608,7 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable pipelines_repo_selector cannot be null');
         }
         if ((mb_strlen($pipelines_repo_selector) > 128)) {
-            throw new \InvalidArgumentException('invalid length for $pipelines_repo_selector when calling Settings., must be smaller than or equal to 128.');
+            throw new \InvalidArgumentException('invalid length for $pipelines_repo_selector when calling SettingsValues., must be smaller than or equal to 128.');
         }
 
         $this->container['pipelines_repo_selector'] = $pipelines_repo_selector;
@@ -697,33 +686,6 @@ class Settings implements ModelInterface, ArrayAccess, \JsonSerializable
             );
         }
         $this->container['telemetry_window'] = $telemetry_window;
-
-        return $this;
-    }
-
-    /**
-     * Gets defaults
-     *
-     * @return \PipelineAnalytics\Generated\Model\SettingsValues
-     */
-    public function getDefaults()
-    {
-        return $this->container['defaults'];
-    }
-
-    /**
-     * Sets defaults
-     *
-     * @param \PipelineAnalytics\Generated\Model\SettingsValues $defaults defaults
-     *
-     * @return self
-     */
-    public function setDefaults($defaults)
-    {
-        if (is_null($defaults)) {
-            throw new \InvalidArgumentException('non-nullable defaults cannot be null');
-        }
-        $this->container['defaults'] = $defaults;
 
         return $this;
     }
