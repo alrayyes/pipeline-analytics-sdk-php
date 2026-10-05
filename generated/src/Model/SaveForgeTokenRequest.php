@@ -1,6 +1,6 @@
 <?php
 /**
- * RepoRegistration
+ * SaveForgeTokenRequest
  *
  * PHP version 8.1
  *
@@ -32,7 +32,7 @@ use \ArrayAccess;
 use \PipelineAnalytics\Generated\ObjectSerializer;
 
 /**
- * RepoRegistration Class Doc Comment
+ * SaveForgeTokenRequest Class Doc Comment
  *
  * @category Class
  * @package  PipelineAnalytics\Generated
@@ -40,7 +40,7 @@ use \PipelineAnalytics\Generated\ObjectSerializer;
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
+class SaveForgeTokenRequest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -49,7 +49,7 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'RepoRegistration';
+    protected static $openAPIModelName = 'SaveForgeTokenRequest';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,7 +58,6 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $openAPITypes = [
         'forge' => '\PipelineAnalytics\Generated\Model\Forge',
-        'identifier' => 'string',
         'forgejo_instance_url' => 'string',
         'token' => 'string'
     ];
@@ -72,7 +71,6 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $openAPIFormats = [
         'forge' => null,
-        'identifier' => null,
         'forgejo_instance_url' => 'uri',
         'token' => null
     ];
@@ -84,7 +82,6 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static array $openAPINullables = [
         'forge' => false,
-        'identifier' => false,
         'forgejo_instance_url' => false,
         'token' => false
     ];
@@ -176,7 +173,6 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $attributeMap = [
         'forge' => 'forge',
-        'identifier' => 'identifier',
         'forgejo_instance_url' => 'forgejoInstanceUrl',
         'token' => 'token'
     ];
@@ -188,7 +184,6 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $setters = [
         'forge' => 'setForge',
-        'identifier' => 'setIdentifier',
         'forgejo_instance_url' => 'setForgejoInstanceUrl',
         'token' => 'setToken'
     ];
@@ -200,7 +195,6 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     protected static $getters = [
         'forge' => 'getForge',
-        'identifier' => 'getIdentifier',
         'forgejo_instance_url' => 'getForgejoInstanceUrl',
         'token' => 'getToken'
     ];
@@ -263,7 +257,6 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
     public function __construct(?array $data = null)
     {
         $this->setIfExists('forge', $data ?? [], null);
-        $this->setIfExists('identifier', $data ?? [], null);
         $this->setIfExists('forgejo_instance_url', $data ?? [], null);
         $this->setIfExists('token', $data ?? [], null);
     }
@@ -298,19 +291,19 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
         if ($this->container['forge'] === null) {
             $invalidProperties[] = "'forge' can't be null";
         }
-        if ($this->container['identifier'] === null) {
-            $invalidProperties[] = "'identifier' can't be null";
-        }
-        if ((mb_strlen($this->container['identifier']) > 200)) {
-            $invalidProperties[] = "invalid value for 'identifier', the character length must be smaller than or equal to 200.";
-        }
-
         if (!is_null($this->container['forgejo_instance_url']) && (mb_strlen($this->container['forgejo_instance_url']) > 2048)) {
             $invalidProperties[] = "invalid value for 'forgejo_instance_url', the character length must be smaller than or equal to 2048.";
         }
 
-        if (!is_null($this->container['token']) && (mb_strlen($this->container['token']) > 1024)) {
+        if ($this->container['token'] === null) {
+            $invalidProperties[] = "'token' can't be null";
+        }
+        if ((mb_strlen($this->container['token']) > 1024)) {
             $invalidProperties[] = "invalid value for 'token', the character length must be smaller than or equal to 1024.";
+        }
+
+        if ((mb_strlen($this->container['token']) < 1)) {
+            $invalidProperties[] = "invalid value for 'token', the character length must be bigger than or equal to 1.";
         }
 
         return $invalidProperties;
@@ -356,37 +349,6 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
     }
 
     /**
-     * Gets identifier
-     *
-     * @return string
-     */
-    public function getIdentifier()
-    {
-        return $this->container['identifier'];
-    }
-
-    /**
-     * Sets identifier
-     *
-     * @param string $identifier identifier
-     *
-     * @return self
-     */
-    public function setIdentifier($identifier)
-    {
-        if (is_null($identifier)) {
-            throw new \InvalidArgumentException('non-nullable identifier cannot be null');
-        }
-        if ((mb_strlen($identifier) > 200)) {
-            throw new \InvalidArgumentException('invalid length for $identifier when calling RepoRegistration., must be smaller than or equal to 200.');
-        }
-
-        $this->container['identifier'] = $identifier;
-
-        return $this;
-    }
-
-    /**
      * Gets forgejo_instance_url
      *
      * @return string|null
@@ -409,7 +371,7 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable forgejo_instance_url cannot be null');
         }
         if ((mb_strlen($forgejo_instance_url) > 2048)) {
-            throw new \InvalidArgumentException('invalid length for $forgejo_instance_url when calling RepoRegistration., must be smaller than or equal to 2048.');
+            throw new \InvalidArgumentException('invalid length for $forgejo_instance_url when calling SaveForgeTokenRequest., must be smaller than or equal to 2048.');
         }
 
         $this->container['forgejo_instance_url'] = $forgejo_instance_url;
@@ -420,7 +382,7 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets token
      *
-     * @return string|null
+     * @return string
      */
     public function getToken()
     {
@@ -430,7 +392,7 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets token
      *
-     * @param string|null $token Repo-scoped personal access token. Never echoed back. Omitted uses the token saved for this forge and instance; a `400` with code `no_saved_token` when there is none.
+     * @param string $token token
      *
      * @return self
      */
@@ -440,7 +402,10 @@ class RepoRegistration implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable token cannot be null');
         }
         if ((mb_strlen($token) > 1024)) {
-            throw new \InvalidArgumentException('invalid length for $token when calling RepoRegistration., must be smaller than or equal to 1024.');
+            throw new \InvalidArgumentException('invalid length for $token when calling SaveForgeTokenRequest., must be smaller than or equal to 1024.');
+        }
+        if ((mb_strlen($token) < 1)) {
+            throw new \InvalidArgumentException('invalid length for $token when calling SaveForgeTokenRequest., must be bigger than or equal to 1.');
         }
 
         $this->container['token'] = $token;

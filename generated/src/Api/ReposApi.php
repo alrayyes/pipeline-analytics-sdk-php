@@ -74,10 +74,16 @@ class ReposApi
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
+        'deleteForgeToken' => [
+            'application/json',
+        ],
         'discoverRepos' => [
             'application/json',
         ],
         'getRepoUsage' => [
+            'application/json',
+        ],
+        'listForgeTokens' => [
             'application/json',
         ],
         'listRepoIdentifiers' => [
@@ -87,6 +93,9 @@ class ReposApi
             'application/json',
         ],
         'registerRepo' => [
+            'application/json',
+        ],
+        'saveForgeToken' => [
             'application/json',
         ],
         'untrackRepo' => [
@@ -138,6 +147,244 @@ class ReposApi
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * Operation deleteForgeToken
+     *
+     * Delete a saved forge token
+     *
+     * @param  string $token_id token_id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteForgeToken'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return void
+     */
+    public function deleteForgeToken($token_id, string $contentType = self::contentTypes['deleteForgeToken'][0])
+    {
+        $this->deleteForgeTokenWithHttpInfo($token_id, $contentType);
+    }
+
+    /**
+     * Operation deleteForgeTokenWithHttpInfo
+     *
+     * Delete a saved forge token
+     *
+     * @param  string $token_id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteForgeToken'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function deleteForgeTokenWithHttpInfo($token_id, string $contentType = self::contentTypes['deleteForgeToken'][0])
+    {
+        $request = $this->deleteForgeTokenRequest($token_id, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            return [null, $statusCode, $response->getHeaders()];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation deleteForgeTokenAsync
+     *
+     * Delete a saved forge token
+     *
+     * @param  string $token_id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteForgeToken'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function deleteForgeTokenAsync($token_id, string $contentType = self::contentTypes['deleteForgeToken'][0])
+    {
+        return $this->deleteForgeTokenAsyncWithHttpInfo($token_id, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation deleteForgeTokenAsyncWithHttpInfo
+     *
+     * Delete a saved forge token
+     *
+     * @param  string $token_id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteForgeToken'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function deleteForgeTokenAsyncWithHttpInfo($token_id, string $contentType = self::contentTypes['deleteForgeToken'][0])
+    {
+        $returnType = '';
+        $request = $this->deleteForgeTokenRequest($token_id, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    return [null, $response->getStatusCode(), $response->getHeaders()];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'deleteForgeToken'
+     *
+     * @param  string $token_id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['deleteForgeToken'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function deleteForgeTokenRequest($token_id, string $contentType = self::contentTypes['deleteForgeToken'][0])
+    {
+
+        // verify the required parameter 'token_id' is set
+        if ($token_id === null || (is_array($token_id) && count($token_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $token_id when calling deleteForgeToken'
+            );
+        }
+
+
+        $resourcePath = '/api/forge-tokens/{tokenId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+
+        // path params
+        if ($token_id !== null) {
+            $resourcePath = str_replace(
+                '{tokenId}',
+                ObjectSerializer::toPathValue($token_id),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'DELETE',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
     }
 
     /**
@@ -772,6 +1019,272 @@ class ReposApi
         if (!empty($this->config->getAccessToken())) {
             $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
         }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'GET',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation listForgeTokens
+     *
+     * The forge tokens saved for registering repositories
+     *
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listForgeTokens'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \PipelineAnalytics\Generated\Model\ListForgeTokens200Response|\PipelineAnalytics\Generated\Model\Error
+     */
+    public function listForgeTokens(string $contentType = self::contentTypes['listForgeTokens'][0])
+    {
+        list($response) = $this->listForgeTokensWithHttpInfo($contentType);
+        return $response;
+    }
+
+    /**
+     * Operation listForgeTokensWithHttpInfo
+     *
+     * The forge tokens saved for registering repositories
+     *
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listForgeTokens'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \PipelineAnalytics\Generated\Model\ListForgeTokens200Response|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function listForgeTokensWithHttpInfo(string $contentType = self::contentTypes['listForgeTokens'][0])
+    {
+        $request = $this->listForgeTokensRequest($contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\ListForgeTokens200Response',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\PipelineAnalytics\Generated\Model\ListForgeTokens200Response',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\ListForgeTokens200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation listForgeTokensAsync
+     *
+     * The forge tokens saved for registering repositories
+     *
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listForgeTokens'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function listForgeTokensAsync(string $contentType = self::contentTypes['listForgeTokens'][0])
+    {
+        return $this->listForgeTokensAsyncWithHttpInfo($contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation listForgeTokensAsyncWithHttpInfo
+     *
+     * The forge tokens saved for registering repositories
+     *
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listForgeTokens'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function listForgeTokensAsyncWithHttpInfo(string $contentType = self::contentTypes['listForgeTokens'][0])
+    {
+        $returnType = '\PipelineAnalytics\Generated\Model\ListForgeTokens200Response';
+        $request = $this->listForgeTokensRequest($contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'listForgeTokens'
+     *
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['listForgeTokens'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function listForgeTokensRequest(string $contentType = self::contentTypes['listForgeTokens'][0])
+    {
+
+
+        $resourcePath = '/api/forge-tokens';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
 
         $defaultHeaders = [];
         if ($this->config->getUserAgent()) {
@@ -1764,6 +2277,323 @@ class ReposApi
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
             'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation saveForgeToken
+     *
+     * Save a forge token, replacing the one for that forge and instance
+     *
+     * @param  \PipelineAnalytics\Generated\Model\SaveForgeTokenRequest $save_forge_token_request save_forge_token_request (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['saveForgeToken'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \PipelineAnalytics\Generated\Model\SavedForgeToken|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
+     */
+    public function saveForgeToken($save_forge_token_request, string $contentType = self::contentTypes['saveForgeToken'][0])
+    {
+        list($response) = $this->saveForgeTokenWithHttpInfo($save_forge_token_request, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation saveForgeTokenWithHttpInfo
+     *
+     * Save a forge token, replacing the one for that forge and instance
+     *
+     * @param  \PipelineAnalytics\Generated\Model\SaveForgeTokenRequest $save_forge_token_request (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['saveForgeToken'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \PipelineAnalytics\Generated\Model\SavedForgeToken|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function saveForgeTokenWithHttpInfo($save_forge_token_request, string $contentType = self::contentTypes['saveForgeToken'][0])
+    {
+        $request = $this->saveForgeTokenRequest($save_forge_token_request, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\SavedForgeToken',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 413:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\PipelineAnalytics\Generated\Model\SavedForgeToken',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\SavedForgeToken',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 413:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation saveForgeTokenAsync
+     *
+     * Save a forge token, replacing the one for that forge and instance
+     *
+     * @param  \PipelineAnalytics\Generated\Model\SaveForgeTokenRequest $save_forge_token_request (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['saveForgeToken'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function saveForgeTokenAsync($save_forge_token_request, string $contentType = self::contentTypes['saveForgeToken'][0])
+    {
+        return $this->saveForgeTokenAsyncWithHttpInfo($save_forge_token_request, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation saveForgeTokenAsyncWithHttpInfo
+     *
+     * Save a forge token, replacing the one for that forge and instance
+     *
+     * @param  \PipelineAnalytics\Generated\Model\SaveForgeTokenRequest $save_forge_token_request (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['saveForgeToken'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function saveForgeTokenAsyncWithHttpInfo($save_forge_token_request, string $contentType = self::contentTypes['saveForgeToken'][0])
+    {
+        $returnType = '\PipelineAnalytics\Generated\Model\SavedForgeToken';
+        $request = $this->saveForgeTokenRequest($save_forge_token_request, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'saveForgeToken'
+     *
+     * @param  \PipelineAnalytics\Generated\Model\SaveForgeTokenRequest $save_forge_token_request (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['saveForgeToken'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function saveForgeTokenRequest($save_forge_token_request, string $contentType = self::contentTypes['saveForgeToken'][0])
+    {
+
+        // verify the required parameter 'save_forge_token_request' is set
+        if ($save_forge_token_request === null || (is_array($save_forge_token_request) && count($save_forge_token_request) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $save_forge_token_request when calling saveForgeToken'
+            );
+        }
+
+
+        $resourcePath = '/api/forge-tokens';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($save_forge_token_request)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                try {
+                    $httpBody = json_encode(ObjectSerializer::sanitizeForSerialization($save_forge_token_request), JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                $httpBody = $save_forge_token_request;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'PUT',
             $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody

@@ -29,6 +29,7 @@ src/Model/GitHubTokenUsage.php
 src/Model/HealthStatus.php
 src/Model/IngestionStatus.php
 src/Model/JobLog.php
+src/Model/ListForgeTokens200Response.php
 src/Model/ListRepoIdentifiers200Response.php
 src/Model/ModelInterface.php
 src/Model/Outcome.php
@@ -45,6 +46,8 @@ src/Model/RunDetail.php
 src/Model/RunList.php
 src/Model/RunStep.php
 src/Model/RunSummary.php
+src/Model/SaveForgeTokenRequest.php
+src/Model/SavedForgeToken.php
 src/Model/Settings.php
 src/Model/SettingsUpdate.php
 src/Model/SettingsValues.php
