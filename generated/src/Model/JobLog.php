@@ -1,6 +1,6 @@
 <?php
 /**
- * RunStep
+ * JobLog
  *
  * PHP version 8.1
  *
@@ -32,7 +32,7 @@ use \ArrayAccess;
 use \PipelineAnalytics\Generated\ObjectSerializer;
 
 /**
- * RunStep Class Doc Comment
+ * JobLog Class Doc Comment
  *
  * @category Class
  * @package  PipelineAnalytics\Generated
@@ -40,7 +40,7 @@ use \PipelineAnalytics\Generated\ObjectSerializer;
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
+class JobLog implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -49,7 +49,7 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'RunStep';
+    protected static $openAPIModelName = 'JobLog';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -57,11 +57,10 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'job_id' => 'string',
-        'name' => 'string',
-        'status' => 'string',
-        'conclusion' => 'string',
-        'outcome' => '\PipelineAnalytics\Generated\Model\Outcome',
+        'available' => 'bool',
+        'reason' => 'string',
+        'lines' => 'string[]',
+        'truncated' => 'bool',
         'forge_url' => 'string'
     ];
 
@@ -73,11 +72,10 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'job_id' => null,
-        'name' => null,
-        'status' => null,
-        'conclusion' => null,
-        'outcome' => null,
+        'available' => null,
+        'reason' => null,
+        'lines' => null,
+        'truncated' => null,
         'forge_url' => 'uri'
     ];
 
@@ -87,11 +85,10 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'job_id' => false,
-        'name' => false,
-        'status' => false,
-        'conclusion' => false,
-        'outcome' => false,
+        'available' => false,
+        'reason' => false,
+        'lines' => false,
+        'truncated' => false,
         'forge_url' => false
     ];
 
@@ -181,11 +178,10 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'job_id' => 'jobId',
-        'name' => 'name',
-        'status' => 'status',
-        'conclusion' => 'conclusion',
-        'outcome' => 'outcome',
+        'available' => 'available',
+        'reason' => 'reason',
+        'lines' => 'lines',
+        'truncated' => 'truncated',
         'forge_url' => 'forgeUrl'
     ];
 
@@ -195,11 +191,10 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'job_id' => 'setJobId',
-        'name' => 'setName',
-        'status' => 'setStatus',
-        'conclusion' => 'setConclusion',
-        'outcome' => 'setOutcome',
+        'available' => 'setAvailable',
+        'reason' => 'setReason',
+        'lines' => 'setLines',
+        'truncated' => 'setTruncated',
         'forge_url' => 'setForgeUrl'
     ];
 
@@ -209,11 +204,10 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'job_id' => 'getJobId',
-        'name' => 'getName',
-        'status' => 'getStatus',
-        'conclusion' => 'getConclusion',
-        'outcome' => 'getOutcome',
+        'available' => 'getAvailable',
+        'reason' => 'getReason',
+        'lines' => 'getLines',
+        'truncated' => 'getTruncated',
         'forge_url' => 'getForgeUrl'
     ];
 
@@ -258,6 +252,25 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
         return self::$openAPIModelName;
     }
 
+    public const REASON_UNSUPPORTED = 'unsupported';
+    public const REASON_EXPIRED = 'expired';
+    public const REASON_FORBIDDEN = 'forbidden';
+    public const REASON_UNREACHABLE = 'unreachable';
+
+    /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getReasonAllowableValues()
+    {
+        return [
+            self::REASON_UNSUPPORTED,
+            self::REASON_EXPIRED,
+            self::REASON_FORBIDDEN,
+            self::REASON_UNREACHABLE,
+        ];
+    }
 
     /**
      * Associative array for storing property values
@@ -274,11 +287,10 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('job_id', $data ?? [], null);
-        $this->setIfExists('name', $data ?? [], null);
-        $this->setIfExists('status', $data ?? [], null);
-        $this->setIfExists('conclusion', $data ?? [], null);
-        $this->setIfExists('outcome', $data ?? [], null);
+        $this->setIfExists('available', $data ?? [], null);
+        $this->setIfExists('reason', $data ?? [], null);
+        $this->setIfExists('lines', $data ?? [], null);
+        $this->setIfExists('truncated', $data ?? [], null);
         $this->setIfExists('forge_url', $data ?? [], null);
     }
 
@@ -309,14 +321,30 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if ($this->container['name'] === null) {
-            $invalidProperties[] = "'name' can't be null";
+        if ($this->container['available'] === null) {
+            $invalidProperties[] = "'available' can't be null";
         }
-        if ($this->container['status'] === null) {
-            $invalidProperties[] = "'status' can't be null";
+        $allowedValues = $this->getReasonAllowableValues();
+        if (!is_null($this->container['reason']) && !in_array($this->container['reason'], $allowedValues, true)) {
+            $invalidProperties[] = sprintf(
+                "invalid value '%s' for 'reason', must be one of '%s'",
+                $this->container['reason'],
+                implode("', '", $allowedValues)
+            );
         }
-        if ($this->container['outcome'] === null) {
-            $invalidProperties[] = "'outcome' can't be null";
+
+        if ($this->container['lines'] === null) {
+            $invalidProperties[] = "'lines' can't be null";
+        }
+        if ((count($this->container['lines']) > 1000)) {
+            $invalidProperties[] = "invalid value for 'lines', number of items must be less than or equal to 1000.";
+        }
+
+        if ($this->container['truncated'] === null) {
+            $invalidProperties[] = "'truncated' can't be null";
+        }
+        if ($this->container['forge_url'] === null) {
+            $invalidProperties[] = "'forge_url' can't be null";
         }
         return $invalidProperties;
     }
@@ -334,136 +362,122 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
 
 
     /**
-     * Gets job_id
+     * Gets available
+     *
+     * @return bool
+     */
+    public function getAvailable()
+    {
+        return $this->container['available'];
+    }
+
+    /**
+     * Sets available
+     *
+     * @param bool $available False when the forge gave no log; see `reason`. `lines` is then empty.
+     *
+     * @return self
+     */
+    public function setAvailable($available)
+    {
+        if (is_null($available)) {
+            throw new \InvalidArgumentException('non-nullable available cannot be null');
+        }
+        $this->container['available'] = $available;
+
+        return $this;
+    }
+
+    /**
+     * Gets reason
      *
      * @return string|null
      */
-    public function getJobId()
+    public function getReason()
     {
-        return $this->container['job_id'];
+        return $this->container['reason'];
     }
 
     /**
-     * Sets job_id
+     * Sets reason
      *
-     * @param string|null $job_id The job this step ran in; pass it to GET /api/runs/{runId}/jobs/{jobId}/log.
+     * @param string|null $reason Present when `available` is false. `unsupported`: the forge has no log API. `expired`: the forge no longer has this log. `forbidden`: the stored token can't read it. `unreachable`: the forge didn't answer.
      *
      * @return self
      */
-    public function setJobId($job_id)
+    public function setReason($reason)
     {
-        if (is_null($job_id)) {
-            throw new \InvalidArgumentException('non-nullable job_id cannot be null');
+        if (is_null($reason)) {
+            throw new \InvalidArgumentException('non-nullable reason cannot be null');
         }
-        $this->container['job_id'] = $job_id;
+        $allowedValues = $this->getReasonAllowableValues();
+        if (!in_array($reason, $allowedValues, true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value '%s' for 'reason', must be one of '%s'",
+                    $reason,
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['reason'] = $reason;
 
         return $this;
     }
 
     /**
-     * Gets name
+     * Gets lines
      *
-     * @return string
+     * @return string[]
      */
-    public function getName()
+    public function getLines()
     {
-        return $this->container['name'];
+        return $this->container['lines'];
     }
 
     /**
-     * Sets name
+     * Sets lines
      *
-     * @param string $name name
+     * @param string[] $lines The last lines of the log, oldest first, each cut at 4096 characters. Raw text, ANSI sequences included.
      *
      * @return self
      */
-    public function setName($name)
+    public function setLines($lines)
     {
-        if (is_null($name)) {
-            throw new \InvalidArgumentException('non-nullable name cannot be null');
+        if (is_null($lines)) {
+            throw new \InvalidArgumentException('non-nullable lines cannot be null');
         }
-        $this->container['name'] = $name;
+        if ((count($lines) > 1000)) {
+            throw new \InvalidArgumentException('invalid value for $lines when calling JobLog., number of items must be less than or equal to 1000.');
+        }
+        $this->container['lines'] = $lines;
 
         return $this;
     }
 
     /**
-     * Gets status
+     * Gets truncated
      *
-     * @return string
+     * @return bool
      */
-    public function getStatus()
+    public function getTruncated()
     {
-        return $this->container['status'];
+        return $this->container['truncated'];
     }
 
     /**
-     * Sets status
+     * Sets truncated
      *
-     * @param string $status status
+     * @param bool $truncated True when the log had more lines than were returned.
      *
      * @return self
      */
-    public function setStatus($status)
+    public function setTruncated($truncated)
     {
-        if (is_null($status)) {
-            throw new \InvalidArgumentException('non-nullable status cannot be null');
+        if (is_null($truncated)) {
+            throw new \InvalidArgumentException('non-nullable truncated cannot be null');
         }
-        $this->container['status'] = $status;
-
-        return $this;
-    }
-
-    /**
-     * Gets conclusion
-     *
-     * @return string|null
-     */
-    public function getConclusion()
-    {
-        return $this->container['conclusion'];
-    }
-
-    /**
-     * Sets conclusion
-     *
-     * @param string|null $conclusion conclusion
-     *
-     * @return self
-     */
-    public function setConclusion($conclusion)
-    {
-        if (is_null($conclusion)) {
-            throw new \InvalidArgumentException('non-nullable conclusion cannot be null');
-        }
-        $this->container['conclusion'] = $conclusion;
-
-        return $this;
-    }
-
-    /**
-     * Gets outcome
-     *
-     * @return \PipelineAnalytics\Generated\Model\Outcome
-     */
-    public function getOutcome()
-    {
-        return $this->container['outcome'];
-    }
-
-    /**
-     * Sets outcome
-     *
-     * @param \PipelineAnalytics\Generated\Model\Outcome $outcome outcome
-     *
-     * @return self
-     */
-    public function setOutcome($outcome)
-    {
-        if (is_null($outcome)) {
-            throw new \InvalidArgumentException('non-nullable outcome cannot be null');
-        }
-        $this->container['outcome'] = $outcome;
+        $this->container['truncated'] = $truncated;
 
         return $this;
     }
@@ -471,7 +485,7 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Gets forge_url
      *
-     * @return string|null
+     * @return string
      */
     public function getForgeUrl()
     {
@@ -481,7 +495,7 @@ class RunStep implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets forge_url
      *
-     * @param string|null $forge_url Deep link to this exact occurrence's job on the originating forge.
+     * @param string $forge_url Deep link to the job on the forge, always present.
      *
      * @return self
      */
