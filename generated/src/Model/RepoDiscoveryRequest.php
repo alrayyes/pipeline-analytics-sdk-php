@@ -295,10 +295,7 @@ class RepoDiscoveryRequest implements ModelInterface, ArrayAccess, \JsonSerializ
             $invalidProperties[] = "invalid value for 'forgejo_instance_url', the character length must be smaller than or equal to 2048.";
         }
 
-        if ($this->container['token'] === null) {
-            $invalidProperties[] = "'token' can't be null";
-        }
-        if ((mb_strlen($this->container['token']) > 1024)) {
+        if (!is_null($this->container['token']) && (mb_strlen($this->container['token']) > 1024)) {
             $invalidProperties[] = "invalid value for 'token', the character length must be smaller than or equal to 1024.";
         }
 
@@ -378,7 +375,7 @@ class RepoDiscoveryRequest implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Gets token
      *
-     * @return string
+     * @return string|null
      */
     public function getToken()
     {
@@ -388,7 +385,7 @@ class RepoDiscoveryRequest implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets token
      *
-     * @param string $token Never stored -- used for this one lookup only.
+     * @param string|null $token Never stored by this call -- used for this one lookup only. Omitted uses the token saved for this forge and instance; a `400` with code `no_saved_token` when there is none.
      *
      * @return self
      */
