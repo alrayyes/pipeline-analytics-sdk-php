@@ -45,6 +45,7 @@ src/Model/RunStep.php
 src/Model/RunSummary.php
 src/Model/Settings.php
 src/Model/SettingsUpdate.php
+src/Model/SettingsValues.php
 src/Model/StageFailureCount.php
 src/Model/Step.php
 src/Model/Trend.php
