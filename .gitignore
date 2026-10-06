@@ -4,6 +4,7 @@
 /.phpunit.result.cache
 /coverage.xml
 /junit.xml
+/coverage-html/
 /.php-cs-fixer.cache
 /site/
 /.phpdoc/
