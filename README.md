@@ -49,9 +49,8 @@ $client = new Client(
 
 A session cookie expires the same way it would in a browser; there's nothing
 in this SDK to refresh it automatically. A real headless token flow is a
-known gap, tracked upstream as
-[alrayyes/pipeline-analytics#178](https://github.com/alrayyes/pipeline-analytics/issues/178) —
-don't work around it, just expect the browser round trip for now.
+known gap: the server has no API-token flow yet, so don't work around it,
+just expect the browser round trip for now.
 
 ## Usage
 
