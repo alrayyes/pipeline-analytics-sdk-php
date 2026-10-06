@@ -38,6 +38,15 @@ jobs:
           php-version: "8.3"
           tools: composer:2.9.5
           extensions: iconv
+          coverage: pcov
+      # The reports ship from this job, not ci.yml's: a repo has one Pages
+      # deployment, so one job has to assemble the whole site. A red test
+      # run fails the job here, so nothing is deployed.
+      - run: composer install --no-interaction --prefer-dist
+      - name: Pest
+        run: >-
+          vendor/bin/pest --log-junit junit.xml
+          --coverage-clover coverage.xml --coverage-html coverage-html
       - run: bash scripts/phpdoc.sh
       # phpDocumentor's config has no static-asset passthrough (checked
       # phpdoc.dist.xml's schema: only paths/version/api), so there's no
@@ -45,6 +54,7 @@ jobs:
       # Copy it in ourselves, after the build and before the artifact is
       # uploaded, so it survives a fresh `site/` every run.
       - run: cp llms.txt site/llms.txt
+      - run: bash scripts/assemble-reports.sh
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: site
