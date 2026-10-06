@@ -71,6 +71,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'message' => 'string',
         'actor' => 'string',
         'forge_url' => 'string',
+        'actions' => 'string[]',
         'steps' => '\PipelineAnalytics\Generated\Model\RunStep[]'
     ];
 
@@ -96,6 +97,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'message' => null,
         'actor' => null,
         'forge_url' => 'uri',
+        'actions' => null,
         'steps' => null
     ];
 
@@ -119,6 +121,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'message' => false,
         'actor' => false,
         'forge_url' => false,
+        'actions' => false,
         'steps' => false
     ];
 
@@ -222,6 +225,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'message' => 'message',
         'actor' => 'actor',
         'forge_url' => 'forgeUrl',
+        'actions' => 'actions',
         'steps' => 'steps'
     ];
 
@@ -245,6 +249,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'message' => 'setMessage',
         'actor' => 'setActor',
         'forge_url' => 'setForgeUrl',
+        'actions' => 'setActions',
         'steps' => 'setSteps'
     ];
 
@@ -268,6 +273,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         'message' => 'getMessage',
         'actor' => 'getActor',
         'forge_url' => 'getForgeUrl',
+        'actions' => 'getActions',
         'steps' => 'getSteps'
     ];
 
@@ -312,6 +318,21 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         return self::$openAPIModelName;
     }
 
+    public const ACTIONS_RERUN = 'rerun';
+    public const ACTIONS_CANCEL = 'cancel';
+
+    /**
+     * Gets allowable values of the enum
+     *
+     * @return string[]
+     */
+    public function getActionsAllowableValues()
+    {
+        return [
+            self::ACTIONS_RERUN,
+            self::ACTIONS_CANCEL,
+        ];
+    }
 
     /**
      * Associative array for storing property values
@@ -342,6 +363,7 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         $this->setIfExists('message', $data ?? [], null);
         $this->setIfExists('actor', $data ?? [], null);
         $this->setIfExists('forge_url', $data ?? [], null);
+        $this->setIfExists('actions', $data ?? [], null);
         $this->setIfExists('steps', $data ?? [], null);
     }
 
@@ -389,6 +411,9 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
         }
         if ($this->container['outcome'] === null) {
             $invalidProperties[] = "'outcome' can't be null";
+        }
+        if ($this->container['actions'] === null) {
+            $invalidProperties[] = "'actions' can't be null";
         }
         if ($this->container['steps'] === null) {
             $invalidProperties[] = "'steps' can't be null";
@@ -782,6 +807,42 @@ class RunSummary implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable forge_url cannot be null');
         }
         $this->container['forge_url'] = $forge_url;
+
+        return $this;
+    }
+
+    /**
+     * Gets actions
+     *
+     * @return string[]
+     */
+    public function getActions()
+    {
+        return $this->container['actions'];
+    }
+
+    /**
+     * Sets actions
+     *
+     * @param string[] $actions What a session may ask the forge to do to this run now: `rerun` for a concluded GitHub run, `cancel` for a queued or running one. Empty when neither applies, and always empty for a Forgejo run. The same rule decides the `409 not_actionable` and `501 unsupported` answers of `POST /api/runs/{runId}/rerun` and `/cancel`, which stay session-only whoever reads this list.
+     *
+     * @return self
+     */
+    public function setActions($actions)
+    {
+        if (is_null($actions)) {
+            throw new \InvalidArgumentException('non-nullable actions cannot be null');
+        }
+        $allowedValues = $this->getActionsAllowableValues();
+        if (array_diff($actions, $allowedValues)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    "Invalid value for 'actions', must be one of '%s'",
+                    implode("', '", $allowedValues)
+                )
+            );
+        }
+        $this->container['actions'] = $actions;
 
         return $this;
     }
