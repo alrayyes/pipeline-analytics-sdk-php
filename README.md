@@ -118,6 +118,17 @@ jitter (honoring a server-sent `Retry-After`), and never retries any other
 `4xx`. Tune it via the constructor's `$maxRetries`/`$retryBaseDelaySeconds`,
 or swap the underlying Guzzle handler stack entirely with `$handlerStack`.
 
+## Reports
+
+Every push to `main` publishes the latest test and coverage reports:
+
+- [Test results](https://apis.ryankes.eu/pipeline-analytics-sdk-php/reports/tests/) (JUnit XML)
+- [Coverage](https://apis.ryankes.eu/pipeline-analytics-sdk-php/reports/coverage/)
+  and its [Cobertura XML](https://apis.ryankes.eu/pipeline-analytics-sdk-php/reports/coverage/coverage.xml)
+
+They're built by the `docs` workflow alongside the API reference, and a
+failing test run publishes nothing.
+
 ## Regenerating the client
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) — the generated code is pinned to a
