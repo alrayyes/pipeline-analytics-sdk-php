@@ -8,7 +8,7 @@ declare(strict_types=1);
 function assembleReports(string $workDir): int
 {
     $script = __DIR__.'/../scripts/assemble-reports.sh';
-    exec('cd '.escapeshellarg($workDir).' && bash '.escapeshellarg($script).' 2>&1', $output, $status);
+    exec('cd '.escapeshellarg($workDir).' && GITHUB_SHA=abc1234 bash '.escapeshellarg($script).' 2>&1', $output, $status);
 
     return $status;
 }
@@ -33,7 +33,7 @@ it('lays the reports out where the catalogue links them', function (): void {
     foreach ([
         'index.html',
         'tests/index.html',
-        'tests/junit.xml',
+        'tests/unit.xml',
         'coverage/index.html',
         'coverage/coverage.xml',
         'coverage/clover.xml',
@@ -56,6 +56,16 @@ it('refuses a coverage.xml that is not Cobertura', function (): void {
     copy($dir.'/clover.xml', $dir.'/coverage.xml');
 
     expect(assembleReports($dir))->not->toBe(0);
+});
+
+it('names the runner in the JUnit file and dates the index', function (): void {
+    $dir = reportsWorkDir();
+
+    expect(assembleReports($dir))->toBe(0);
+
+    expect(is_file($dir.'/site/reports/tests/junit.xml'))->toBeFalse();
+    $index = file_get_contents($dir.'/site/reports/index.html');
+    expect($index)->toContain('abc1234')->toMatch('/\d{4}-\d{2}-\d{2}/');
 });
 
 it('fails without the native Clover file', function (): void {
