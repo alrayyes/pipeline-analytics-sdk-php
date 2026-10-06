@@ -46,7 +46,8 @@ jobs:
       - name: Pest
         run: >-
           vendor/bin/pest --log-junit junit.xml
-          --coverage-clover coverage.xml --coverage-html coverage-html
+          --coverage-cobertura coverage.xml --coverage-clover clover.xml
+          --coverage-html coverage-html
       - run: bash scripts/phpdoc.sh
       # phpDocumentor's config has no static-asset passthrough (checked
       # phpdoc.dist.xml's schema: only paths/version/api), so there's no

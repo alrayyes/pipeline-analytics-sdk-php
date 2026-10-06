@@ -123,7 +123,8 @@ Every push to `main` publishes the latest test and coverage reports:
 
 - [Test results](https://apis.ryankes.eu/pipeline-analytics-sdk-php/reports/tests/) (JUnit XML)
 - [Coverage](https://apis.ryankes.eu/pipeline-analytics-sdk-php/reports/coverage/)
-  and its [Cobertura XML](https://apis.ryankes.eu/pipeline-analytics-sdk-php/reports/coverage/coverage.xml)
+  and its [Cobertura XML](https://apis.ryankes.eu/pipeline-analytics-sdk-php/reports/coverage/coverage.xml),
+  with Pest's native [Clover XML](https://apis.ryankes.eu/pipeline-analytics-sdk-php/reports/coverage/clover.xml) beside it
 
 They're built by the `docs` workflow alongside the API reference, and a
 failing test run publishes nothing.
