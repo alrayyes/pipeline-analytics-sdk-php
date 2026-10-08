@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.0.6](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v3.0.5...v3.0.6) (2026-10-08)
+
+
+### Bug Fixes
+
+* bump phpstan/phpstan from 2.2.16 to 2.2.17 ([#117](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/117)) ([2ef8c98](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/2ef8c98eb040cf53e1cecbda6baebb723b904d60))
+* bump phpstan/phpstan-phpunit from 2.0.19 to 2.0.21 ([#116](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/116)) ([f7cb6d4](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/f7cb6d4558cd4185451364b5a4395b3bdd1df975))
+
+
+### Miscellaneous Chores
+
+* bump @commitlint/cli from 21.2.2 to 21.2.3 ([#118](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/118)) ([1103e84](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/1103e84dbe8fe31c0a451682d9efbf11ade3eb72))
+
 ## [3.0.5](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v3.0.4...v3.0.5) (2026-10-06)
 
 
