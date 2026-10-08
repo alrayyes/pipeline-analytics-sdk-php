@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.7](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v3.0.6...v3.0.7) (2026-10-08)
+
+
+### Bug Fixes
+
+* bump phpmd/phpmd from 2.15.0 to 3.0.0 ([8d3373b](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/8d3373b5a04fe72420d823cefcb6146ac61932a1))
+* bump phpmd/phpmd from 2.15.0 to 3.0.0 ([d91bbed](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/d91bbed0eb6dbdb42f8f2505a19c2d4c78762142))
+
 ## [3.0.6](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v3.0.5...v3.0.6) (2026-10-08)
 
 
