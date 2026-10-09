@@ -10,7 +10,8 @@ pre-commit:
       # initial bootstrap commit, or a regeneration PR) must never reach
       # {staged_files} here at all.
       glob: "{src,tests}/**/*.php"
-      run: vendor/bin/pint {staged_files} && git add {staged_files}
+      run: vendor/bin/pint {staged_files}
+      stage_fixed: true
 
 commit-msg:
   commands:
