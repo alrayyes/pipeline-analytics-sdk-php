@@ -690,15 +690,16 @@ class AuthApi
      *
      * Issue a new API token
      *
+     * @param  \PipelineAnalytics\Generated\Model\IssueApiTokenRequest|null $issue_api_token_request issue_api_token_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueApiToken'] to see the possible values for this operation
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \PipelineAnalytics\Generated\Model\ApiToken|\PipelineAnalytics\Generated\Model\Error
+     * @return \PipelineAnalytics\Generated\Model\ApiToken|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
      */
-    public function issueApiToken(string $contentType = self::contentTypes['issueApiToken'][0])
+    public function issueApiToken($issue_api_token_request = null, string $contentType = self::contentTypes['issueApiToken'][0])
     {
-        list($response) = $this->issueApiTokenWithHttpInfo($contentType);
+        list($response) = $this->issueApiTokenWithHttpInfo($issue_api_token_request, $contentType);
         return $response;
     }
 
@@ -707,15 +708,16 @@ class AuthApi
      *
      * Issue a new API token
      *
+     * @param  \PipelineAnalytics\Generated\Model\IssueApiTokenRequest|null $issue_api_token_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueApiToken'] to see the possible values for this operation
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \PipelineAnalytics\Generated\Model\ApiToken|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \PipelineAnalytics\Generated\Model\ApiToken|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
-    public function issueApiTokenWithHttpInfo(string $contentType = self::contentTypes['issueApiToken'][0])
+    public function issueApiTokenWithHttpInfo($issue_api_token_request = null, string $contentType = self::contentTypes['issueApiToken'][0])
     {
-        $request = $this->issueApiTokenRequest($contentType);
+        $request = $this->issueApiTokenRequest($issue_api_token_request, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -744,6 +746,12 @@ class AuthApi
                 case 201:
                     return $this->handleResponseWithDataType(
                         '\PipelineAnalytics\Generated\Model\ApiToken',
+                        $request,
+                        $response,
+                    );
+                case 400:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
                         $request,
                         $response,
                     );
@@ -785,6 +793,14 @@ class AuthApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
                 case 401:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
@@ -805,14 +821,15 @@ class AuthApi
      *
      * Issue a new API token
      *
+     * @param  \PipelineAnalytics\Generated\Model\IssueApiTokenRequest|null $issue_api_token_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueApiToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function issueApiTokenAsync(string $contentType = self::contentTypes['issueApiToken'][0])
+    public function issueApiTokenAsync($issue_api_token_request = null, string $contentType = self::contentTypes['issueApiToken'][0])
     {
-        return $this->issueApiTokenAsyncWithHttpInfo($contentType)
+        return $this->issueApiTokenAsyncWithHttpInfo($issue_api_token_request, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -825,15 +842,16 @@ class AuthApi
      *
      * Issue a new API token
      *
+     * @param  \PipelineAnalytics\Generated\Model\IssueApiTokenRequest|null $issue_api_token_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueApiToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function issueApiTokenAsyncWithHttpInfo(string $contentType = self::contentTypes['issueApiToken'][0])
+    public function issueApiTokenAsyncWithHttpInfo($issue_api_token_request = null, string $contentType = self::contentTypes['issueApiToken'][0])
     {
         $returnType = '\PipelineAnalytics\Generated\Model\ApiToken';
-        $request = $this->issueApiTokenRequest($contentType);
+        $request = $this->issueApiTokenRequest($issue_api_token_request, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -874,13 +892,15 @@ class AuthApi
     /**
      * Create request for operation 'issueApiToken'
      *
+     * @param  \PipelineAnalytics\Generated\Model\IssueApiTokenRequest|null $issue_api_token_request (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['issueApiToken'] to see the possible values for this operation
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    public function issueApiTokenRequest(string $contentType = self::contentTypes['issueApiToken'][0])
+    public function issueApiTokenRequest($issue_api_token_request = null, string $contentType = self::contentTypes['issueApiToken'][0])
     {
+
 
 
         $resourcePath = '/api/auth/tokens';
@@ -901,7 +921,18 @@ class AuthApi
         );
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if (isset($issue_api_token_request)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                try {
+                    $httpBody = json_encode(ObjectSerializer::sanitizeForSerialization($issue_api_token_request), JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                $httpBody = $issue_api_token_request;
+            }
+        } elseif (count($formParams) > 0) {
             if ($multipart) {
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {

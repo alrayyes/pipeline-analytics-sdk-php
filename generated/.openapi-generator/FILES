@@ -28,6 +28,7 @@ src/Model/Forge.php
 src/Model/GitHubTokenUsage.php
 src/Model/HealthStatus.php
 src/Model/IngestionStatus.php
+src/Model/IssueApiTokenRequest.php
 src/Model/JobLog.php
 src/Model/ListForgeTokens200Response.php
 src/Model/ListRepoIdentifiers200Response.php
