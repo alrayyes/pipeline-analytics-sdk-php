@@ -101,7 +101,13 @@ class PipelinesApi
         'listUnhealthySteps' => [
             'application/json',
         ],
+        'quarantineStep' => [
+            'application/json',
+        ],
         'rerunRun' => [
+            'application/json',
+        ],
+        'unquarantineStep' => [
             'application/json',
         ],
     ];
@@ -3149,6 +3155,357 @@ class PipelinesApi
     }
 
     /**
+     * Operation quarantineStep
+     *
+     * Mark a flaky step as known, so it stops making its pipeline unhealthy
+     *
+     * @param  string $pipeline_id pipeline_id (required)
+     * @param  string $step The step&#39;s name, percent-encoded when it contains a &#x60;/&#x60;. (required)
+     * @param  \PipelineAnalytics\Generated\Model\QuarantineRequest|null $quarantine_request quarantine_request (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['quarantineStep'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \PipelineAnalytics\Generated\Model\StepQuarantine|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
+     */
+    public function quarantineStep($pipeline_id, $step, $quarantine_request = null, string $contentType = self::contentTypes['quarantineStep'][0])
+    {
+        list($response) = $this->quarantineStepWithHttpInfo($pipeline_id, $step, $quarantine_request, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation quarantineStepWithHttpInfo
+     *
+     * Mark a flaky step as known, so it stops making its pipeline unhealthy
+     *
+     * @param  string $pipeline_id (required)
+     * @param  string $step The step&#39;s name, percent-encoded when it contains a &#x60;/&#x60;. (required)
+     * @param  \PipelineAnalytics\Generated\Model\QuarantineRequest|null $quarantine_request (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['quarantineStep'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \PipelineAnalytics\Generated\Model\StepQuarantine|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function quarantineStepWithHttpInfo($pipeline_id, $step, $quarantine_request = null, string $contentType = self::contentTypes['quarantineStep'][0])
+    {
+        $request = $this->quarantineStepRequest($pipeline_id, $step, $quarantine_request, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\StepQuarantine',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 422:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\PipelineAnalytics\Generated\Model\StepQuarantine',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\StepQuarantine',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 422:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation quarantineStepAsync
+     *
+     * Mark a flaky step as known, so it stops making its pipeline unhealthy
+     *
+     * @param  string $pipeline_id (required)
+     * @param  string $step The step&#39;s name, percent-encoded when it contains a &#x60;/&#x60;. (required)
+     * @param  \PipelineAnalytics\Generated\Model\QuarantineRequest|null $quarantine_request (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['quarantineStep'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function quarantineStepAsync($pipeline_id, $step, $quarantine_request = null, string $contentType = self::contentTypes['quarantineStep'][0])
+    {
+        return $this->quarantineStepAsyncWithHttpInfo($pipeline_id, $step, $quarantine_request, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation quarantineStepAsyncWithHttpInfo
+     *
+     * Mark a flaky step as known, so it stops making its pipeline unhealthy
+     *
+     * @param  string $pipeline_id (required)
+     * @param  string $step The step&#39;s name, percent-encoded when it contains a &#x60;/&#x60;. (required)
+     * @param  \PipelineAnalytics\Generated\Model\QuarantineRequest|null $quarantine_request (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['quarantineStep'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function quarantineStepAsyncWithHttpInfo($pipeline_id, $step, $quarantine_request = null, string $contentType = self::contentTypes['quarantineStep'][0])
+    {
+        $returnType = '\PipelineAnalytics\Generated\Model\StepQuarantine';
+        $request = $this->quarantineStepRequest($pipeline_id, $step, $quarantine_request, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'quarantineStep'
+     *
+     * @param  string $pipeline_id (required)
+     * @param  string $step The step&#39;s name, percent-encoded when it contains a &#x60;/&#x60;. (required)
+     * @param  \PipelineAnalytics\Generated\Model\QuarantineRequest|null $quarantine_request (optional)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['quarantineStep'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function quarantineStepRequest($pipeline_id, $step, $quarantine_request = null, string $contentType = self::contentTypes['quarantineStep'][0])
+    {
+
+        // verify the required parameter 'pipeline_id' is set
+        if ($pipeline_id === null || (is_array($pipeline_id) && count($pipeline_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $pipeline_id when calling quarantineStep'
+            );
+        }
+
+        // verify the required parameter 'step' is set
+        if ($step === null || (is_array($step) && count($step) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $step when calling quarantineStep'
+            );
+        }
+
+
+
+        $resourcePath = '/api/pipelines/{pipelineId}/steps/{step}/quarantine';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+
+        // path params
+        if ($pipeline_id !== null) {
+            $resourcePath = str_replace(
+                '{pipelineId}',
+                ObjectSerializer::toPathValue($pipeline_id),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($step !== null) {
+            $resourcePath = str_replace(
+                '{step}',
+                ObjectSerializer::toPathValue($step),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($quarantine_request)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the body
+                try {
+                    $httpBody = json_encode(ObjectSerializer::sanitizeForSerialization($quarantine_request), JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                $httpBody = $quarantine_request;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'PUT',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation rerunRun
      *
      * Ask the forge to re-run a concluded run
@@ -3412,6 +3769,326 @@ class PipelinesApi
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
             'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation unquarantineStep
+     *
+     * Clear a step&#39;s quarantine
+     *
+     * @param  string $pipeline_id pipeline_id (required)
+     * @param  string $step The step&#39;s name, percent-encoded when it contains a &#x60;/&#x60;. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['unquarantineStep'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \PipelineAnalytics\Generated\Model\StepQuarantine|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
+     */
+    public function unquarantineStep($pipeline_id, $step, string $contentType = self::contentTypes['unquarantineStep'][0])
+    {
+        list($response) = $this->unquarantineStepWithHttpInfo($pipeline_id, $step, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation unquarantineStepWithHttpInfo
+     *
+     * Clear a step&#39;s quarantine
+     *
+     * @param  string $pipeline_id (required)
+     * @param  string $step The step&#39;s name, percent-encoded when it contains a &#x60;/&#x60;. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['unquarantineStep'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \PipelineAnalytics\Generated\Model\StepQuarantine|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function unquarantineStepWithHttpInfo($pipeline_id, $step, string $contentType = self::contentTypes['unquarantineStep'][0])
+    {
+        $request = $this->unquarantineStepRequest($pipeline_id, $step, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\StepQuarantine',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\PipelineAnalytics\Generated\Model\StepQuarantine',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\StepQuarantine',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation unquarantineStepAsync
+     *
+     * Clear a step&#39;s quarantine
+     *
+     * @param  string $pipeline_id (required)
+     * @param  string $step The step&#39;s name, percent-encoded when it contains a &#x60;/&#x60;. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['unquarantineStep'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function unquarantineStepAsync($pipeline_id, $step, string $contentType = self::contentTypes['unquarantineStep'][0])
+    {
+        return $this->unquarantineStepAsyncWithHttpInfo($pipeline_id, $step, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation unquarantineStepAsyncWithHttpInfo
+     *
+     * Clear a step&#39;s quarantine
+     *
+     * @param  string $pipeline_id (required)
+     * @param  string $step The step&#39;s name, percent-encoded when it contains a &#x60;/&#x60;. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['unquarantineStep'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function unquarantineStepAsyncWithHttpInfo($pipeline_id, $step, string $contentType = self::contentTypes['unquarantineStep'][0])
+    {
+        $returnType = '\PipelineAnalytics\Generated\Model\StepQuarantine';
+        $request = $this->unquarantineStepRequest($pipeline_id, $step, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'unquarantineStep'
+     *
+     * @param  string $pipeline_id (required)
+     * @param  string $step The step&#39;s name, percent-encoded when it contains a &#x60;/&#x60;. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['unquarantineStep'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function unquarantineStepRequest($pipeline_id, $step, string $contentType = self::contentTypes['unquarantineStep'][0])
+    {
+
+        // verify the required parameter 'pipeline_id' is set
+        if ($pipeline_id === null || (is_array($pipeline_id) && count($pipeline_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $pipeline_id when calling unquarantineStep'
+            );
+        }
+
+        // verify the required parameter 'step' is set
+        if ($step === null || (is_array($step) && count($step) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $step when calling unquarantineStep'
+            );
+        }
+
+
+        $resourcePath = '/api/pipelines/{pipelineId}/steps/{step}/quarantine';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+
+        // path params
+        if ($pipeline_id !== null) {
+            $resourcePath = str_replace(
+                '{pipelineId}',
+                ObjectSerializer::toPathValue($pipeline_id),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($step !== null) {
+            $resourcePath = str_replace(
+                '{step}',
+                ObjectSerializer::toPathValue($step),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'DELETE',
             $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody

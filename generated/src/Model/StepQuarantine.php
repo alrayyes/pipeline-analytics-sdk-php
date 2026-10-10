@@ -1,6 +1,6 @@
 <?php
 /**
- * Step
+ * StepQuarantine
  *
  * PHP version 8.1
  *
@@ -32,7 +32,7 @@ use \ArrayAccess;
 use \PipelineAnalytics\Generated\ObjectSerializer;
 
 /**
- * Step Class Doc Comment
+ * StepQuarantine Class Doc Comment
  *
  * @category Class
  * @package  PipelineAnalytics\Generated
@@ -40,7 +40,7 @@ use \PipelineAnalytics\Generated\ObjectSerializer;
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class Step implements ModelInterface, ArrayAccess, \JsonSerializable
+class StepQuarantine implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -49,7 +49,7 @@ class Step implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'Step';
+    protected static $openAPIModelName = 'StepQuarantine';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -57,17 +57,8 @@ class Step implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'id' => 'string',
-        'name' => 'string',
-        'duration_contribution_seconds' => 'float',
-        'queue_seconds' => 'float',
-        'exec_seconds' => 'float',
-        'failure_rate' => 'float',
-        'failure_count' => 'int',
-        'flaky' => 'bool',
         'quarantined' => 'bool',
-        'quarantine' => '\PipelineAnalytics\Generated\Model\Quarantine',
-        'forge_url' => 'string'
+        'quarantine' => '\PipelineAnalytics\Generated\Model\Quarantine'
     ];
 
     /**
@@ -78,17 +69,8 @@ class Step implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'id' => null,
-        'name' => null,
-        'duration_contribution_seconds' => null,
-        'queue_seconds' => null,
-        'exec_seconds' => null,
-        'failure_rate' => null,
-        'failure_count' => null,
-        'flaky' => null,
         'quarantined' => null,
-        'quarantine' => null,
-        'forge_url' => 'uri'
+        'quarantine' => null
     ];
 
     /**
@@ -97,17 +79,8 @@ class Step implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'id' => false,
-        'name' => false,
-        'duration_contribution_seconds' => false,
-        'queue_seconds' => false,
-        'exec_seconds' => false,
-        'failure_rate' => false,
-        'failure_count' => false,
-        'flaky' => false,
         'quarantined' => false,
-        'quarantine' => false,
-        'forge_url' => false
+        'quarantine' => false
     ];
 
     /**
@@ -196,17 +169,8 @@ class Step implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'id' => 'id',
-        'name' => 'name',
-        'duration_contribution_seconds' => 'durationContributionSeconds',
-        'queue_seconds' => 'queueSeconds',
-        'exec_seconds' => 'execSeconds',
-        'failure_rate' => 'failureRate',
-        'failure_count' => 'failureCount',
-        'flaky' => 'flaky',
         'quarantined' => 'quarantined',
-        'quarantine' => 'quarantine',
-        'forge_url' => 'forgeUrl'
+        'quarantine' => 'quarantine'
     ];
 
     /**
@@ -215,17 +179,8 @@ class Step implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'id' => 'setId',
-        'name' => 'setName',
-        'duration_contribution_seconds' => 'setDurationContributionSeconds',
-        'queue_seconds' => 'setQueueSeconds',
-        'exec_seconds' => 'setExecSeconds',
-        'failure_rate' => 'setFailureRate',
-        'failure_count' => 'setFailureCount',
-        'flaky' => 'setFlaky',
         'quarantined' => 'setQuarantined',
-        'quarantine' => 'setQuarantine',
-        'forge_url' => 'setForgeUrl'
+        'quarantine' => 'setQuarantine'
     ];
 
     /**
@@ -234,17 +189,8 @@ class Step implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'id' => 'getId',
-        'name' => 'getName',
-        'duration_contribution_seconds' => 'getDurationContributionSeconds',
-        'queue_seconds' => 'getQueueSeconds',
-        'exec_seconds' => 'getExecSeconds',
-        'failure_rate' => 'getFailureRate',
-        'failure_count' => 'getFailureCount',
-        'flaky' => 'getFlaky',
         'quarantined' => 'getQuarantined',
-        'quarantine' => 'getQuarantine',
-        'forge_url' => 'getForgeUrl'
+        'quarantine' => 'getQuarantine'
     ];
 
     /**
@@ -304,17 +250,8 @@ class Step implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('id', $data ?? [], null);
-        $this->setIfExists('name', $data ?? [], null);
-        $this->setIfExists('duration_contribution_seconds', $data ?? [], null);
-        $this->setIfExists('queue_seconds', $data ?? [], null);
-        $this->setIfExists('exec_seconds', $data ?? [], null);
-        $this->setIfExists('failure_rate', $data ?? [], null);
-        $this->setIfExists('failure_count', $data ?? [], null);
-        $this->setIfExists('flaky', $data ?? [], null);
         $this->setIfExists('quarantined', $data ?? [], null);
         $this->setIfExists('quarantine', $data ?? [], null);
-        $this->setIfExists('forge_url', $data ?? [], null);
     }
 
     /**
@@ -344,30 +281,6 @@ class Step implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if ($this->container['id'] === null) {
-            $invalidProperties[] = "'id' can't be null";
-        }
-        if ($this->container['name'] === null) {
-            $invalidProperties[] = "'name' can't be null";
-        }
-        if ($this->container['duration_contribution_seconds'] === null) {
-            $invalidProperties[] = "'duration_contribution_seconds' can't be null";
-        }
-        if ($this->container['queue_seconds'] === null) {
-            $invalidProperties[] = "'queue_seconds' can't be null";
-        }
-        if ($this->container['exec_seconds'] === null) {
-            $invalidProperties[] = "'exec_seconds' can't be null";
-        }
-        if ($this->container['failure_rate'] === null) {
-            $invalidProperties[] = "'failure_rate' can't be null";
-        }
-        if ($this->container['failure_count'] === null) {
-            $invalidProperties[] = "'failure_count' can't be null";
-        }
-        if ($this->container['flaky'] === null) {
-            $invalidProperties[] = "'flaky' can't be null";
-        }
         if ($this->container['quarantined'] === null) {
             $invalidProperties[] = "'quarantined' can't be null";
         }
@@ -387,222 +300,6 @@ class Step implements ModelInterface, ArrayAccess, \JsonSerializable
 
 
     /**
-     * Gets id
-     *
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->container['id'];
-    }
-
-    /**
-     * Sets id
-     *
-     * @param string $id id
-     *
-     * @return self
-     */
-    public function setId($id)
-    {
-        if (is_null($id)) {
-            throw new \InvalidArgumentException('non-nullable id cannot be null');
-        }
-        $this->container['id'] = $id;
-
-        return $this;
-    }
-
-    /**
-     * Gets name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->container['name'];
-    }
-
-    /**
-     * Sets name
-     *
-     * @param string $name name
-     *
-     * @return self
-     */
-    public function setName($name)
-    {
-        if (is_null($name)) {
-            throw new \InvalidArgumentException('non-nullable name cannot be null');
-        }
-        $this->container['name'] = $name;
-
-        return $this;
-    }
-
-    /**
-     * Gets duration_contribution_seconds
-     *
-     * @return float
-     */
-    public function getDurationContributionSeconds()
-    {
-        return $this->container['duration_contribution_seconds'];
-    }
-
-    /**
-     * Sets duration_contribution_seconds
-     *
-     * @param float $duration_contribution_seconds duration_contribution_seconds
-     *
-     * @return self
-     */
-    public function setDurationContributionSeconds($duration_contribution_seconds)
-    {
-        if (is_null($duration_contribution_seconds)) {
-            throw new \InvalidArgumentException('non-nullable duration_contribution_seconds cannot be null');
-        }
-        $this->container['duration_contribution_seconds'] = $duration_contribution_seconds;
-
-        return $this;
-    }
-
-    /**
-     * Gets queue_seconds
-     *
-     * @return float
-     */
-    public function getQueueSeconds()
-    {
-        return $this->container['queue_seconds'];
-    }
-
-    /**
-     * Sets queue_seconds
-     *
-     * @param float $queue_seconds queue_seconds
-     *
-     * @return self
-     */
-    public function setQueueSeconds($queue_seconds)
-    {
-        if (is_null($queue_seconds)) {
-            throw new \InvalidArgumentException('non-nullable queue_seconds cannot be null');
-        }
-        $this->container['queue_seconds'] = $queue_seconds;
-
-        return $this;
-    }
-
-    /**
-     * Gets exec_seconds
-     *
-     * @return float
-     */
-    public function getExecSeconds()
-    {
-        return $this->container['exec_seconds'];
-    }
-
-    /**
-     * Sets exec_seconds
-     *
-     * @param float $exec_seconds exec_seconds
-     *
-     * @return self
-     */
-    public function setExecSeconds($exec_seconds)
-    {
-        if (is_null($exec_seconds)) {
-            throw new \InvalidArgumentException('non-nullable exec_seconds cannot be null');
-        }
-        $this->container['exec_seconds'] = $exec_seconds;
-
-        return $this;
-    }
-
-    /**
-     * Gets failure_rate
-     *
-     * @return float
-     */
-    public function getFailureRate()
-    {
-        return $this->container['failure_rate'];
-    }
-
-    /**
-     * Sets failure_rate
-     *
-     * @param float $failure_rate failure_rate
-     *
-     * @return self
-     */
-    public function setFailureRate($failure_rate)
-    {
-        if (is_null($failure_rate)) {
-            throw new \InvalidArgumentException('non-nullable failure_rate cannot be null');
-        }
-        $this->container['failure_rate'] = $failure_rate;
-
-        return $this;
-    }
-
-    /**
-     * Gets failure_count
-     *
-     * @return int
-     */
-    public function getFailureCount()
-    {
-        return $this->container['failure_count'];
-    }
-
-    /**
-     * Sets failure_count
-     *
-     * @param int $failure_count Times this step failed within the window.
-     *
-     * @return self
-     */
-    public function setFailureCount($failure_count)
-    {
-        if (is_null($failure_count)) {
-            throw new \InvalidArgumentException('non-nullable failure_count cannot be null');
-        }
-        $this->container['failure_count'] = $failure_count;
-
-        return $this;
-    }
-
-    /**
-     * Gets flaky
-     *
-     * @return bool
-     */
-    public function getFlaky()
-    {
-        return $this->container['flaky'];
-    }
-
-    /**
-     * Sets flaky
-     *
-     * @param bool $flaky flaky
-     *
-     * @return self
-     */
-    public function setFlaky($flaky)
-    {
-        if (is_null($flaky)) {
-            throw new \InvalidArgumentException('non-nullable flaky cannot be null');
-        }
-        $this->container['flaky'] = $flaky;
-
-        return $this;
-    }
-
-    /**
      * Gets quarantined
      *
      * @return bool
@@ -615,7 +312,7 @@ class Step implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets quarantined
      *
-     * @param bool $quarantined True when a person has marked this step as known. It is still `flaky`; it just stops making its pipeline unhealthy.
+     * @param bool $quarantined quarantined
      *
      * @return self
      */
@@ -652,33 +349,6 @@ class Step implements ModelInterface, ArrayAccess, \JsonSerializable
             throw new \InvalidArgumentException('non-nullable quarantine cannot be null');
         }
         $this->container['quarantine'] = $quarantine;
-
-        return $this;
-    }
-
-    /**
-     * Gets forge_url
-     *
-     * @return string|null
-     */
-    public function getForgeUrl()
-    {
-        return $this->container['forge_url'];
-    }
-
-    /**
-     * Sets forge_url
-     *
-     * @param string|null $forge_url Deep link to one occurrence's log on the originating forge -- not necessarily one where the step failed. GET .../flaky-runs is the reliable way to reach a run the step actually failed on.
-     *
-     * @return self
-     */
-    public function setForgeUrl($forge_url)
-    {
-        if (is_null($forge_url)) {
-            throw new \InvalidArgumentException('non-nullable forge_url cannot be null');
-        }
-        $this->container['forge_url'] = $forge_url;
 
         return $this;
     }

@@ -37,6 +37,8 @@ src/Model/PipelineDetail.php
 src/Model/PipelineList.php
 src/Model/PipelineStepsGroup.php
 src/Model/PipelineSummary.php
+src/Model/Quarantine.php
+src/Model/QuarantineRequest.php
 src/Model/RateLimitStatus.php
 src/Model/Repo.php
 src/Model/RepoDiscoveryRequest.php
@@ -53,6 +55,7 @@ src/Model/SettingsUpdate.php
 src/Model/SettingsValues.php
 src/Model/StageFailureCount.php
 src/Model/Step.php
+src/Model/StepQuarantine.php
 src/Model/Trend.php
 src/Model/UnhealthyStepsList.php
 src/Model/UsageEntry.php

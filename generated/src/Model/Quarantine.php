@@ -1,6 +1,6 @@
 <?php
 /**
- * FlakyStepEntry
+ * Quarantine
  *
  * PHP version 8.1
  *
@@ -32,15 +32,16 @@ use \ArrayAccess;
 use \PipelineAnalytics\Generated\ObjectSerializer;
 
 /**
- * FlakyStepEntry Class Doc Comment
+ * Quarantine Class Doc Comment
  *
  * @category Class
+ * @description A person&#39;s mark on a flaky step. Present only while it is in force.
  * @package  PipelineAnalytics\Generated
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements \ArrayAccess<string, mixed>
  */
-class FlakyStepEntry implements ModelInterface, ArrayAccess, \JsonSerializable
+class Quarantine implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -49,7 +50,7 @@ class FlakyStepEntry implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @var string
      */
-    protected static $openAPIModelName = 'FlakyStepEntry';
+    protected static $openAPIModelName = 'Quarantine';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -57,15 +58,9 @@ class FlakyStepEntry implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $openAPITypes = [
-        'pipeline_id' => 'string',
-        'pipeline_name' => 'string',
-        'repo_id' => 'string',
-        'name' => 'string',
-        'flake_rate' => 'float',
-        'run_count' => 'int',
-        'recent_outcomes' => '\PipelineAnalytics\Generated\Model\Outcome[]',
-        'quarantined' => 'bool',
-        'quarantine' => '\PipelineAnalytics\Generated\Model\Quarantine'
+        'note' => 'string',
+        'quarantined_at' => '\DateTime',
+        'expires_at' => '\DateTime'
     ];
 
     /**
@@ -76,15 +71,9 @@ class FlakyStepEntry implements ModelInterface, ArrayAccess, \JsonSerializable
      * @psalm-var array<string, string|null>
      */
     protected static $openAPIFormats = [
-        'pipeline_id' => null,
-        'pipeline_name' => null,
-        'repo_id' => null,
-        'name' => null,
-        'flake_rate' => null,
-        'run_count' => null,
-        'recent_outcomes' => null,
-        'quarantined' => null,
-        'quarantine' => null
+        'note' => null,
+        'quarantined_at' => 'date-time',
+        'expires_at' => 'date-time'
     ];
 
     /**
@@ -93,15 +82,9 @@ class FlakyStepEntry implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var boolean[]
      */
     protected static array $openAPINullables = [
-        'pipeline_id' => false,
-        'pipeline_name' => false,
-        'repo_id' => false,
-        'name' => false,
-        'flake_rate' => false,
-        'run_count' => false,
-        'recent_outcomes' => false,
-        'quarantined' => false,
-        'quarantine' => false
+        'note' => false,
+        'quarantined_at' => false,
+        'expires_at' => false
     ];
 
     /**
@@ -190,15 +173,9 @@ class FlakyStepEntry implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
-        'pipeline_id' => 'pipelineId',
-        'pipeline_name' => 'pipelineName',
-        'repo_id' => 'repoId',
-        'name' => 'name',
-        'flake_rate' => 'flakeRate',
-        'run_count' => 'runCount',
-        'recent_outcomes' => 'recentOutcomes',
-        'quarantined' => 'quarantined',
-        'quarantine' => 'quarantine'
+        'note' => 'note',
+        'quarantined_at' => 'quarantinedAt',
+        'expires_at' => 'expiresAt'
     ];
 
     /**
@@ -207,15 +184,9 @@ class FlakyStepEntry implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
-        'pipeline_id' => 'setPipelineId',
-        'pipeline_name' => 'setPipelineName',
-        'repo_id' => 'setRepoId',
-        'name' => 'setName',
-        'flake_rate' => 'setFlakeRate',
-        'run_count' => 'setRunCount',
-        'recent_outcomes' => 'setRecentOutcomes',
-        'quarantined' => 'setQuarantined',
-        'quarantine' => 'setQuarantine'
+        'note' => 'setNote',
+        'quarantined_at' => 'setQuarantinedAt',
+        'expires_at' => 'setExpiresAt'
     ];
 
     /**
@@ -224,15 +195,9 @@ class FlakyStepEntry implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
-        'pipeline_id' => 'getPipelineId',
-        'pipeline_name' => 'getPipelineName',
-        'repo_id' => 'getRepoId',
-        'name' => 'getName',
-        'flake_rate' => 'getFlakeRate',
-        'run_count' => 'getRunCount',
-        'recent_outcomes' => 'getRecentOutcomes',
-        'quarantined' => 'getQuarantined',
-        'quarantine' => 'getQuarantine'
+        'note' => 'getNote',
+        'quarantined_at' => 'getQuarantinedAt',
+        'expires_at' => 'getExpiresAt'
     ];
 
     /**
@@ -292,15 +257,9 @@ class FlakyStepEntry implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('pipeline_id', $data ?? [], null);
-        $this->setIfExists('pipeline_name', $data ?? [], null);
-        $this->setIfExists('repo_id', $data ?? [], null);
-        $this->setIfExists('name', $data ?? [], null);
-        $this->setIfExists('flake_rate', $data ?? [], null);
-        $this->setIfExists('run_count', $data ?? [], null);
-        $this->setIfExists('recent_outcomes', $data ?? [], null);
-        $this->setIfExists('quarantined', $data ?? [], null);
-        $this->setIfExists('quarantine', $data ?? [], null);
+        $this->setIfExists('note', $data ?? [], null);
+        $this->setIfExists('quarantined_at', $data ?? [], null);
+        $this->setIfExists('expires_at', $data ?? [], null);
     }
 
     /**
@@ -330,33 +289,18 @@ class FlakyStepEntry implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
-        if ($this->container['pipeline_id'] === null) {
-            $invalidProperties[] = "'pipeline_id' can't be null";
+        if ($this->container['note'] === null) {
+            $invalidProperties[] = "'note' can't be null";
         }
-        if ($this->container['pipeline_name'] === null) {
-            $invalidProperties[] = "'pipeline_name' can't be null";
-        }
-        if ($this->container['repo_id'] === null) {
-            $invalidProperties[] = "'repo_id' can't be null";
-        }
-        if ($this->container['name'] === null) {
-            $invalidProperties[] = "'name' can't be null";
-        }
-        if ($this->container['flake_rate'] === null) {
-            $invalidProperties[] = "'flake_rate' can't be null";
-        }
-        if ($this->container['run_count'] === null) {
-            $invalidProperties[] = "'run_count' can't be null";
-        }
-        if ($this->container['recent_outcomes'] === null) {
-            $invalidProperties[] = "'recent_outcomes' can't be null";
-        }
-        if ((count($this->container['recent_outcomes']) > 40)) {
-            $invalidProperties[] = "invalid value for 'recent_outcomes', number of items must be less than or equal to 40.";
+        if ((mb_strlen($this->container['note']) > 500)) {
+            $invalidProperties[] = "invalid value for 'note', the character length must be smaller than or equal to 500.";
         }
 
-        if ($this->container['quarantined'] === null) {
-            $invalidProperties[] = "'quarantined' can't be null";
+        if ($this->container['quarantined_at'] === null) {
+            $invalidProperties[] = "'quarantined_at' can't be null";
+        }
+        if ($this->container['expires_at'] === null) {
+            $invalidProperties[] = "'expires_at' can't be null";
         }
         return $invalidProperties;
     }
@@ -374,247 +318,86 @@ class FlakyStepEntry implements ModelInterface, ArrayAccess, \JsonSerializable
 
 
     /**
-     * Gets pipeline_id
+     * Gets note
      *
      * @return string
      */
-    public function getPipelineId()
+    public function getNote()
     {
-        return $this->container['pipeline_id'];
+        return $this->container['note'];
     }
 
     /**
-     * Sets pipeline_id
+     * Sets note
      *
-     * @param string $pipeline_id pipeline_id
+     * @param string $note Why the step is quarantined; empty when none was given.
      *
      * @return self
      */
-    public function setPipelineId($pipeline_id)
+    public function setNote($note)
     {
-        if (is_null($pipeline_id)) {
-            throw new \InvalidArgumentException('non-nullable pipeline_id cannot be null');
+        if (is_null($note)) {
+            throw new \InvalidArgumentException('non-nullable note cannot be null');
         }
-        $this->container['pipeline_id'] = $pipeline_id;
+        if ((mb_strlen($note) > 500)) {
+            throw new \InvalidArgumentException('invalid length for $note when calling Quarantine., must be smaller than or equal to 500.');
+        }
+
+        $this->container['note'] = $note;
 
         return $this;
     }
 
     /**
-     * Gets pipeline_name
+     * Gets quarantined_at
      *
-     * @return string
+     * @return \DateTime
      */
-    public function getPipelineName()
+    public function getQuarantinedAt()
     {
-        return $this->container['pipeline_name'];
+        return $this->container['quarantined_at'];
     }
 
     /**
-     * Sets pipeline_name
+     * Sets quarantined_at
      *
-     * @param string $pipeline_name pipeline_name
+     * @param \DateTime $quarantined_at When it was marked, or last renewed.
      *
      * @return self
      */
-    public function setPipelineName($pipeline_name)
+    public function setQuarantinedAt($quarantined_at)
     {
-        if (is_null($pipeline_name)) {
-            throw new \InvalidArgumentException('non-nullable pipeline_name cannot be null');
+        if (is_null($quarantined_at)) {
+            throw new \InvalidArgumentException('non-nullable quarantined_at cannot be null');
         }
-        $this->container['pipeline_name'] = $pipeline_name;
+        $this->container['quarantined_at'] = $quarantined_at;
 
         return $this;
     }
 
     /**
-     * Gets repo_id
+     * Gets expires_at
      *
-     * @return string
+     * @return \DateTime
      */
-    public function getRepoId()
+    public function getExpiresAt()
     {
-        return $this->container['repo_id'];
+        return $this->container['expires_at'];
     }
 
     /**
-     * Sets repo_id
+     * Sets expires_at
      *
-     * @param string $repo_id repo_id
+     * @param \DateTime $expires_at Thirty days after `quarantinedAt`. After this the mark is as if never set.
      *
      * @return self
      */
-    public function setRepoId($repo_id)
+    public function setExpiresAt($expires_at)
     {
-        if (is_null($repo_id)) {
-            throw new \InvalidArgumentException('non-nullable repo_id cannot be null');
+        if (is_null($expires_at)) {
+            throw new \InvalidArgumentException('non-nullable expires_at cannot be null');
         }
-        $this->container['repo_id'] = $repo_id;
-
-        return $this;
-    }
-
-    /**
-     * Gets name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->container['name'];
-    }
-
-    /**
-     * Sets name
-     *
-     * @param string $name name
-     *
-     * @return self
-     */
-    public function setName($name)
-    {
-        if (is_null($name)) {
-            throw new \InvalidArgumentException('non-nullable name cannot be null');
-        }
-        $this->container['name'] = $name;
-
-        return $this;
-    }
-
-    /**
-     * Gets flake_rate
-     *
-     * @return float
-     */
-    public function getFlakeRate()
-    {
-        return $this->container['flake_rate'];
-    }
-
-    /**
-     * Sets flake_rate
-     *
-     * @param float $flake_rate Fraction in (0, 1] of the step's runs in the window that failed.
-     *
-     * @return self
-     */
-    public function setFlakeRate($flake_rate)
-    {
-        if (is_null($flake_rate)) {
-            throw new \InvalidArgumentException('non-nullable flake_rate cannot be null');
-        }
-        $this->container['flake_rate'] = $flake_rate;
-
-        return $this;
-    }
-
-    /**
-     * Gets run_count
-     *
-     * @return int
-     */
-    public function getRunCount()
-    {
-        return $this->container['run_count'];
-    }
-
-    /**
-     * Sets run_count
-     *
-     * @param int $run_count Runs of this step in the window.
-     *
-     * @return self
-     */
-    public function setRunCount($run_count)
-    {
-        if (is_null($run_count)) {
-            throw new \InvalidArgumentException('non-nullable run_count cannot be null');
-        }
-        $this->container['run_count'] = $run_count;
-
-        return $this;
-    }
-
-    /**
-     * Gets recent_outcomes
-     *
-     * @return \PipelineAnalytics\Generated\Model\Outcome[]
-     */
-    public function getRecentOutcomes()
-    {
-        return $this->container['recent_outcomes'];
-    }
-
-    /**
-     * Sets recent_outcomes
-     *
-     * @param \PipelineAnalytics\Generated\Model\Outcome[] $recent_outcomes The step's result in its most recent runs, oldest first.
-     *
-     * @return self
-     */
-    public function setRecentOutcomes($recent_outcomes)
-    {
-        if (is_null($recent_outcomes)) {
-            throw new \InvalidArgumentException('non-nullable recent_outcomes cannot be null');
-        }
-        if ((count($recent_outcomes) > 40)) {
-            throw new \InvalidArgumentException('invalid value for $recent_outcomes when calling FlakyStepEntry., number of items must be less than or equal to 40.');
-        }
-        $this->container['recent_outcomes'] = $recent_outcomes;
-
-        return $this;
-    }
-
-    /**
-     * Gets quarantined
-     *
-     * @return bool
-     */
-    public function getQuarantined()
-    {
-        return $this->container['quarantined'];
-    }
-
-    /**
-     * Sets quarantined
-     *
-     * @param bool $quarantined True when a person has marked this step as known. It is listed either way, with the same figures.
-     *
-     * @return self
-     */
-    public function setQuarantined($quarantined)
-    {
-        if (is_null($quarantined)) {
-            throw new \InvalidArgumentException('non-nullable quarantined cannot be null');
-        }
-        $this->container['quarantined'] = $quarantined;
-
-        return $this;
-    }
-
-    /**
-     * Gets quarantine
-     *
-     * @return \PipelineAnalytics\Generated\Model\Quarantine|null
-     */
-    public function getQuarantine()
-    {
-        return $this->container['quarantine'];
-    }
-
-    /**
-     * Sets quarantine
-     *
-     * @param \PipelineAnalytics\Generated\Model\Quarantine|null $quarantine quarantine
-     *
-     * @return self
-     */
-    public function setQuarantine($quarantine)
-    {
-        if (is_null($quarantine)) {
-            throw new \InvalidArgumentException('non-nullable quarantine cannot be null');
-        }
-        $this->container['quarantine'] = $quarantine;
+        $this->container['expires_at'] = $expires_at;
 
         return $this;
     }
