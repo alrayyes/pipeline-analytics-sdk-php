@@ -88,6 +88,16 @@ composer audit
 `lefthook run pre-push` runs the same set, so that's the one command to run
 before opening a pull request.
 
+Two jobs share the dependency audit, both through
+[advisory-scan](https://github.com/alrayyes/advisory-scan). The `audit` job
+runs on a pull request that changes `composer.json` or `composer.lock`,
+audits the head and the base, and fails only on advisories the pull request
+adds. So an advisory published overnight doesn't turn unrelated pull requests
+red. `advisory-scan.yml` audits `main` daily, on every push that changes those
+files, and on demand, and keeps one open issue titled "Dependency advisories".
+It closes that issue when the audit is clean. There's no ignore list: an
+advisory with no fix stays in that issue until one ships.
+
 Tests are written in Pest's `it()`/`test()` syntax, not PHPUnit's
 class-and-method form (`rules/php.md`'s Testing section). `composer test`'s
 suite only covers the hand-written parts -- retry backoff, cookie injection,
