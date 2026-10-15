@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.10](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v3.0.9...v3.0.10) (2026-10-15)
+
+
+### Bug Fixes
+
+* bump phpstan/phpstan from 2.2.17 to 2.3.1 ([#130](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/130)) ([8dca965](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/8dca965432077282afd74f51499f864424150185))
+* regenerate client from pipeline-analytics openapi.yaml ([#134](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/134)) ([c61e90a](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/c61e90acd1a22eb286f8973b7ec4e36b2076d8e7))
+
 ## [3.0.9](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v3.0.8...v3.0.9) (2026-10-10)
 
 
