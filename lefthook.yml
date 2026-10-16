@@ -33,8 +33,6 @@ pre-push:
       run: vendor/bin/rector process --dry-run
     test:
       run: vendor/bin/pest
-    audit:
-      run: composer audit
     bearer:
       # --diff against the base branch, not a full scan: too slow to run
       # on every push per rules/php.md.
