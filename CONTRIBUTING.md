@@ -85,8 +85,8 @@ composer normalize:lint
 composer audit
 ```
 
-`lefthook run pre-push` runs the same set, so that's the one command to run
-before opening a pull request.
+`lefthook run pre-push` runs the same set except `composer audit`, which CI owns, so
+that is the one command to run before opening a pull request.
 
 Two jobs share the dependency audit, both through
 [advisory-scan](https://github.com/alrayyes/advisory-scan). The `audit` job
@@ -97,6 +97,10 @@ red. `advisory-scan.yml` audits `main` daily, on every push that changes those
 files, and on demand, and keeps one open issue titled "Dependency advisories".
 It closes that issue when the audit is clean. There's no ignore list: an
 advisory with no fix stays in that issue until one ships.
+
+No pre-push hook runs the audit: it would fail every push the day an
+advisory lands on `main`, whatever the push changed. CI owns the gate. To
+check by hand, run `composer audit`.
 
 Tests are written in Pest's `it()`/`test()` syntax, not PHPUnit's
 class-and-method form (`rules/php.md`'s Testing section). `composer test`'s
