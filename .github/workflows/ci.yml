@@ -117,7 +117,35 @@ jobs:
       - name: Rector
         run: vendor/bin/rector process --dry-run
 
+  # Works out whether a pull request touches the dependency manifests. A skipped job reports
+  # success, so `audit` can stay a required check; a `paths:` filter on the workflow would
+  # leave it pending forever. A push to main always runs it.
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      deps: ${{ steps.groups.outputs.deps }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - id: groups
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "${EVENT}" != pull_request ] ||
+            git diff --name-only "${BASE}...HEAD" | grep -Eq '^(composer\.json|composer\.lock|\.github/workflows/ci\.yml)$'; then
+            echo deps=true >> "$GITHUB_OUTPUT"
+          else
+            echo deps=false >> "$GITHUB_OUTPUT"
+          fi
+
+  # Fails only on advisories this change adds over its base (rules/dependencies.md, #138).
+  # What's already on main is the scan's to track, in advisory-scan.yml.
   audit:
+    needs: changes
+    if: needs.changes.outputs.deps == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -125,10 +153,12 @@ jobs:
       - uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
         with:
           php-version: "8.3"
-      - name: composer install
-        run: composer install --no-interaction --prefer-dist
-      - name: composer audit
-        run: composer audit
+          tools: composer:2.8.12
+      # Pinned to a main commit of alrayyes/advisory-scan until its first release; re-pin then.
+      - uses: alrayyes/advisory-scan@425418a63e80eb10142fbd2e82127b7ef3a51d68
+        with:
+          mode: gate
+          command: composer audit --locked --abandoned=report
 
   # Contract-test the client against a mock server built from the same
   # pinned spec, per rules/sdk-generation.md's "testing against the spec,
