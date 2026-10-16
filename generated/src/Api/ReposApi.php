@@ -80,6 +80,9 @@ class ReposApi
         'discoverRepos' => [
             'application/json',
         ],
+        'getRepo' => [
+            'application/json',
+        ],
         'getRepoUsage' => [
             'application/json',
         ],
@@ -716,6 +719,310 @@ class ReposApi
         $query = ObjectSerializer::buildQuery($queryParams);
         return new Request(
             'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation getRepo
+     *
+     * One tracked repository
+     *
+     * @param  string $repo_id repo_id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getRepo'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return \PipelineAnalytics\Generated\Model\Repo|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
+     */
+    public function getRepo($repo_id, string $contentType = self::contentTypes['getRepo'][0])
+    {
+        list($response) = $this->getRepoWithHttpInfo($repo_id, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation getRepoWithHttpInfo
+     *
+     * One tracked repository
+     *
+     * @param  string $repo_id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getRepo'] to see the possible values for this operation
+     *
+     * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws \InvalidArgumentException
+     * @return array of \PipelineAnalytics\Generated\Model\Repo|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function getRepoWithHttpInfo($repo_id, string $contentType = self::contentTypes['getRepo'][0])
+    {
+        $request = $this->getRepoRequest($repo_id, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+
+            switch($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Repo',
+                        $request,
+                        $response,
+                    );
+                case 401:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+                case 404:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
+            }
+
+            
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\PipelineAnalytics\Generated\Model\Repo',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Repo',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 401:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+        
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getRepoAsync
+     *
+     * One tracked repository
+     *
+     * @param  string $repo_id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getRepo'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getRepoAsync($repo_id, string $contentType = self::contentTypes['getRepo'][0])
+    {
+        return $this->getRepoAsyncWithHttpInfo($repo_id, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation getRepoAsyncWithHttpInfo
+     *
+     * One tracked repository
+     *
+     * @param  string $repo_id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getRepo'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getRepoAsyncWithHttpInfo($repo_id, string $contentType = self::contentTypes['getRepo'][0])
+    {
+        $returnType = '\PipelineAnalytics\Generated\Model\Repo';
+        $request = $this->getRepoRequest($repo_id, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if ($returnType === '\SplFileObject') {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getRepo'
+     *
+     * @param  string $repo_id (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['getRepo'] to see the possible values for this operation
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function getRepoRequest($repo_id, string $contentType = self::contentTypes['getRepo'][0])
+    {
+
+        // verify the required parameter 'repo_id' is set
+        if ($repo_id === null || (is_array($repo_id) && count($repo_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $repo_id when calling getRepo'
+            );
+        }
+
+
+        $resourcePath = '/api/repos/{repoId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+
+        // path params
+        if ($repo_id !== null) {
+            $resourcePath = str_replace(
+                '{repoId}',
+                ObjectSerializer::toPathValue($repo_id),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                # if Content-Type contains "application/json", json_encode the form parameters
+                try {
+                    $httpBody = json_encode($formParams, JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
+                    throw new \InvalidArgumentException('json_encode error: ' . $e->getMessage(), 0, $e);
+                }
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+        // this endpoint requires Bearer authentication (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'GET',
             $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody
