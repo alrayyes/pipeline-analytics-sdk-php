@@ -249,6 +249,14 @@ class PipelinesApi
                     );
                     $e->setResponseObject($data);
                     throw $e;
+                case 500:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
                 case 501:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
@@ -440,7 +448,7 @@ class PipelinesApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return \PipelineAnalytics\Generated\Model\JobLog|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
+     * @return \PipelineAnalytics\Generated\Model\JobLog|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error
      */
     public function getJobLog($run_id, $job_id, $lines = 200, string $contentType = self::contentTypes['getJobLog'][0])
     {
@@ -460,7 +468,7 @@ class PipelinesApi
      *
      * @throws \PipelineAnalytics\Generated\ApiException on non-2xx response or if the response body is not in the expected format
      * @throws \InvalidArgumentException
-     * @return array of \PipelineAnalytics\Generated\Model\JobLog|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \PipelineAnalytics\Generated\Model\JobLog|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error|\PipelineAnalytics\Generated\Model\Error, HTTP status code, HTTP response headers (array of strings)
      */
     public function getJobLogWithHttpInfo($run_id, $job_id, $lines = 200, string $contentType = self::contentTypes['getJobLog'][0])
     {
@@ -508,6 +516,12 @@ class PipelinesApi
                         $request,
                         $response,
                     );
+                case 500:
+                    return $this->handleResponseWithDataType(
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $request,
+                        $response,
+                    );
             }
 
             
@@ -549,6 +563,14 @@ class PipelinesApi
                     $e->setResponseObject($data);
                     throw $e;
                 case 404:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\PipelineAnalytics\Generated\Model\Error',
@@ -3589,6 +3611,14 @@ class PipelinesApi
                     $e->setResponseObject($data);
                     throw $e;
                 case 409:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\PipelineAnalytics\Generated\Model\Error',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+                case 500:
                     $data = ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\PipelineAnalytics\Generated\Model\Error',
