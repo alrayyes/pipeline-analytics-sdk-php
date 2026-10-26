@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.0.16](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v3.0.15...v3.0.16) (2026-10-26)
+
+
+### Bug Fixes
+
+* bump guzzlehttp/guzzle from 8.2.0 to 8.3.0 ([#155](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/155)) ([7a65836](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/7a658364ddfbbb42f5e0936549fcee9f51e23eb2))
+* bump phpstan/phpstan-phpunit from 2.0.21 to 2.1.1 ([#152](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/152)) ([bca654b](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/bca654b81796ec9050fbf790193d17015e2409f3))
+* bump rector/rector from 2.6.7 to 2.7.0 ([#153](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/153)) ([44093e4](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/44093e4ae438e6db280024ab4b80c9670508bbe8))
+
+
+### Miscellaneous Chores
+
+* bump @commitlint/cli from 21.2.3 to 21.2.4 ([#156](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/156)) ([b086210](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/b0862100108ec86e7a91c970d14e7c9942640ab3))
+* bump @commitlint/config-conventional from 21.2.3 to 21.2.4 ([#157](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/157)) ([ddcab22](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/ddcab220af95c88f9f65354de73101c69ce3110d))
+
 ## [3.0.15](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v3.0.14...v3.0.15) (2026-10-17)
 
 
