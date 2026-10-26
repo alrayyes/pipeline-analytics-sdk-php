@@ -12,6 +12,10 @@
 - [lefthook](https://github.com/evilmartians/lefthook) and
   [bun](https://bun.sh) (for commitlint). `bun install` then
   `lefthook install` once, after cloning.
+- [gitleaks](https://github.com/gitleaks/gitleaks) on your `PATH`. The hooks
+  run it over the staged files on commit and the whole history on push, and CI
+  runs it over the whole history on every pull request, so a pasted credential
+  is caught before it merges.
 
 ## Generator choice
 
@@ -83,6 +87,7 @@ vendor/bin/pint --test     # formatting check
 composer rector:lint       # mechanical-upgrade check, dry run
 composer normalize:lint
 composer audit
+gitleaks git --redact --no-banner   # secret scan, whole history
 ```
 
 `lefthook run pre-push` runs the same set except `composer audit`, which CI owns, so
