@@ -1,5 +1,5 @@
 # Deliberately ungated: a secret can be committed to any file, so there is no
-# diff this is safe to skip for. No `paths:` filter, unlike prose.yml.
+# diff this is safe to skip for. No `paths:` filter.
 name: gitleaks
 
 on:
