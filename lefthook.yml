@@ -1,6 +1,11 @@
+# gitleaks scans the whole history at pre-push rather than the unpushed range:
+# it takes about half a second at this size, and CI does the same
+# (rules/secrets.md).
 pre-commit:
   parallel: false
   commands:
+    gitleaks:
+      run: gitleaks git --staged --redact --no-banner
     pint:
       # Scoped to src/tests, never a bare "*.php": pint.json's own
       # "exclude" for generated/ only applies when Pint discovers files
@@ -21,6 +26,8 @@ commit-msg:
 pre-push:
   parallel: false
   commands:
+    gitleaks:
+      run: gitleaks git --redact --no-banner
     composer-normalize:
       run: composer normalize:lint
     pint:
