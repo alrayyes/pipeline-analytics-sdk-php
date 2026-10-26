@@ -1,6 +1,3 @@
-# gitleaks scans the whole history at pre-push rather than the unpushed range:
-# it takes about half a second at this size, and CI does the same
-# (rules/secrets.md).
 pre-commit:
   parallel: false
   commands:
@@ -26,6 +23,8 @@ commit-msg:
 pre-push:
   parallel: false
   commands:
+    # Scans the whole history rather than the unpushed range: it takes about
+    # half a second at this size, and CI does the same (rules/secrets.md).
     gitleaks:
       run: gitleaks git --redact --no-banner
     composer-normalize:

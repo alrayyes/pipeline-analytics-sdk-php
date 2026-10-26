@@ -87,6 +87,7 @@ vendor/bin/pint --test     # formatting check
 composer rector:lint       # mechanical-upgrade check, dry run
 composer normalize:lint
 composer audit
+gitleaks git --redact --no-banner   # secret scan, whole history
 ```
 
 `lefthook run pre-push` runs the same set except `composer audit`, which CI owns, so
