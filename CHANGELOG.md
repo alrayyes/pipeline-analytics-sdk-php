@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.17](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v3.0.16...v3.0.17) (2026-10-29)
+
+
+### Bug Fixes
+
+* bump guzzlehttp/guzzle from 8.3.0 to 8.3.1 ([#162](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/162)) ([ba4f2e5](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/ba4f2e521a72136ed9724eaf94e16eb9043df60c))
+* bump phpstan/phpstan from 2.3.1 to 2.3.2 ([#161](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/161)) ([f6841b5](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/f6841b53fa82b466dc6287877f0e5e1347cf1d5d))
+
 ## [3.0.16](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v3.0.15...v3.0.16) (2026-10-26)
 
 
