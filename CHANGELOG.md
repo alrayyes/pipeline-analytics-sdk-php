@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.18](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v3.0.17...v3.0.18) (2026-11-05)
+
+
+### Bug Fixes
+
+* bump ergebnis/composer-normalize from 2.54.0 to 2.56.0 ([#164](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/164)) ([3d45139](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/3d45139e36acb573961a6b151ce2ab9a63fcfd7b))
+* bump phpstan and rector together ([#167](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/167)) ([dd60983](https://github.com/alrayyes/pipeline-analytics-sdk-php/commit/dd609833b3a314c3c8398323807fa46f3997e4ff)), closes [#166](https://github.com/alrayyes/pipeline-analytics-sdk-php/issues/166)
+
 ## [3.0.17](https://github.com/alrayyes/pipeline-analytics-sdk-php/compare/v3.0.16...v3.0.17) (2026-10-29)
 
 
