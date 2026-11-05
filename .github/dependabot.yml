@@ -9,6 +9,14 @@ updates:
       # ships whether or not it's security-relevant, so fix: cuts a patch
       # the same way any other fix does (rules/releases.md).
       prefix: fix
+    groups:
+      # Rector runs on classes from the phpstan phar, and each Rector
+      # release requires a minimum phpstan. Pinned exactly, neither can
+      # move alone without breaking lint (#166).
+      static-analysis:
+        patterns:
+          - "phpstan/*"
+          - "rector/*"
 
   - package-ecosystem: bun
     directory: /
