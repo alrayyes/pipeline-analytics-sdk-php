@@ -15,7 +15,7 @@
         "guzzlehttp/guzzle": "8.5.0"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "2.57.0",
+        "ergebnis/composer-normalize": "2.58.0",
         "laravel/pint": "1.32.3",
         "pestphp/pest": "3.8.7",
         "phpmd/phpmd": "3.0.0",
